@@ -1,0 +1,32 @@
+﻿name: Agent Query
+description: Ask one of the Neural Office agents a technical question.
+title: "Query for [Agent Name]: "
+labels:
+  - ask-agent
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Ask the Neural Office AI Agents
+        Your question will be answered by the GitHub Actions agent workflow. The response will appear as a comment, then the issue will be closed.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: Ask about the project, architecture, stack, deployment, database, UI, or codebase.
+      placeholder: "How does the authentication system work? What tech stack is used?"
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent should answer?
+      description: The link label routes automatically, but this helps humans see the intended agent.
+      options:
+        - master
+        - frontend
+        - backend
+        - database
+        - devops
+    validations:
+      required: true

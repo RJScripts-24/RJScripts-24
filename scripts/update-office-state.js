@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -8,32 +8,35 @@ const querySummary = process.env.QUERY_SUMMARY || process.argv[4] || '';
 
 const statePath = path.join(__dirname, '../office/office-state.json');
 const configPath = path.join(__dirname, '../office/agent-config.json');
-const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''));
+}
 
-const agentName = config.agents.find(a => a.id === agentId)?.name || agentId;
+const state = readJson(statePath);
+const config = readJson(configPath);
+
+const agentName = config.agents.find(a => a.id === agentId)?.name || agentId || 'Agents';
+const safeSummary = querySummary.substring(0, 60);
 
 if (actionType === 'query_resolved') {
   if (state.agents[agentId]) {
     state.agents[agentId].status = 'completed';
-    state.agents[agentId].lastQuery = querySummary.substring(0, 60);
+    state.agents[agentId].lastQuery = safeSummary;
     state.agents[agentId].lastActive = new Date().toISOString();
-    state.agents[agentId].queriesResolved += 1;
+    state.agents[agentId].queriesResolved = Number(state.agents[agentId].queriesResolved || 0) + 1;
   }
-  state.ticker = `🤖 ${agentName} just resolved: '${querySummary.substring(0, 60)}'`;
+  state.ticker = `${agentName} just resolved: '${safeSummary}'`;
 } else if (actionType === 'push_ingested') {
-  state.ticker = `📚 ${agentName || 'Agents'} ingested new code chunks`;
+  state.ticker = `${agentName} ingested new code chunks`;
 } else if (actionType === 'agent_spawned') {
-  state.ticker = `🌱 New agent spawned: ${agentName}`;
+  state.ticker = `New agent spawned: ${agentName}`;
 }
 
 state.lastUpdated = new Date().toISOString();
 fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
 
-// Run SVG generator
 execSync('node office/generate-svg.js', { stdio: 'inherit' });
 
-// Commit to git if running in Actions
 if (process.env.GITHUB_ACTIONS) {
   try {
     execSync('git config --global user.name "github-actions[bot]"');

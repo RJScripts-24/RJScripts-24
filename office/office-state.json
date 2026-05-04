@@ -1,6 +1,6 @@
 {
   "lastUpdated": "2023-01-01T00:00:00.000Z",
-  "ticker": "🤖 AI Agents Online | Ask me anything via the agent desks above",
+  "ticker": "AI Agents Online | Open the live office chat to ask a question.",
   "agents": {
     "master": {
       "status": "idle",
@@ -34,3 +34,4 @@
     }
   }
 }
+

@@ -3,7 +3,7 @@
     {
       "id": "master",
       "name": "Master Agent",
-      "role": "Orchestrator — routes queries, synthesizes cross-domain answers",
+      "role": "Orchestrator - routes queries and synthesizes cross-domain answers",
       "issueLabel": "ask-master",
       "accentColor": "#FFD700",
       "deskPosition": { "x": 380, "y": 250 },
@@ -13,7 +13,7 @@
     {
       "id": "frontend",
       "name": "Frontend Agent",
-      "role": "Frontend specialist",
+      "role": "Frontend specialist - React, UI, CSS, accessibility, performance",
       "issueLabel": "ask-frontend",
       "accentColor": "#61DAFB",
       "deskPosition": { "x": 100, "y": 100 },
@@ -23,7 +23,7 @@
     {
       "id": "backend",
       "name": "Backend Agent",
-      "role": "Backend specialist",
+      "role": "Backend specialist - APIs, auth, services, integrations",
       "issueLabel": "ask-backend",
       "accentColor": "#68D391",
       "deskPosition": { "x": 660, "y": 100 },
@@ -33,7 +33,7 @@
     {
       "id": "database",
       "name": "Database Agent",
-      "role": "Database specialist",
+      "role": "Database specialist - schema, queries, indexing, memory",
       "issueLabel": "ask-database",
       "accentColor": "#B794F4",
       "deskPosition": { "x": 100, "y": 400 },
@@ -43,7 +43,7 @@
     {
       "id": "devops",
       "name": "DevOps Agent",
-      "role": "DevOps specialist",
+      "role": "DevOps specialist - CI/CD, deploys, cloud, observability",
       "issueLabel": "ask-devops",
       "accentColor": "#F6AD55",
       "deskPosition": { "x": 660, "y": 400 },

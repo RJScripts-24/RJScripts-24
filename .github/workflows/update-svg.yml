@@ -4,6 +4,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   update-and-ingest:
     runs-on: ubuntu-latest
@@ -37,4 +41,6 @@ jobs:
         run: node scripts/ingest-codebase.js
 
       - name: Update Office State
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/update-office-state.js push_ingested master
