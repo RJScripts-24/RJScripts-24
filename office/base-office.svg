@@ -434,6 +434,6 @@
 
   <rect x="30" y="593" width="1040" height="32" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="3"/>
   <svg x="42" y="597" width="1016" height="28" overflow="hidden">
-    <text x="0" y="20" class="ticker-text">AI Agents Online | Open the live office chat to ask a question.  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
+    <text x="0" y="20" class="ticker-text">Master Agent ingested new code chunks  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
   </svg>
 </svg>
