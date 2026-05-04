@@ -22,24 +22,12 @@
 
 </div>
 
-```typescript
-const rishabh = {
-  name: "Rishabh Kumar Jha",
-  role: "Full-stack Software Engineer & AI Builder",
-  location: "Bangalore, India",
-  focus: [
-    "Autonomous multi-agent systems",
-    "LLM orchestration",
-    "Scalable microservices"
-  ],
-  education: "B.E. CSE & Business Systems, NMIT (GPA: 9.25/10)",
-  contact: {
-    email: "rkj242004@gmail.com",
-    linkedin: "https://linkedin.com/in/rishabh-kumar-jha",
-    github: "https://github.com/RJScripts-24"
-  }
-};
-```
+I am **Rishabh Kumar Jha**, a full-stack software engineer and AI builder based in Bangalore, India.  
+I focus on building autonomous multi-agent systems, LLM orchestration workflows, and scalable microservice platforms.
+
+I am currently pursuing a **B.E. in Computer Science and Business Systems** at NMIT with a **9.25/10 GPA**.
+
+You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://linkedin.com/in/rishabh-kumar-jha), or explore my work on [GitHub](https://github.com/RJScripts-24).
 
 ---
 
