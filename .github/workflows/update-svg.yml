@@ -1,0 +1,15 @@
+name: Update SVG
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update SVG placeholder
+        run: echo "Update SVG pipeline triggered"

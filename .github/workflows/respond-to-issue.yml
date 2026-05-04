@@ -1,0 +1,35 @@
+name: Respond to Issue
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Comment and close issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_URL: ${{ github.event.issue.url }}
+          LABELS: ${{ toJson(github.event.issue.labels) }}
+        run: |
+          AGENT_NAME="Master Agent"
+          if echo "$LABELS" | grep -q "ask-frontend"; then AGENT_NAME="Frontend Agent"; fi
+          if echo "$LABELS" | grep -q "ask-backend"; then AGENT_NAME="Backend Agent"; fi
+          if echo "$LABELS" | grep -q "ask-database"; then AGENT_NAME="Database Agent"; fi
+          if echo "$LABELS" | grep -q "ask-devops"; then AGENT_NAME="DevOps Agent"; fi
+
+          BODY='{"body": "🤖 '"$AGENT_NAME"' received your query. The AI response system is initializing. This message confirms your GitHub Actions pipeline is working correctly."}'
+          
+          curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               -d "$BODY" \
+               "$ISSUE_URL/comments"
+               
+          curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               -d '{"state":"closed"}' \
+               "$ISSUE_URL"

@@ -1,0 +1,54 @@
+{
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master Agent",
+      "role": "Orchestrator — routes queries, synthesizes cross-domain answers",
+      "issueLabel": "ask-master",
+      "accentColor": "#FFD700",
+      "deskPosition": { "x": 380, "y": 250 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend Agent",
+      "role": "Frontend specialist",
+      "issueLabel": "ask-frontend",
+      "accentColor": "#61DAFB",
+      "deskPosition": { "x": 100, "y": 100 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "backend",
+      "name": "Backend Agent",
+      "role": "Backend specialist",
+      "issueLabel": "ask-backend",
+      "accentColor": "#68D391",
+      "deskPosition": { "x": 660, "y": 100 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "database",
+      "name": "Database Agent",
+      "role": "Database specialist",
+      "issueLabel": "ask-database",
+      "accentColor": "#B794F4",
+      "deskPosition": { "x": 100, "y": 400 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "devops",
+      "name": "DevOps Agent",
+      "role": "DevOps specialist",
+      "issueLabel": "ask-devops",
+      "accentColor": "#F6AD55",
+      "deskPosition": { "x": 660, "y": 400 },
+      "status": "idle",
+      "lastActivity": null
+    }
+  ]
+}

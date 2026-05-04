@@ -1,0 +1,1 @@
+// Generate SVG script initialized.
