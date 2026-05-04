@@ -1,70 +1,73 @@
 ﻿<div align="center">
 
-# 🤖 Neural Office — AI Agent Swarm
+# Neural Office — Commit Choreography
 
-**A fully autonomous AI assistant that lives on my GitHub profile.**
+**A living SVG office where specialist agents review every latest commit together.**
 
-[![Launch Interactive Office](https://img.shields.io/badge/Launch_Interactive_Office-Open_Chat_Room-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
+[![Open Interactive Office](https://img.shields.io/badge/Open_Interactive_Office-Live_Conversation_View-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
 <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-  <img src="office/base-office.svg" alt="Neural Office — click to open the interactive office page (GitHub Pages)" width="100%">
+  <img src="office/base-office.svg" alt="Neural Office commit conversation SVG preview" width="100%">
 </a>
 
-*↑ Live animated SVG preview. Clicking the preview opens the interactive office page (GitHub Pages). To ask a question directly, use the **Ask →** links in the table below.*
-
-> **GitHub Pages:** If the badge shows “404 — There isn't a GitHub Pages site here”, enable Pages on this repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**, then run the “Deploy Interactive Office” workflow (or push to `main`). First deploy may need approval under **Actions → Deploy Interactive Office**.
+*The SVG above updates from GitHub Actions after new commits land on `main`.*
 
 </div>
 
 ---
 
-## 💬 How to Ask an Agent a Question
+## What Changed
 
-> GitHub profile READMEs can't run JavaScript, so the animated SVG above is only a preview.
-> On GitHub Pages, the interactive room lets you click desks on the image.
-
-**Option A — Use the interactive room** (after Pages is live):
-[Launch Interactive Office →](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
-
-**Option B — Direct agent links:**
-
-| Agent | Specialty | Ask Now |
-|-------|-----------|---------|
-| 🎯 Master Agent | Architecture, cross-domain questions | [Ask →](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-master&title=Query%20for%20Master%20Agent%3A%20) |
-| 🎨 Frontend Agent | React, TypeScript, CSS, UI/UX | [Ask →](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-frontend&title=Query%20for%20Frontend%20Agent%3A%20) |
-| ⚙️ Backend Agent | APIs, authentication, server logic | [Ask →](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-backend&title=Query%20for%20Backend%20Agent%3A%20) |
-| 🗃️ Database Agent | SQL, schema design, queries | [Ask →](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-database&title=Query%20for%20Database%20Agent%3A%20) |
-| 🚀 DevOps Agent | CI/CD, Docker, cloud, GitHub Actions | [Ask →](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-devops&title=Query%20for%20DevOps%20Agent%3A%20) |
-
-> ⏱️ **Response time: ~60 seconds** · Powered by Groq (llama3-70b-8192) · Responses are AI-generated
+- Removed the issue-query chatbox path as the primary interaction.
+- Agents now auto-discuss the **latest commit** (files changed + diff context).
+- The center desk is removed from the scene; agents walk to a sync zone, talk, and return.
+- Conversation and animation plans are stored in `office/office-state.json`.
 
 ---
 
-## 🏗️ How It Works (Technical)
+## Architecture
 
-```
-Recruiter clicks agent
-       ↓
-GitHub Issues page opens (pre-filled as chatbox)
-       ↓
-Recruiter submits question
-       ↓
-GitHub Actions trigger (respond-to-issue.yml)
-       ↓
-Intent router reads issue labels → selects agent persona
-       ↓
-Groq API called (llama3-70b-8192, ~800ms inference)
-       ↓
-Agent posts formatted reply as issue comment
-       ↓
-Issue closed automatically
-       ↓
-office-state.json updated → SVG regenerated → committed
-       ↓
-Profile README shows updated speech bubble + ticker
+```text
+push to main
+   ↓
+update-svg.yml workflow runs
+   ↓
+ingest-codebase.js updates memory store
+   ↓
+generate-conversation.js builds commit discussion
+   ├─ template fallback (always)
+   └─ Groq enhancement (if GROQ_API_KEY exists)
+   ↓
+update-office-state.js writes state schema
+   ↓
+generate-svg.js renders animated office/base-office.svg
+   ↓
+workflow commits state + svg with [skip ci]
+   ↓
+GitHub Pages shows interactive-office.html
 ```
 
-**Stack:** GitHub Actions · Groq API · ChromaDB (RAG) · Programmatic SVG · Node.js
+---
+
+## Runtime Notes
+
+- Conversation mode is hybrid:
+  - **Template mode** when no API key is available.
+  - **Groq mode** when `GROQ_API_KEY` is configured.
+- SVG links now route to the interactive office page, not issue templates.
+- To run locally:
+  - `npm run generate:conversation`
+  - `npm run generate:office`
+
+---
+
+## Pages Setup
+
+If `interactive-office.html` shows 404:
+
+1. Repository **Settings → Pages**  
+2. **Build and deployment → Source: GitHub Actions**  
+3. Run the **Deploy Interactive Office** workflow once
 
 ---
 

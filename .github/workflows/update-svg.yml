@@ -10,12 +10,13 @@ permissions:
 
 jobs:
   update-and-ingest:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,7 +26,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         run: |
-          DIFF=$(git diff --name-only HEAD~1 HEAD | jq -R -s -c 'split("\n")[:-1]') || echo '[]'
+          DIFF=$(git diff --name-only HEAD~1 HEAD | jq -R -s -c 'split("\n")[:-1]') || DIFF='[]'
           echo "DIFF_FILES=$DIFF" >> $GITHUB_ENV
 
       - name: Restore ChromaDB cache
@@ -40,7 +41,25 @@ jobs:
       - name: Run Ingestion
         run: node scripts/ingest-codebase.js
 
-      - name: Update Office State
+      - name: Generate Commit Conversation
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/update-office-state.js push_ingested master
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: node scripts/generate-conversation.js
+
+      - name: Regenerate Office SVG
+        run: node office/generate-svg.js
+
+      - name: Configure bot git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit SVG and state
+        run: |
+          git add office/office-state.json office/base-office.svg
+          if git diff --staged --quiet; then
+            echo "No SVG/state changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(office): update commit conversation [skip ci]"
+          git push

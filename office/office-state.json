@@ -1,46 +1,149 @@
 {
-  "lastUpdated": "2026-05-04T17:00:27.044Z",
-  "ticker": "🤖 Neural Office Online | Click an agent to ask a question",
-  "agents": {
-    "master": {
-      "status": "idle",
-      "lastQuery": "",
-      "lastQueryShort": "",
-      "lastActive": null,
-      "queriesResolved": 0,
-      "showBubble": false
+  "lastUpdated": "2026-05-04T18:32:23.169Z",
+  "ticker": "Agents reviewed 5ee552f: Fixed the redirect issue 3 | 4 files changed, 47 insertions(+), 54 deletions(-)",
+  "lastCommit": {
+    "sha": "5ee552f4821f8c1a843789ed5e395519e6d4dde5",
+    "author": "rkj24",
+    "message": "Fixed the redirect issue 3",
+    "url": "https://github.com/RJScripts-24/RJScripts-24/commit/5ee552f4821f8c1a843789ed5e395519e6d4dde5",
+    "timestamp": "2026-05-04T23:44:36+05:30"
+  },
+  "conversation": {
+    "id": "5ee552f-1777919543054",
+    "generatedAt": "2026-05-04T18:32:23.054Z",
+    "mode": "template",
+    "headline": "Agents reviewed 5ee552f: Fixed the redirect issue 3",
+    "turns": [
+      {
+        "speakerId": "backend",
+        "speakerName": "Backend Agent",
+        "text": "I reviewed commit 5ee552f. Main files touched: README.md, office/base-office.svg, office/generate-svg.js, office/office-st...."
+      },
+      {
+        "speakerId": "database",
+        "speakerName": "Database Agent",
+        "text": "Commit message says: \"Fixed the redirect issue 3\". I'll validate runtime impact and integration paths."
+      },
+      {
+        "speakerId": "devops",
+        "speakerName": "DevOps Agent",
+        "text": "Data implications look manageable. We should track migrations and query hotspots in the next push."
+      },
+      {
+        "speakerId": "frontend",
+        "speakerName": "Frontend Agent",
+        "text": "CI/CD note: I'll monitor workflow stability and deployment drift after this change lands."
+      }
+    ]
+  },
+  "conversationHistory": [
+    {
+      "id": "5ee552f-1777919543054",
+      "generatedAt": "2026-05-04T18:32:23.054Z",
+      "mode": "template",
+      "headline": "Agents reviewed 5ee552f: Fixed the redirect issue 3",
+      "turns": [
+        {
+          "speakerId": "backend",
+          "speakerName": "Backend Agent",
+          "text": "I reviewed commit 5ee552f. Main files touched: README.md, office/base-office.svg, office/generate-svg.js, office/office-st...."
+        },
+        {
+          "speakerId": "database",
+          "speakerName": "Database Agent",
+          "text": "Commit message says: \"Fixed the redirect issue 3\". I'll validate runtime impact and integration paths."
+        },
+        {
+          "speakerId": "devops",
+          "speakerName": "DevOps Agent",
+          "text": "Data implications look manageable. We should track migrations and query hotspots in the next push."
+        },
+        {
+          "speakerId": "frontend",
+          "speakerName": "Frontend Agent",
+          "text": "CI/CD note: I'll monitor workflow stability and deployment drift after this change lands."
+        }
+      ]
     },
+    {
+      "id": "5ee552f-1777919311674",
+      "generatedAt": "2026-05-04T18:28:31.675Z",
+      "mode": "template",
+      "headline": "Agents reviewed 5ee552f: Fixed the redirect issue 3",
+      "turns": [
+        {
+          "speakerId": "backend",
+          "speakerName": "Backend Agent",
+          "text": "I reviewed commit 5ee552f. Main files touched: README.md, office/base-office.svg, office/generate-svg.js, office/office-st...."
+        },
+        {
+          "speakerId": "database",
+          "speakerName": "Database Agent",
+          "text": "Commit message says: \"Fixed the redirect issue 3\". I'll validate runtime impact and integration paths."
+        },
+        {
+          "speakerId": "devops",
+          "speakerName": "DevOps Agent",
+          "text": "Data implications look manageable. We should track migrations and query hotspots in the next push."
+        },
+        {
+          "speakerId": "frontend",
+          "speakerName": "Frontend Agent",
+          "text": "CI/CD note: I'll monitor workflow stability and deployment drift after this change lands."
+        }
+      ]
+    }
+  ],
+  "animationPlan": {
+    "meetingSpot": {
+      "x": 430,
+      "y": 290
+    },
+    "walkerRoutes": [
+      {
+        "agentId": "backend",
+        "pathValues": "145 150; 430 290; 145 150",
+        "dur": "14s",
+        "delay": "0s",
+        "targetDeskId": "database"
+      },
+      {
+        "agentId": "database",
+        "pathValues": "790 150; 430 290; 790 150",
+        "dur": "15s",
+        "delay": "1s",
+        "targetDeskId": "backend"
+      }
+    ],
+    "spotlightDeskIds": [
+      "backend",
+      "database"
+    ]
+  },
+  "agents": {
     "frontend": {
-      "status": "idle",
-      "lastQuery": "",
-      "lastQueryShort": "",
-      "lastActive": null,
-      "queriesResolved": 0,
-      "showBubble": false
+      "status": "active",
+      "lastLine": "CI/CD note: I'll monitor workflow stability and deployment drift after this change lands.",
+      "lastActive": "2026-05-04T18:32:23.167Z",
+      "conversationsCount": 2
     },
     "backend": {
-      "status": "idle",
-      "lastQuery": "",
-      "lastQueryShort": "",
-      "lastActive": null,
-      "queriesResolved": 0,
-      "showBubble": false
+      "status": "active",
+      "lastLine": "I reviewed commit 5ee552f. Main files touched: README.md, office/base-office.svg, office/generate-svg.js, office/office-st....",
+      "lastActive": "2026-05-04T18:32:23.167Z",
+      "conversationsCount": 2
     },
     "database": {
-      "status": "idle",
-      "lastQuery": "",
-      "lastQueryShort": "",
-      "lastActive": null,
-      "queriesResolved": 0,
-      "showBubble": false
+      "status": "active",
+      "lastLine": "Commit message says: \"Fixed the redirect issue 3\". I'll validate runtime impact and integration paths.",
+      "lastActive": "2026-05-04T18:32:23.167Z",
+      "conversationsCount": 2
     },
     "devops": {
-      "status": "idle",
-      "lastQuery": "",
-      "lastQueryShort": "",
-      "lastActive": null,
-      "queriesResolved": 0,
-      "showBubble": false
+      "status": "active",
+      "lastLine": "Data implications look manageable. We should track migrations and query hotspots in the next push.",
+      "lastActive": "2026-05-04T18:32:23.167Z",
+      "conversationsCount": 2
     }
   }
 }

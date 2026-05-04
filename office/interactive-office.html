@@ -3,322 +3,113 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Neural Office — AI Agent Swarm | RJScripts-24</title>
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:title" content="Neural Office — AI Agent Swarm | RJScripts-24">
-  <meta property="og:description" content="Interactive 2D virtual office with AI agents that answer technical questions via GitHub Issues">
+  <title>Neural Office — Commit Conversation</title>
+  <meta property="og:title" content="Neural Office — Commit Conversation">
+  <meta property="og:description" content="Agents discuss the latest commit and animate through a meeting choreography.">
   <meta property="og:image" content="https://raw.githubusercontent.com/RJScripts-24/RJScripts-24/main/office/base-office.svg">
-  <meta property="og:url" content="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-  <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Neural Office — AI Agent Swarm | RJScripts-24">
-  <meta name="twitter:description" content="Interactive 2D virtual office with AI agents that answer technical questions via GitHub Issues">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/RJScripts-24/RJScripts-24/main/office/base-office.svg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --border: #30363d;
-      --text: #f8fafc;
-      --muted: #8b949e;
-      --accent: #58a6ff;
-      --gold:   #ffd700;
-      --cyan:   #61dafb;
-      --green:  #68d391;
-      --violet: #b794f4;
-      --orange: #f6ad55;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Fira Code', 'Consolas', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── Layout ─────────────────────────────── */
-    .page { max-width: 1140px; margin: 0 auto; padding: 32px 16px 64px; }
-
-    /* ── Heading ────────────────────────────── */
-    .hero { text-align: center; margin-bottom: 28px; }
-    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-    .hero p  { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
-
-    /* ── SVG Stage ──────────────────────────── */
-    .svg-stage {
-      position: relative;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto 12px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #080b12;
-    }
-    .svg-stage img { width: 100%; display: block; }
-
-    /* Invisible clickable overlays, percentages based on 1100×640 SVG */
-    .agent-zone {
-      position: absolute;
-      cursor: pointer;
-      border-radius: 8px;
-      background: transparent;
-      border: none;
-      transition: background 0.18s;
-    }
-    .agent-zone:hover { background: rgba(255,255,255,0.07); }
-    .agent-zone:focus-visible { outline: 2px solid var(--accent); }
-
-    /* Percentages: hover-outline rect is at group_x-28, group_y-98, w=236, h=302 in 1100×640 */
-    .zone-frontend { left:10.6%; top: 8.1%; width:21.5%; height:47.2%; }
-    .zone-master   { left:40.6%; top:25.3%; width:21.5%; height:47.2%; }
-    .zone-backend  { left:69.3%; top: 8.1%; width:21.5%; height:47.2%; }
-    .zone-database { left:13.4%; top:51.9%; width:21.5%; height:47.2%; }
-    .zone-devops   { left:69.3%; top:51.9%; width:21.5%; height:47.2%; }
-
-    .svg-hint {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.78rem;
-      margin-bottom: 40px;
-    }
-
-    /* ── Section titles ─────────────────────── */
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin: 48px 0 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── How It Works ───────────────────────── */
-    .steps {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .step {
-      flex: 1;
-      min-width: 180px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 16px;
-      text-align: center;
-    }
-    .step-icon { font-size: 2rem; margin-bottom: 10px; }
-    .step-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
-    .step-desc { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
-
-    /* ── Direct Links ───────────────────────── */
-    .agent-btns { display: flex; flex-wrap: wrap; gap: 12px; }
-    .agent-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 8px;
-      border: 2px solid;
-      background: transparent;
-      color: inherit;
-      text-decoration: none;
-      font: inherit;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-    }
-    .agent-btn:hover { transform: translateY(-2px); }
-    .btn-master   { color: var(--gold);   border-color: var(--gold);   }
-    .btn-master:hover   { background: rgba(255,215,0,0.08); }
-    .btn-frontend { color: var(--cyan);   border-color: var(--cyan);   }
-    .btn-frontend:hover { background: rgba(97,218,251,0.08); }
-    .btn-backend  { color: var(--green);  border-color: var(--green);  }
-    .btn-backend:hover  { background: rgba(104,211,145,0.08); }
-    .btn-database { color: var(--violet); border-color: var(--violet); }
-    .btn-database:hover { background: rgba(183,148,244,0.08); }
-    .btn-devops   { color: var(--orange); border-color: var(--orange); }
-    .btn-devops:hover   { background: rgba(246,173,85,0.08); }
-
-    /* ── Recent Activity ────────────────────── */
-    .activity-feed { display: flex; flex-direction: column; gap: 10px; }
-    .activity-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s;
-    }
-    .activity-card:hover { border-color: var(--accent); }
-    .activity-agent-chip {
-      flex-shrink: 0;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .activity-title { flex: 1; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .activity-badge {
-      flex-shrink: 0;
-      font-size: 0.72rem;
-      color: #56d364;
-      border: 1px solid #238636;
-      border-radius: 20px;
-      padding: 2px 8px;
-    }
-    .skeleton {
-      background: linear-gradient(90deg, var(--surface) 25%, #1c2128 50%, var(--surface) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      border-radius: 10px;
-      height: 54px;
-    }
-    @keyframes shimmer { to { background-position: -200% 0; } }
-    .activity-error { color: var(--muted); font-size: 0.88rem; padding: 16px 0; }
-
-    /* ── Footer ─────────────────────────────── */
-    footer {
-      margin-top: 56px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-    footer a { color: var(--accent); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0d1117; color: #f8fafc; font-family: "Fira Code", monospace; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 28px 16px 56px; }
+    h1 { margin: 0; font-size: clamp(1.6rem, 3.4vw, 2.7rem); }
+    .sub { color: #93a6bd; margin-top: 10px; line-height: 1.55; }
+    .stage { position: relative; margin-top: 20px; border: 2px solid #2f3b52; border-radius: 14px; overflow: hidden; background: #080b12; }
+    .stage img { width: 100%; display: block; }
+    .zone { position: absolute; border-radius: 8px; cursor: pointer; transition: background .15s; }
+    .zone:hover { background: rgba(255,255,255,.07); }
+    .zone-frontend { left: 7.8%; top: 9.2%; width: 20%; height: 34%; }
+    .zone-backend { left: 69%; top: 9.2%; width: 20%; height: 34%; }
+    .zone-database { left: 9.2%; top: 51.7%; width: 20%; height: 34%; }
+    .zone-devops { left: 69%; top: 51.7%; width: 20%; height: 34%; }
+    .grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; margin-top: 20px; }
+    .card { background: #161b22; border: 1px solid #2f3b52; border-radius: 12px; padding: 16px; }
+    .title { font-weight: 700; margin: 0 0 10px; color: #7dd3fc; }
+    .meta { display: grid; gap: 6px; color: #c6d5e7; font-size: 0.9rem; }
+    .turns { display: grid; gap: 10px; margin-top: 12px; }
+    .turn { border-left: 3px solid #2f3b52; padding: 8px 10px; background: #0f1522; border-radius: 6px; }
+    .turn-speaker { font-size: .78rem; font-weight: 700; color: #7dd3fc; }
+    .turn-text { margin-top: 4px; line-height: 1.5; color: #d8e4f3; font-size: .9rem; }
+    .hint { margin-top: 18px; color: #8ea4bd; font-size: .82rem; }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <main class="page">
-    <div class="hero">
-      <h1>🤖 Neural Office — AI Agent Swarm</h1>
-      <p>Click any agent desk to open a pre-filled GitHub Issue chatbox. The AI replies in ~60 seconds.</p>
-    </div>
+  <main class="wrap">
+    <h1>Neural Office — Commit Conversation</h1>
+    <p class="sub">Agents now discuss the latest repository commit automatically. No issue query flow is used. The SVG shows moving agents meeting in the center and returning to their desks.</p>
 
-    <!-- SVG stage with invisible clickable overlays -->
-    <div class="svg-stage" id="svgStage">
-      <img src="base-office.svg" alt="Neural Office — animated virtual office with AI agents. Click an agent desk to ask a question." id="officeImg">
+    <section class="stage">
+      <img src="base-office.svg" alt="Neural Office animated commit discussion">
+      <div class="zone zone-frontend" data-agent="frontend" title="Frontend Agent"></div>
+      <div class="zone zone-backend" data-agent="backend" title="Backend Agent"></div>
+      <div class="zone zone-database" data-agent="database" title="Database Agent"></div>
+      <div class="zone zone-devops" data-agent="devops" title="DevOps Agent"></div>
+    </section>
 
-      <!-- Overlays: percentages derived from hover-outline rect coords in 1100×640 SVG -->
-      <a class="agent-zone zone-frontend" href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-frontend&title=Query%20for%20Frontend%20Agent%3A%20" target="_blank" rel="noopener" aria-label="Ask Frontend Agent"></a>
-      <a class="agent-zone zone-master"   href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-master&title=Query%20for%20Master%20Agent%3A%20"   target="_blank" rel="noopener" aria-label="Ask Master Agent"></a>
-      <a class="agent-zone zone-backend"  href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-backend&title=Query%20for%20Backend%20Agent%3A%20"  target="_blank" rel="noopener" aria-label="Ask Backend Agent"></a>
-      <a class="agent-zone zone-database" href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-database&title=Query%20for%20Database%20Agent%3A%20" target="_blank" rel="noopener" aria-label="Ask Database Agent"></a>
-      <a class="agent-zone zone-devops"   href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-devops&title=Query%20for%20DevOps%20Agent%3A%20"   target="_blank" rel="noopener" aria-label="Ask DevOps Agent"></a>
-    </div>
-    <p class="svg-hint">↑ Live animated SVG — updates after every answered question · Hover over a desk to highlight it · Click to open the chatbox</p>
+    <section class="grid">
+      <article class="card">
+        <p class="title">Latest Commit</p>
+        <div class="meta" id="commitMeta">
+          <div>Loading commit metadata...</div>
+        </div>
+      </article>
+      <article class="card">
+        <p class="title">Conversation Timeline</p>
+        <div id="conversationTurns" class="turns">
+          <div class="turn"><div class="turn-text">Loading conversation...</div></div>
+        </div>
+      </article>
+    </section>
 
-    <!-- How It Works -->
-    <h2 class="section-title">⚡ How It Works</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">🖱️</div>
-        <div class="step-label">1. Click an Agent</div>
-        <div class="step-desc">Click any agent desk above or use a direct link below to open a pre-filled GitHub Issue form.</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">📝</div>
-        <div class="step-label">2. Submit Your Question</div>
-        <div class="step-desc">Type your question and click Submit. The GitHub Issue IS the chatbox — no login beyond GitHub needed.</div>
-      </div>
-      <div class="step">
-        <div class="step-icon">🤖</div>
-        <div class="step-label">3. AI Replies in ~60s</div>
-        <div class="step-desc">A GitHub Action wakes up, calls Groq (llama3-70b-8192), and posts the agent's reply as a comment. Issue closes automatically.</div>
-      </div>
-    </div>
-
-    <!-- Direct Links -->
-    <h2 class="section-title">🔗 Direct Agent Links</h2>
-    <div class="agent-btns">
-      <a class="agent-btn btn-master"   href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-master&title=Query%20for%20Master%20Agent%3A%20"   target="_blank" rel="noopener">🎯 Ask Master</a>
-      <a class="agent-btn btn-frontend" href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-frontend&title=Query%20for%20Frontend%20Agent%3A%20" target="_blank" rel="noopener">🎨 Ask Frontend</a>
-      <a class="agent-btn btn-backend"  href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-backend&title=Query%20for%20Backend%20Agent%3A%20"  target="_blank" rel="noopener">⚙️ Ask Backend</a>
-      <a class="agent-btn btn-database" href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-database&title=Query%20for%20Database%20Agent%3A%20" target="_blank" rel="noopener">🗃️ Ask Database</a>
-      <a class="agent-btn btn-devops"   href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-devops&title=Query%20for%20DevOps%20Agent%3A%20"   target="_blank" rel="noopener">🚀 Ask DevOps</a>
-    </div>
-
-    <!-- Recent Activity Feed -->
-    <h2 class="section-title">📋 Recent Conversations</h2>
-    <div class="activity-feed" id="activityFeed">
-      <div class="skeleton"></div>
-      <div class="skeleton"></div>
-      <div class="skeleton"></div>
-    </div>
-
-    <footer>
-      Neural Office v1.0 &middot; Built with <a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions</a> + <a href="https://groq.com" target="_blank" rel="noopener">Groq AI</a> &middot; <a href="https://github.com/RJScripts-24" target="_blank" rel="noopener">@RJScripts-24</a>
-    </footer>
+    <p class="hint">Click any desk hotspot to filter the visible turns by speaker. Full state source: <a href="office-state.json" target="_blank" rel="noopener">office-state.json</a>.</p>
   </main>
-
   <script>
-    // ── Agent label → display name + accent colour ──────────────────────────
-    const AGENT_META = {
-      'ask-master':   { name: '🎯 Master',   color: '#ffd700' },
-      'ask-frontend': { name: '🎨 Frontend', color: '#61dafb' },
-      'ask-backend':  { name: '⚙️ Backend',  color: '#68d391' },
-      'ask-database': { name: '🗃️ Database', color: '#b794f4' },
-      'ask-devops':   { name: '🚀 DevOps',   color: '#f6ad55' },
-    };
-
-    function agentFromLabels(labels) {
-      const names = labels.map(l => l.name || l);
-      for (const key of Object.keys(AGENT_META)) {
-        if (names.includes(key)) return AGENT_META[key];
+    let currentTurns = [];
+    function turnMarkup(turn) {
+      return `<div class="turn" data-speaker="${turn.speakerId}">
+        <div class="turn-speaker">${turn.speakerName || turn.speakerId}</div>
+        <div class="turn-text">${turn.text || ""}</div>
+      </div>`;
+    }
+    function renderTurns(filterId = null) {
+      const root = document.getElementById("conversationTurns");
+      const turns = filterId ? currentTurns.filter(t => t.speakerId === filterId) : currentTurns;
+      if (!turns.length) {
+        root.innerHTML = `<div class="turn"><div class="turn-text">No lines for this agent in the latest conversation.</div></div>`;
+        return;
       }
-      return { name: '🤖 Agent', color: '#58a6ff' };
+      root.innerHTML = turns.map(turnMarkup).join("");
     }
 
-    async function loadRecentActivity() {
-      const feed = document.getElementById('activityFeed');
-      try {
-        const res = await fetch(
-          'https://api.github.com/repos/RJScripts-24/RJScripts-24/issues?state=closed&per_page=5&labels=ask-agent',
-          { headers: { Accept: 'application/vnd.github.v3+json' } }
-        );
-        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-        const issues = await res.json();
-
-        if (!Array.isArray(issues) || issues.length === 0) {
-          feed.innerHTML = '<p class="activity-error">No recent conversations yet — be the first to ask a question!</p>';
-          return;
-        }
-
-        feed.innerHTML = issues.map(issue => {
-          const agent = agentFromLabels(issue.labels || []);
-          const title = issue.title.replace(/^Query for [^:]+:\s*/, '').trim() || issue.title;
-          return `
-            <a class="activity-card" href="${issue.html_url}" target="_blank" rel="noopener">
-              <span class="activity-agent-chip" style="color:${agent.color};border-color:${agent.color}">${agent.name}</span>
-              <span class="activity-title">${title}</span>
-              <span class="activity-badge">Answered ✓</span>
-            </a>`;
-        }).join('');
-      } catch (err) {
-        feed.innerHTML = `<p class="activity-error">Recent activity unavailable — <a href="https://github.com/RJScripts-24/RJScripts-24/issues?q=is%3Aissue+is%3Aclosed+label%3Aask-agent" target="_blank" rel="noopener" style="color:#58a6ff">view on GitHub Issues</a></p>`;
-      }
+    async function hydrate() {
+      const res = await fetch("office-state.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Unable to load office-state.json");
+      const state = await res.json();
+      const commit = state.lastCommit || {};
+      const conv = state.conversation || {};
+      currentTurns = Array.isArray(conv.turns) ? conv.turns : [];
+      document.getElementById("commitMeta").innerHTML = `
+        <div><strong>SHA:</strong> ${commit.sha ? commit.sha.slice(0, 8) : "n/a"}</div>
+        <div><strong>Author:</strong> ${commit.author || "n/a"}</div>
+        <div><strong>Message:</strong> ${commit.message || "n/a"}</div>
+        <div><strong>Generated:</strong> ${conv.generatedAt || "n/a"}</div>
+        <div><strong>Mode:</strong> ${conv.mode || "template"}</div>
+        <div><strong>Commit URL:</strong> ${commit.url ? `<a href="${commit.url}" target="_blank" rel="noopener">open commit</a>` : "n/a"}</div>`;
+      renderTurns();
+      document.querySelectorAll(".zone").forEach((el) => {
+        el.addEventListener("click", () => renderTurns(el.dataset.agent));
+      });
     }
 
-    loadRecentActivity();
+    hydrate().catch(() => {
+      document.getElementById("commitMeta").innerHTML = "<div>Failed to load state.</div>";
+      document.getElementById("conversationTurns").innerHTML = `<div class="turn"><div class="turn-text">Conversation data unavailable.</div></div>`;
+    });
   </script>
 </body>
 </html>
