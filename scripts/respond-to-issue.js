@@ -1,6 +1,7 @@
 const { routeQuery } = require("./intent-router");
 const { generateResponse } = require("./groq-client");
 const { queryMemory } = require("./vector-store");
+const { execSync } = require("child_process");
 
 async function main() {
   console.log(`[${new Date().toISOString()}] Started respond-to-issue workflow`);
@@ -99,6 +100,15 @@ async function main() {
     const errText = await closeRes.text();
     console.error("Failed to close issue:", errText);
     process.exit(1);
+  }
+
+  // 6. Update SVG State
+  console.log(`[${new Date().toISOString()}] Updating office state...`);
+  try {
+    const summary = issueTitle.substring(0, 60).replace(/"/g, '\\"');
+    execSync(`node scripts/update-office-state.js query_resolved ${agentInfo.agentId} "${summary}"`, { stdio: 'inherit' });
+  } catch (e) {
+    console.error("Failed to update office state:", e.message);
   }
 
   console.log(`[${new Date().toISOString()}] Workflow completed successfully!`);

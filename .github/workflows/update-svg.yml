@@ -36,5 +36,5 @@ jobs:
       - name: Run Ingestion
         run: node scripts/ingest-codebase.js
 
-      - name: Update SVG placeholder
-        run: echo "Update SVG pipeline triggered"
+      - name: Update Office State
+        run: node scripts/update-office-state.js push_ingested master

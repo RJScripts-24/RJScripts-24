@@ -1,0 +1,36 @@
+{
+  "lastUpdated": "2023-01-01T00:00:00.000Z",
+  "ticker": "🤖 AI Agents Online | Ask me anything via the agent desks above",
+  "agents": {
+    "master": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "frontend": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "backend": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "database": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "devops": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    }
+  }
+}
