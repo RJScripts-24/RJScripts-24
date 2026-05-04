@@ -6,9 +6,11 @@
 
 [![Launch Interactive Office](https://img.shields.io/badge/Launch_Interactive_Office-Open_Chat_Room-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
-<img src="office/base-office.svg" alt="Neural Office — animated preview (use Ask links below; SVG links do not work inside README images)" width="100%">
+<a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
+  <img src="office/base-office.svg" alt="Neural Office — click to open the interactive office page (GitHub Pages)" width="100%">
+</a>
 
-*↑ Live animated SVG preview. Profile READMEs cannot make in-image clicks hit different URLs — use the **Ask →** links in the table below (always works), or the badge once GitHub Pages is enabled.*
+*↑ Live animated SVG preview. Clicking the preview opens the interactive office page (GitHub Pages). To ask a question directly, use the **Ask →** links in the table below.*
 
 > **GitHub Pages:** If the badge shows “404 — There isn't a GitHub Pages site here”, enable Pages on this repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**, then run the “Deploy Interactive Office” workflow (or push to `main`). First deploy may need approval under **Actions → Deploy Interactive Office**.
 

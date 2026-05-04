@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
-  "lastUpdated": "2023-01-01T00:00:00.000Z",
-  "ticker": "🤖 Neural Office Online | Click an agent to ask a question",
-=======
   "lastUpdated": "2026-05-04T17:00:27.044Z",
-  "ticker": "Master Agent ingested new code chunks",
->>>>>>> 8a10b7b80baafb0cd1e4c58f6e2799d7db1fe899
+  "ticker": "🤖 Neural Office Online | Click an agent to ask a question",
   "agents": {
     "master": {
       "status": "idle",
@@ -48,8 +43,4 @@
       "showBubble": false
     }
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 8a10b7b80baafb0cd1e4c58f6e2799d7db1fe899

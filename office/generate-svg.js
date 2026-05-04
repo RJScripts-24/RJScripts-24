@@ -247,25 +247,27 @@ const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://
     </filter>
   </defs>
   <style><![CDATA[
-    @media (prefers-reduced-motion: no-preference) {
-      .screen-pulse { animation: screenPulse 1.8s linear infinite; }
-      .sprite-wrap, .agent-sprite { animation: float 2.4s linear infinite; }
-      .arm-left { animation: typeLeft 0.55s steps(2) infinite; transform-origin: 10px 36px; }
-      .arm-right { animation: typeRight 0.55s steps(2) infinite; transform-origin: 38px 36px; }
-      .leg-left { animation: walkLegA 0.45s steps(2) infinite; transform-origin: 18px 64px; }
-      .leg-right { animation: walkLegB 0.45s steps(2) infinite; transform-origin: 31px 64px; }
-      .idle-ring { animation: idlePulse 2s linear infinite; }
-      .active-aura { animation: activePulse 0.55s linear infinite; filter: url(#softGlow); }
-      .active-aura.slow { animation-duration: 1.1s; }
-      .completed-badge { animation: badgePop 30s linear forwards; }
-      .dot-one { animation: thinkDot 1.4s linear infinite; }
-      .dot-two { animation: thinkDot 1.4s linear infinite 0.25s; }
-      .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
-      .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
-      .data-flow { animation: dash 1.3s linear infinite; }
-      .ticker-text { animation: ticker ${tickerDur} linear infinite; }
-      .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
-      .blink { animation: blink 2.8s steps(2) infinite; }
+    .screen-pulse { animation: screenPulse 1.8s linear infinite; }
+    .sprite-wrap, .agent-sprite { animation: float 2.4s linear infinite; }
+    .arm-left { animation: typeLeft 0.55s steps(2) infinite; transform-origin: 10px 36px; }
+    .arm-right { animation: typeRight 0.55s steps(2) infinite; transform-origin: 38px 36px; }
+    .leg-left { animation: walkLegA 0.45s steps(2) infinite; transform-origin: 18px 64px; }
+    .leg-right { animation: walkLegB 0.45s steps(2) infinite; transform-origin: 31px 64px; }
+    .idle-ring { animation: idlePulse 2s linear infinite; }
+    .active-aura { animation: activePulse 0.55s linear infinite; filter: url(#softGlow); }
+    .active-aura.slow { animation-duration: 1.1s; }
+    .completed-badge { animation: badgePop 30s linear forwards; }
+    .dot-one { animation: thinkDot 1.4s linear infinite; }
+    .dot-two { animation: thinkDot 1.4s linear infinite 0.25s; }
+    .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
+    .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
+    .data-flow { animation: dash 1.3s linear infinite; }
+    .ticker-text { animation: ticker ${tickerDur} linear infinite; }
+    .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
+    .blink { animation: blink 2.8s steps(2) infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
     }
     @keyframes screenPulse { 0%,100%{opacity:.68} 50%{opacity:1;filter:drop-shadow(0 0 10px currentColor)} }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
