@@ -65,7 +65,7 @@ config.agents.forEach(agent => {
   }
 
   agentsSvg += `
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=${agent.issueLabel}&amp;template=query_template.md&amp;title=Query+for+${encodeURIComponent(agent.name)}%3A+" target="_blank">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=${agent.issueLabel}&amp;template=query_template.md&amp;title=Query+for+${encodeURIComponent(agent.name)}%3A+" target="_blank">
     <g transform="translate(${agent.deskPosition.x}, ${agent.deskPosition.y})">
       ${masterRing}
       ${speechBubble}

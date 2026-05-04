@@ -2,28 +2,24 @@
   <style>
     <![CDATA[
       @media (prefers-reduced-motion: no-preference) {
-        .float { animation: float 2s linear infinite; }
-        .pulse-screen { animation: pulse-screen 1.5s linear infinite; }
-        .master-ring { transform-origin: 450px 280px; animation: golden-spin 8s linear infinite; }
-        .marquee-text { animation: ticker-scroll 20s linear infinite; }
+        .float { animation: float 2.5s linear infinite; }
+        .pulse-idle { animation: pulse-idle 2s linear infinite; }
+        .pulse-active { animation: pulse-active 0.5s linear infinite; }
+        .thinking-dot { animation: thinking-dot 1.5s linear infinite; }
+        .marquee-text { animation: ticker-scroll 25s linear infinite; }
+        .master-ring { transform-origin: 70px 30px; animation: golden-spin 8s linear infinite; }
+        .badge-fadeout { animation: badge-fadeout 30s linear forwards; }
+        .glow-pulse { animation: glow-pulse 0.5s alternate infinite; }
       }
       
-      @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-3px); }
-      }
-      @keyframes pulse-screen {
-        0%, 100% { opacity: 0.7; }
-        50% { opacity: 1.0; }
-      }
-      @keyframes golden-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      @keyframes ticker-scroll {
-        0% { transform: translateX(900px); }
-        100% { transform: translateX(-100%); }
-      }
+      @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+      @keyframes pulse-idle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+      @keyframes pulse-active { 0%, 100% { opacity: 0.7; } 50% { opacity: 1.0; } }
+      @keyframes thinking-dot { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+      @keyframes ticker-scroll { 0% { transform: translateX(900px); } 100% { transform: translateX(-100%); } }
+      @keyframes golden-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      @keyframes badge-fadeout { 0%, 90% { opacity: 1; } 100% { opacity: 0; } }
+      @keyframes glow-pulse { 0% { filter: drop-shadow(0 0 4px #fff); } 100% { filter: drop-shadow(0 0 12px #fff); } }
 
       .text-title { font-family: monospace; font-size: 24px; fill: #ffffff; text-anchor: middle; font-weight: bold; }
       .text-ticker { font-family: monospace; font-size: 16px; fill: #00ff00; }
@@ -38,89 +34,103 @@
   <rect width="900" height="600" fill="url(#grid)" />
   <text x="450" y="40" class="text-title">NEURAL OFFICE</text>
 
-  <!-- Master Agent -->
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=ask-master&amp;template=query_template.md&amp;title=Query+for+Master+Agent%3A+" target="_blank">
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=ask-master&amp;template=query_template.md&amp;title=Query+for+Master%20Agent%3A+" target="_blank">
     <g transform="translate(380, 250)">
       <circle cx="70" cy="30" r="80" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="10 5" class="master-ring" />
-      <rect x="20" y="40" width="100" height="40" fill="#2d333b" rx="2" />
-      <rect x="40" y="10" width="60" height="30" fill="#1c2128" rx="2" />
-      <rect x="45" y="15" width="50" height="20" fill="#FFD700" class="pulse-screen" style="animation-delay: 0s;" rx="1" />
-      <g class="float">
-        <rect x="66" y="-14" width="8" height="10" fill="#FFD700" />
-        <rect x="66" y="-22" width="8" height="8" fill="#FFF099" />
-        <rect x="68" y="-20" width="2" height="2" fill="#000" />
-        <rect x="72" y="-20" width="2" height="2" fill="#000" />
-        <rect x="69" y="-26" width="2" height="4" fill="#FFD700" />
-      </g>
-      <text x="70" y="100" class="text-label">Master Agent</text>
-    </g>
-  </a>
-
-  <!-- Frontend Agent -->
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=ask-frontend&amp;template=query_template.md&amp;title=Query+for+Frontend+Agent%3A+" target="_blank">
-    <g transform="translate(100, 100)">
+      
       <rect x="20" y="40" width="80" height="35" fill="#2d333b" rx="2" />
       <rect x="35" y="15" width="50" height="25" fill="#1c2128" rx="2" />
-      <rect x="40" y="20" width="40" height="15" fill="#61DAFB" class="pulse-screen" style="animation-delay: 0.3s;" rx="1" />
+      <rect x="40" y="20" width="40" height="15" fill="#FFD700" class="pulse-idle" rx="1" />
+      <text x="60" y="-10" class="text-label" fill="#8b949e">Resolved: 0</text>
       <g class="float">
-        <rect x="56" y="0" width="8" height="10" fill="#61DAFB" />
-        <rect x="56" y="-8" width="8" height="8" fill="#A0E9FF" />
+        <rect x="56" y="0" width="8" height="10" fill="#FFD700" />
+        <rect x="56" y="-8" width="8" height="8" fill="#FFF" />
         <rect x="58" y="-6" width="2" height="2" fill="#000" />
         <rect x="62" y="-6" width="2" height="2" fill="#000" />
       </g>
+      <circle cx="60" cy="27" r="20" fill="none" stroke="#FFD700" stroke-width="2" class="pulse-idle" />
+      <text x="60" y="95" class="text-label">Master Agent</text>
+    </g>
+  </a>
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=ask-frontend&amp;template=query_template.md&amp;title=Query+for+Frontend%20Agent%3A+" target="_blank">
+    <g transform="translate(100, 100)">
+      
+      
+      <rect x="20" y="40" width="80" height="35" fill="#2d333b" rx="2" />
+      <rect x="35" y="15" width="50" height="25" fill="#1c2128" rx="2" />
+      <rect x="40" y="20" width="40" height="15" fill="#61DAFB" class="pulse-idle" rx="1" />
+      <text x="60" y="-10" class="text-label" fill="#8b949e">Resolved: 0</text>
+      <g class="float">
+        <rect x="56" y="0" width="8" height="10" fill="#61DAFB" />
+        <rect x="56" y="-8" width="8" height="8" fill="#FFF" />
+        <rect x="58" y="-6" width="2" height="2" fill="#000" />
+        <rect x="62" y="-6" width="2" height="2" fill="#000" />
+      </g>
+      <circle cx="60" cy="27" r="20" fill="none" stroke="#61DAFB" stroke-width="2" class="pulse-idle" />
       <text x="60" y="95" class="text-label">Frontend Agent</text>
     </g>
   </a>
-
-  <!-- Backend Agent -->
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=ask-backend&amp;template=query_template.md&amp;title=Query+for+Backend+Agent%3A+" target="_blank">
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=ask-backend&amp;template=query_template.md&amp;title=Query+for+Backend%20Agent%3A+" target="_blank">
     <g transform="translate(660, 100)">
+      
+      
       <rect x="20" y="40" width="80" height="35" fill="#2d333b" rx="2" />
       <rect x="35" y="15" width="50" height="25" fill="#1c2128" rx="2" />
-      <rect x="40" y="20" width="40" height="15" fill="#68D391" class="pulse-screen" style="animation-delay: 0.6s;" rx="1" />
+      <rect x="40" y="20" width="40" height="15" fill="#68D391" class="pulse-idle" rx="1" />
+      <text x="60" y="-10" class="text-label" fill="#8b949e">Resolved: 0</text>
       <g class="float">
         <rect x="56" y="0" width="8" height="10" fill="#68D391" />
-        <rect x="56" y="-8" width="8" height="8" fill="#A8E8C0" />
+        <rect x="56" y="-8" width="8" height="8" fill="#FFF" />
         <rect x="58" y="-6" width="2" height="2" fill="#000" />
         <rect x="62" y="-6" width="2" height="2" fill="#000" />
       </g>
+      <circle cx="60" cy="27" r="20" fill="none" stroke="#68D391" stroke-width="2" class="pulse-idle" />
       <text x="60" y="95" class="text-label">Backend Agent</text>
     </g>
   </a>
-
-  <!-- Database Agent -->
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=ask-database&amp;template=query_template.md&amp;title=Query+for+Database+Agent%3A+" target="_blank">
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=ask-database&amp;template=query_template.md&amp;title=Query+for+Database%20Agent%3A+" target="_blank">
     <g transform="translate(100, 400)">
+      
+      
       <rect x="20" y="40" width="80" height="35" fill="#2d333b" rx="2" />
       <rect x="35" y="15" width="50" height="25" fill="#1c2128" rx="2" />
-      <rect x="40" y="20" width="40" height="15" fill="#B794F4" class="pulse-screen" style="animation-delay: 0.9s;" rx="1" />
+      <rect x="40" y="20" width="40" height="15" fill="#B794F4" class="pulse-idle" rx="1" />
+      <text x="60" y="-10" class="text-label" fill="#8b949e">Resolved: 0</text>
       <g class="float">
         <rect x="56" y="0" width="8" height="10" fill="#B794F4" />
-        <rect x="56" y="-8" width="8" height="8" fill="#D6C1F9" />
+        <rect x="56" y="-8" width="8" height="8" fill="#FFF" />
         <rect x="58" y="-6" width="2" height="2" fill="#000" />
         <rect x="62" y="-6" width="2" height="2" fill="#000" />
       </g>
+      <circle cx="60" cy="27" r="20" fill="none" stroke="#B794F4" stroke-width="2" class="pulse-idle" />
       <text x="60" y="95" class="text-label">Database Agent</text>
     </g>
   </a>
-
-  <!-- DevOps Agent -->
-  <a xlink:href="https://github.com/rkj24/RJScripts-24/issues/new?labels=ask-devops&amp;template=query_template.md&amp;title=Query+for+DevOps+Agent%3A+" target="_blank">
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?labels=ask-devops&amp;template=query_template.md&amp;title=Query+for+DevOps%20Agent%3A+" target="_blank">
     <g transform="translate(660, 400)">
+      
+      
       <rect x="20" y="40" width="80" height="35" fill="#2d333b" rx="2" />
       <rect x="35" y="15" width="50" height="25" fill="#1c2128" rx="2" />
-      <rect x="40" y="20" width="40" height="15" fill="#F6AD55" class="pulse-screen" style="animation-delay: 1.2s;" rx="1" />
+      <rect x="40" y="20" width="40" height="15" fill="#F6AD55" class="pulse-idle" rx="1" />
+      <text x="60" y="-10" class="text-label" fill="#8b949e">Resolved: 0</text>
       <g class="float">
         <rect x="56" y="0" width="8" height="10" fill="#F6AD55" />
-        <rect x="56" y="-8" width="8" height="8" fill="#FBD38D" />
+        <rect x="56" y="-8" width="8" height="8" fill="#FFF" />
         <rect x="58" y="-6" width="2" height="2" fill="#000" />
         <rect x="62" y="-6" width="2" height="2" fill="#000" />
       </g>
+      <circle cx="60" cy="27" r="20" fill="none" stroke="#F6AD55" stroke-width="2" class="pulse-idle" />
       <text x="60" y="95" class="text-label">DevOps Agent</text>
     </g>
   </a>
+  
 
-  <!-- Ticker Bar -->
   <rect x="0" y="560" width="900" height="40" fill="#161b22" />
   <svg x="0" y="560" width="900" height="40">
     <text x="0" y="25" class="text-ticker marquee-text">🤖 AI Agents Online | Ask me anything via the agent desks above</text>

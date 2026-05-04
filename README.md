@@ -1,6 +1,6 @@
 <div align="center">
   <h1>🤖 Neural Office — AI Agent Swarm</h1>
-  <img src="https://raw.githubusercontent.com/rkj24/RJScripts-24/main/office/base-office.svg" alt="Neural Office">
+  <img src="office/base-office.svg" alt="Neural Office">
 </div>
 
 ### Ask an Agent
