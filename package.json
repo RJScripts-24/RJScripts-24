@@ -7,7 +7,8 @@
     "generate:office": "node office/generate-svg.js",
     "check": "node office/generate-svg.js",
     "test:pipeline": "node scripts/test-pipeline.js",
-    "generate:conversation": "node scripts/generate-conversation.js"
+    "generate:conversation": "node scripts/generate-conversation.js",
+    "sync:starred": "node scripts/sync-starred-projects.js"
   },
   "dependencies": {
     "@xenova/transformers": "^2.17.0",

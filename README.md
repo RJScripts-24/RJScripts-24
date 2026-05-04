@@ -27,7 +27,7 @@ I focus on building autonomous multi-agent systems, LLM orchestration workflows,
 
 I am currently pursuing a **B.E. in Computer Science and Business Systems** at NMIT with a **9.25/10 GPA**.
 
-You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://linkedin.com/in/rishabh-kumar-jha), or explore my work on [GitHub](https://github.com/RJScripts-24).
+You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.linkedin.com/in/rishabh-kumar-jha-8b5761325/), or explore my work on [GitHub](https://github.com/RJScripts-24).
 
 ---
 
@@ -37,57 +37,82 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://linke
 
 </div>
 
+<!-- STARRED_PROJECTS:START -->
 <table>
 <tr>
 <td width="50%" valign="top">
 
-### 🌍 [GeoCortex](https://github.com/RJScripts-24/GeoCortex)
-> Geospatial intelligence platform with AI-assisted analysis.
+### 🚀 [CIOS](https://github.com/RJScripts-24/CIOS)
+> Client Intelligence Operating System
 
-**Highlights:**
-- 60fps WebGL map rendering
-- Security-first proxy architecture
-- CI/CD-driven delivery pipeline
+**Snapshot:**
+- Language: TypeScript
+- Stars: 1
+- Updated: 2026-05-04
 
-[![Stars](https://img.shields.io/github/stars/RJScripts-24/GeoCortex?style=social)](https://github.com/RJScripts-24/GeoCortex)
+[![Stars](https://img.shields.io/github/stars/RJScripts-24/CIOS?style=social)](https://github.com/RJScripts-24/CIOS)
 
 </td>
 <td width="50%" valign="top">
 
-### 🧠 [InfraZero](https://github.com/RJScripts-24/InfraZero)
-> Local-first visual IDE for distributed systems modeling.
+### 🚀 [DataReaperX](https://github.com/RJScripts-24/DataReaperX)
+> DataReaper is an autonomous, multi-agent AI system designed to be a personal privacy "Search &amp; Destroy" unit
 
-**Highlights:**
-- Real-time multiplayer WebSocket workspace
-- Rust/WASM deterministic simulation engine
-- Topology hashing for replay integrity
+**Snapshot:**
+- Language: TypeScript
+- Stars: 1
+- Updated: 2026-05-04
 
-[![Stars](https://img.shields.io/github/stars/RJScripts-24/InfraZero?style=social)](https://github.com/RJScripts-24/InfraZero)
+[![Stars](https://img.shields.io/github/stars/RJScripts-24/DataReaperX?style=social)](https://github.com/RJScripts-24/DataReaperX)
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-### ⚡ [Velocis](https://github.com/RJScripts-24/Velocis)
-> AI-powered developer platform for code generation and repo intelligence.
+### 🚀 [InfraZero](https://github.com/RJScripts-24/InfraZero)
+> InfraZero is a local-first visual IDE that allows teams to collaboratively design distributed systems using AI and instantly verify their reliability through hardware-accelerated, browser-based physics simulations.
 
-**Highlights:**
-- Prompt-driven IDE workflows
-- Automated QA + docs generation in CI
-- Cloud deployment and cost prediction layer
+**Snapshot:**
+- Language: TypeScript
+- Stars: 1
+- Updated: 2026-03-30
+
+[![Stars](https://img.shields.io/github/stars/RJScripts-24/InfraZero?style=social)](https://github.com/RJScripts-24/InfraZero)
+
+</td>
+<td width="50%" valign="top">
+
+### 🚀 [Velocis](https://github.com/RJScripts-24/Velocis)
+> Velocis embeds an AI senior engineer into your repo — automating reviews, tests, and documentation. A full-stack GenAI system for faster onboarding and developer productivity.
+
+**Snapshot:**
+- Language: TypeScript
+- Stars: 1
+- Updated: 2026-04-06
 
 [![Stars](https://img.shields.io/github/stars/RJScripts-24/Velocis?style=social)](https://github.com/RJScripts-24/Velocis)
 
 </td>
-<td width="50%" valign="top" align="center">
-<br><br>
-<img src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" width="200" alt="coding gif"/>
-<br>
-*Building production-grade AI systems.*
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 🚀 [GeoCortex](https://github.com/RJScripts-24/GeoCortex)
+> A web app that uses Google earth engine and 3D map tiles to point out heat maps and flood prone regions along with AI assisted solution and gesture controlled navigation
+
+**Snapshot:**
+- Language: JavaScript
+- Stars: 2
+- Updated: 2026-02-08
+
+[![Stars](https://img.shields.io/github/stars/RJScripts-24/GeoCortex?style=social)](https://github.com/RJScripts-24/GeoCortex)
+
 </td>
+<td width="50%" valign="top" align="center"><br><br><em>More starred projects soon.</em></td>
 </tr>
 </table>
+<!-- STARRED_PROJECTS:END -->
 
 ---
 
