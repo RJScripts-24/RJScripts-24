@@ -3,15 +3,14 @@
 # 🤖 Neural Office — AI Agent Swarm
 
 **A fully autonomous AI assistant that lives on my GitHub profile.**
-Click any agent below to open the interactive chat room.
 
 [![Launch Interactive Office](https://img.shields.io/badge/Launch_Interactive_Office-Open_Chat_Room-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
-<a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-  <img src="office/base-office.svg" alt="Neural Office - Click to open interactive agent chatroom" width="100%">
-</a>
+<img src="office/base-office.svg" alt="Neural Office — animated preview (use Ask links below; SVG links do not work inside README images)" width="100%">
 
-*↑ This is a live animated SVG. It updates every time an agent answers a question.*
+*↑ Live animated SVG preview. Profile READMEs cannot make in-image clicks hit different URLs — use the **Ask →** links in the table below (always works), or the badge once GitHub Pages is enabled.*
+
+> **GitHub Pages:** If the badge shows “404 — There isn't a GitHub Pages site here”, enable Pages on this repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**, then run the “Deploy Interactive Office” workflow (or push to `main`). First deploy may need approval under **Actions → Deploy Interactive Office**.
 
 </div>
 
@@ -19,10 +18,10 @@ Click any agent below to open the interactive chat room.
 
 ## 💬 How to Ask an Agent a Question
 
-> GitHub profile READMEs can't run JavaScript, so the animated SVG above is the live preview.
-> The interactive chat room (above button) is where agents are clickable.
+> GitHub profile READMEs can't run JavaScript, so the animated SVG above is only a preview.
+> On GitHub Pages, the interactive room lets you click desks on the image.
 
-**Option A — Use the interactive room** (recommended):
+**Option A — Use the interactive room** (after Pages is live):
 [Launch Interactive Office →](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
 **Option B — Direct agent links:**
