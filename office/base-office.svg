@@ -15,7 +15,7 @@
     .tiny { font: 700 9px Consolas,Monaco,monospace; fill:#cbd5e1; text-anchor:middle; }
     .bubble-speaker { font: 800 8px Consolas,Monaco,monospace; fill:#334155; text-anchor:middle; }
     .bubble-line { font: 700 9px Consolas,Monaco,monospace; fill:#111827; text-anchor:middle; }
-    .ticker-text { font: 800 15px Consolas,Monaco,monospace; fill:#7dd3fc; animation: ticker 42.9s linear infinite; }
+    .ticker-text { font: 800 15px Consolas,Monaco,monospace; fill:#7dd3fc; animation: ticker 40.2s linear infinite; }
     .screen-pulse { animation: screenPulse 1.5s linear infinite; }
     .agent-sprite { animation: bob 2.1s linear infinite; }
     .arm-left { animation: armA 0.55s steps(2) infinite; transform-origin: 10px 36px; }
@@ -45,7 +45,7 @@
   <rect x="32" y="62" width="1036" height="514" rx="20" fill="none" stroke="#26334a" stroke-width="4"/>
 
   <text x="550" y="38" class="title">NEURAL OFFICE � COMMIT CHOREOGRAPHY</text>
-  <text x="550" y="58" class="subtitle">Latest commit 5ee55... by rkj24 � sequential 4-agent discussions</text>
+  <text x="550" y="58" class="subtitle">Latest commit 2a9ae... by rkj24 � sequential 4-agent discussions</text>
 
   <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" xlink:href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" target="_blank" rel="noopener">
     <g>
@@ -65,7 +65,7 @@
     <rect x="0" y="0" width="152" height="48" rx="8" fill="#f8fafc" stroke="#68D391" stroke-width="2"/>
     <path d="M66 48 l8 11 l8 -11" fill="#f8fafc" stroke="#68D391" stroke-width="2"/>
     <text x="76" y="16" class="bubble-speaker">BACKEND AGENT</text>
-    <text x="76" y="32" class="bubble-line">I reviewed commit 5ee552f. Main files tou...</text>
+    <text x="76" y="32" class="bubble-line">I reviewed commit 2a9ae0c. Main files tou...</text>
   </g>
       <rect x="24" y="-28" width="128" height="24" rx="3" fill="#0b0f17" stroke="#68D391" stroke-width="2"/>
       <text x="88" y="-11" class="agent-label">BACKEND_AGENT</text>
@@ -73,7 +73,7 @@
       <rect x="55" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
       <rect x="62" y="82" width="50" height="22" fill="#68D391" class="screen-pulse"/>
       <ellipse cx="86" cy="155" rx="66" ry="12" fill="#111827" opacity="0.42"/>
-      <text x="88" y="166" class="tiny">I reviewed commit 5ee552f. ...</text>
+      <text x="88" y="166" class="tiny">I reviewed commit 2a9ae0c. ...</text>
       <g transform="translate(62 -20)">
   <g class="agent-sprite" transform="scale(1)">
     <rect x="12" y="2" width="24" height="23" fill="#223047"/>
@@ -90,10 +90,42 @@
   </a>
 
   <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" xlink:href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" target="_blank" rel="noopener">
+    <g class="desk-group" transform="translate(130 390)">
+      <rect class="hover-outline" x="-24" y="-60" width="220" height="220" rx="10" fill="transparent" stroke="#B794F4" stroke-width="2" opacity="0"/>
+      
+  <g class="head-bubble" style="animation-delay:6s" transform="translate(148 312)">
+    <rect x="0" y="0" width="152" height="48" rx="8" fill="#f8fafc" stroke="#B794F4" stroke-width="2"/>
+    <path d="M66 48 l8 11 l8 -11" fill="#f8fafc" stroke="#B794F4" stroke-width="2"/>
+    <text x="76" y="16" class="bubble-speaker">DATABASE AGENT</text>
+    <text x="76" y="32" class="bubble-line">Commit message says: &quot;Readme automated&quot;. ...</text>
+  </g>
+      <rect x="24" y="-28" width="128" height="24" rx="3" fill="#0b0f17" stroke="#B794F4" stroke-width="2"/>
+      <text x="88" y="-11" class="agent-label">DATABASE_AGENT</text>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="55" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="62" y="82" width="50" height="22" fill="#B794F4" class="screen-pulse"/>
+      <ellipse cx="86" cy="155" rx="66" ry="12" fill="#111827" opacity="0.42"/>
+      <text x="88" y="166" class="tiny">Commit message says: &quot;Readm...</text>
+      <g transform="translate(62 -20)">
+  <g class="agent-sprite" transform="scale(1)">
+    <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+    <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+    <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+    <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+    <rect x="11" y="31" width="26" height="32" fill="#B794F4"/>
+    <rect x="6" y="35" width="8" height="24" fill="#B794F4" class="arm-left"/>
+    <rect x="34" y="35" width="8" height="24" fill="#B794F4" class="arm-right"/>
+    <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+    <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+  </g></g>
+    </g>
+  </a>
+
+  <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" xlink:href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" target="_blank" rel="noopener">
     <g class="desk-group" transform="translate(790 390)">
       <rect class="hover-outline" x="-24" y="-60" width="220" height="220" rx="10" fill="transparent" stroke="#F6AD55" stroke-width="2" opacity="0"/>
       
-  <g class="head-bubble" style="animation-delay:6s" transform="translate(808 312)">
+  <g class="head-bubble" style="animation-delay:12s" transform="translate(808 312)">
     <rect x="0" y="0" width="152" height="48" rx="8" fill="#f8fafc" stroke="#F6AD55" stroke-width="2"/>
     <path d="M66 48 l8 11 l8 -11" fill="#f8fafc" stroke="#F6AD55" stroke-width="2"/>
     <text x="76" y="16" class="bubble-speaker">DEVOPS AGENT</text>
@@ -115,38 +147,6 @@
     <rect x="11" y="31" width="26" height="32" fill="#F6AD55"/>
     <rect x="6" y="35" width="8" height="24" fill="#F6AD55" class="arm-left"/>
     <rect x="34" y="35" width="8" height="24" fill="#F6AD55" class="arm-right"/>
-    <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
-    <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
-  </g></g>
-    </g>
-  </a>
-
-  <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" xlink:href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" target="_blank" rel="noopener">
-    <g class="desk-group" transform="translate(130 390)">
-      <rect class="hover-outline" x="-24" y="-60" width="220" height="220" rx="10" fill="transparent" stroke="#B794F4" stroke-width="2" opacity="0"/>
-      
-  <g class="head-bubble" style="animation-delay:12s" transform="translate(148 312)">
-    <rect x="0" y="0" width="152" height="48" rx="8" fill="#f8fafc" stroke="#B794F4" stroke-width="2"/>
-    <path d="M66 48 l8 11 l8 -11" fill="#f8fafc" stroke="#B794F4" stroke-width="2"/>
-    <text x="76" y="16" class="bubble-speaker">DATABASE AGENT</text>
-    <text x="76" y="32" class="bubble-line">Commit message says: &quot;Fixed the redirect ...</text>
-  </g>
-      <rect x="24" y="-28" width="128" height="24" rx="3" fill="#0b0f17" stroke="#B794F4" stroke-width="2"/>
-      <text x="88" y="-11" class="agent-label">DATABASE_AGENT</text>
-      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
-      <rect x="55" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
-      <rect x="62" y="82" width="50" height="22" fill="#B794F4" class="screen-pulse"/>
-      <ellipse cx="86" cy="155" rx="66" ry="12" fill="#111827" opacity="0.42"/>
-      <text x="88" y="166" class="tiny">Commit message says: &quot;Fixed...</text>
-      <g transform="translate(62 -20)">
-  <g class="agent-sprite" transform="scale(1)">
-    <rect x="12" y="2" width="24" height="23" fill="#223047"/>
-    <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
-    <rect x="18" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="28" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="11" y="31" width="26" height="32" fill="#B794F4"/>
-    <rect x="6" y="35" width="8" height="24" fill="#B794F4" class="arm-left"/>
-    <rect x="34" y="35" width="8" height="24" fill="#B794F4" class="arm-right"/>
     <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
     <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
   </g></g>
@@ -186,7 +186,7 @@
   </a>
   
       <g class="walker-seq" style="animation-delay:0s">
-        <animateTransform attributeName="transform" type="translate" values="852 100; 790 265; 852 370; 852 100" dur="24s" begin="0s" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="translate" values="852 100; 460 265; 192 370; 852 100" dur="24s" begin="0s" repeatCount="indefinite"/>
         <ellipse cx="22" cy="91" rx="20" ry="6" fill="#0b1220" opacity="0.45"/>
         
   <g class="agent-sprite" transform="scale(0.9)">
@@ -203,24 +203,7 @@
       </g>
 
       <g class="walker-seq" style="animation-delay:6s">
-        <animateTransform attributeName="transform" type="translate" values="852 370; 460 400; 192 370; 852 370" dur="24s" begin="0s" repeatCount="indefinite"/>
-        <ellipse cx="22" cy="91" rx="20" ry="6" fill="#0b1220" opacity="0.45"/>
-        
-  <g class="agent-sprite" transform="scale(0.9)">
-    <rect x="12" y="2" width="24" height="23" fill="#223047"/>
-    <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
-    <rect x="18" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="28" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="11" y="31" width="26" height="32" fill="#F6AD55"/>
-    <rect x="6" y="35" width="8" height="24" fill="#F6AD55" class="arm-left"/>
-    <rect x="34" y="35" width="8" height="24" fill="#F6AD55" class="arm-right"/>
-    <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
-    <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
-  </g>
-      </g>
-
-      <g class="walker-seq" style="animation-delay:12s">
-        <animateTransform attributeName="transform" type="translate" values="192 370; 120 265; 172 100; 192 370" dur="24s" begin="0s" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="translate" values="192 370; 460 400; 852 370; 192 370" dur="24s" begin="0s" repeatCount="indefinite"/>
         <ellipse cx="22" cy="91" rx="20" ry="6" fill="#0b1220" opacity="0.45"/>
         
   <g class="agent-sprite" transform="scale(0.9)">
@@ -231,6 +214,23 @@
     <rect x="11" y="31" width="26" height="32" fill="#B794F4"/>
     <rect x="6" y="35" width="8" height="24" fill="#B794F4" class="arm-left"/>
     <rect x="34" y="35" width="8" height="24" fill="#B794F4" class="arm-right"/>
+    <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+    <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+  </g>
+      </g>
+
+      <g class="walker-seq" style="animation-delay:12s">
+        <animateTransform attributeName="transform" type="translate" values="852 370; 450 265; 172 100; 852 370" dur="24s" begin="0s" repeatCount="indefinite"/>
+        <ellipse cx="22" cy="91" rx="20" ry="6" fill="#0b1220" opacity="0.45"/>
+        
+  <g class="agent-sprite" transform="scale(0.9)">
+    <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+    <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+    <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+    <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+    <rect x="11" y="31" width="26" height="32" fill="#F6AD55"/>
+    <rect x="6" y="35" width="8" height="24" fill="#F6AD55" class="arm-left"/>
+    <rect x="34" y="35" width="8" height="24" fill="#F6AD55" class="arm-right"/>
     <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
     <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
   </g>
@@ -255,6 +255,6 @@
 
   <rect x="30" y="598" width="1040" height="28" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="2"/>
   <svg x="42" y="601" width="1016" height="24" overflow="hidden">
-    <text x="0" y="16" class="ticker-text">Agents reviewed 5ee552f: Fixed the redirect issue 3 | 4 files changed, 47 insertions(+), 54 deletions(-) | Randomized agent choreography active</text>
+    <text x="0" y="16" class="ticker-text">Agents reviewed 2a9ae0c: Readme automated | 4 files changed, 207 insertions(+), 27 deletions(-) | Randomized agent choreography active</text>
   </svg>
 </svg>
