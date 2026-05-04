@@ -1,15 +1,40 @@
-name: Update SVG
+name: Update SVG and Ingest Memory
 on:
   push:
     branches:
       - main
 
 jobs:
-  update:
+  update-and-ingest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          DIFF=$(git diff --name-only HEAD~1 HEAD | jq -R -s -c 'split("\n")[:-1]') || echo '[]'
+          echo "DIFF_FILES=$DIFF" >> $GITHUB_ENV
+
+      - name: Restore ChromaDB cache
+        uses: actions/cache@v4
+        with:
+          path: ./chroma-db/
+          key: chroma-db-${{ runner.os }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Ingestion
+        run: node scripts/ingest-codebase.js
 
       - name: Update SVG placeholder
         run: echo "Update SVG pipeline triggered"
