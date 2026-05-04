@@ -22,7 +22,7 @@ async function routeQuery(issueTitle, issueBody, issueLabels) {
     else if (labels.includes("ask-devops")) agentId = "devops";
   }
 
-  // 2. Classify if no label matches
+  // Failure mode 2: no matching agent label → LLM classification, then fallback to master
   if (!agentId) {
     const classificationPrompt = `Analyze the following issue and classify it into exactly one of the following domains: "master", "frontend", "backend", "database", "devops".
 Return ONLY the domain word, nothing else.`;
@@ -36,9 +36,14 @@ Return ONLY the domain word, nothing else.`;
         agentId = "master";
       }
     } catch (e) {
-      console.error("Classification failed, defaulting to master:", e.message);
+      console.error("Classification failed, defaulting to master agent:", e.message);
       agentId = "master";
     }
+  }
+
+  if (!agentId) {
+    console.warn("No agent label matched and classification unavailable — defaulting to master agent.");
+    agentId = "master";
   }
 
   return {

@@ -1,0 +1,2767 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/ISSUE_TEMPLATE/query_template.md
+.github/ISSUE_TEMPLATE/query_template.yml
+.github/workflows/deploy-pages.yml
+.github/workflows/respond-to-issue.yml
+.github/workflows/update-svg.yml
+.gitignore
+github_virtual_office_prompt.md
+office/agent-config.json
+office/base-office.svg
+office/generate-svg.js
+office/interactive-office.html
+office/office-state.json
+package.json
+README.md
+scripts/agent-personas.js
+scripts/groq-client.js
+scripts/ingest-codebase.js
+scripts/intent-router.js
+scripts/post-comment.js
+scripts/respond-to-issue.js
+scripts/update-office-state.js
+scripts/vector-store.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".github/ISSUE_TEMPLATE/query_template.yml">
+name: Agent Query
+description: Ask one of the Neural Office agents a technical question.
+title: "Query for [Agent Name]: "
+labels:
+  - ask-agent
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Ask the Neural Office AI Agents
+        Your question will be answered by the GitHub Actions agent workflow. The response will appear as a comment, then the issue will be closed.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: Ask about the project, architecture, stack, deployment, database, UI, or codebase.
+      placeholder: "How does the authentication system work? What tech stack is used?"
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent should answer?
+      description: The link label routes automatically, but this helps humans see the intended agent.
+      options:
+        - master
+        - frontend
+        - backend
+        - database
+        - devops
+    validations:
+      required: true
+</file>
+
+<file path=".github/workflows/deploy-pages.yml">
+name: Deploy Interactive Office
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+</file>
+
+<file path="github_virtual_office_prompt.md">
+# 🛸 ANTIGRAVITY MASTER PROMPT
+## GitHub Profile: 2D Virtual AI Agent Office
+### A Phase-Locked, Hallucination-Resistant Build Specification
+
+---
+
+> **HOW TO USE THIS PROMPT**
+> Copy each Phase Block individually into your AI coding assistant (Cursor, Claude, Copilot, etc.).
+> Complete and verify each phase before proceeding to the next.
+> Never paste multiple phases together — this is intentional to prevent context drift and hallucination.
+
+---
+
+## 🧠 SYSTEM CONTEXT (Paste this before EVERY phase)
+
+```
+You are an expert full-stack engineer and pixel-art SVG designer specializing in GitHub Actions automation, LLM orchestration, and serverless architectures. You write clean, modular, production-grade code.
+
+Your job is to build a 2D virtual AI agent office that lives entirely inside a GitHub Profile README.md. The system uses:
+- GitHub Actions as the compute layer
+- GitHub Issues REST API as the event/database layer
+- Groq API (llama3-70b-8192 model) for ultra-fast LLM inference
+- ChromaDB (local/serverless mode) for vector memory and RAG
+- SVG with embedded CSS animations as the visual engine
+- Node.js / TypeScript for all scripting
+
+STRICT RULES YOU MUST FOLLOW:
+1. Never fabricate API methods. Only use documented APIs.
+2. Never skip error handling on any API call.
+3. Every file you create must be placed in its exact specified path.
+4. After each code block, write a one-line "✅ DONE CHECK" that tells me how to verify it works.
+5. Do not proceed to the next task within a phase until I confirm the current one.
+6. If you are uncertain about any implementation detail, say "UNCERTAIN:" and list the options instead of guessing.
+```
+
+---
+
+## 📦 PHASE 1 — Static UI Foundation & Repository Scaffold
+
+### Objective
+Create the visual office SVG, repository file structure, and a basic GitHub Action that responds to issues with a hardcoded reply. No LLM calls yet. Verify the entire visual and event pipeline is working before touching AI.
+
+---
+
+### PHASE 1 — PROMPT BLOCK (Copy this exactly)
+
+```
+PHASE 1 TASK: Build the static foundation for a 2D GitHub Profile Virtual Office.
+
+## Step 1.1 — Repository File Structure
+
+Create the following file and folder structure. Output each file path as a header, then the full file content beneath it. Do not summarize — output the complete content of every file.
+
+Required structure:
+├── README.md                          (entry point — embeds the SVG)
+├── office/
+│   ├── base-office.svg                (the 2D pixel-art office — full SVG source)
+│   ├── generate-svg.js                (Node.js script that programmatically rebuilds the SVG)
+│   └── agent-config.json              (agent definitions: name, role, desk position, issue label)
+├── .github/
+│   └── workflows/
+│       ├── respond-to-issue.yml       (triggers on issue opened)
+│       └── update-svg.yml             (triggers on push to main)
+└── scripts/
+    └── post-comment.js                (uses GitHub REST API to comment on and close issues)
+
+## Step 1.2 — SVG Office Design
+
+Design the base-office.svg as a top-down 2D pixel-art office, 900px wide × 600px tall.
+
+REQUIRED VISUAL ELEMENTS:
+- Dark background (#0d1117 — GitHub dark mode)
+- A grid floor pattern using subtle lines (#1c2128)
+- 5 agent "desks" arranged in the office:
+  - Master Agent (center, slightly larger desk, gold accent color #FFD700)
+  - Frontend Agent (top-left, blue accent #61DAFB)
+  - Backend Agent (top-right, green accent #68D391)
+  - Database Agent (bottom-left, purple accent #B794F4)
+  - DevOps Agent (bottom-right, orange accent #F6AD55)
+- Each desk has:
+  - A pixel-art desk rectangle
+  - A pixel-art monitor (2 small stacked rectangles)
+  - A pixel-art agent sprite (8x8 pixel character above the desk using SVG rect elements — no external images)
+  - A name label below the sprite
+  - The entire desk group wrapped in: <a xlink:href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new?labels=AGENT_LABEL&template=query_template.md&title=Query+for+AGENT_NAME%3A+" target="_blank">
+- A "NEURAL OFFICE" title at the top in monospace font
+- A marquee-style ticker bar at the bottom (static text for now): "🤖 AI Agents Online | Ask me anything via the agent desks above"
+
+ANIMATION REQUIREMENTS (CSS only, embedded in <style> tag inside SVG):
+- Agent sprites must have a subtle floating animation (translateY -3px to 0, 2s ease-in-out infinite)
+- Monitor screens must pulse with a soft glow (opacity 0.7 to 1.0, 1.5s ease-in-out infinite, each agent on different delay)
+- Master agent desk must have a rotating golden ring around it (slow spin, 8s linear infinite)
+- The ticker text must scroll left continuously (CSS marquee via translateX animation, 20s linear infinite)
+- All animations must be paused when prefers-reduced-motion: reduce
+
+PIXEL ART SPRITE DESIGN (SVG rect-based, for each agent):
+- Body: 8px × 10px rect
+- Head: 8px × 8px rect (lighter shade)
+- Eyes: two 2px × 2px rects
+- Color the body using the agent's accent color
+- Add a small "antenna" (2px × 4px rect) on top of the head for the Master Agent only
+
+## Step 1.3 — agent-config.json
+
+Output this JSON file with all 5 agents defined:
+{
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master Agent",
+      "role": "Orchestrator — routes queries, synthesizes cross-domain answers",
+      "issueLabel": "ask-master",
+      "accentColor": "#FFD700",
+      "deskPosition": { "x": 380, "y": 250 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    ... (define all 5 agents)
+  ]
+}
+
+## Step 1.4 — GitHub Action: respond-to-issue.yml
+
+Write a GitHub Actions workflow that:
+- Triggers on: issues: types: [opened]
+- Runs on ubuntu-latest
+- Checks out the repo
+- Reads the issue title and body using the GitHub context
+- Reads the issue labels to determine which agent was targeted
+- Posts a HARDCODED reply comment to the issue using the GitHub REST API (curl command with $GITHUB_TOKEN)
+- The hardcoded reply must say: "🤖 [AGENT_NAME] received your query. The AI response system is initializing. This message confirms your GitHub Actions pipeline is working correctly."
+- Closes the issue after commenting
+- DO NOT use any third-party actions other than actions/checkout
+
+## Step 1.5 — README.md
+
+Write the README.md that:
+- Has a centered H1 title: "🤖 Neural Office — AI Agent Swarm"
+- Embeds the SVG using an HTML img tag pointing to the raw GitHub URL of base-office.svg (use YOUR_USERNAME placeholder)
+- Has a brief instruction section below explaining how to click an agent and ask a question
+- Has a "Recent Activity" section with a placeholder comment: <!-- ACTIVITY_LOG -->
+
+After outputting all files, write:
+✅ DONE CHECK: Open a GitHub Issue on your repo with any label matching one of the agents. Within 60 seconds, the Action should comment and close it. The SVG should render on your profile README.
+```
+
+---
+
+## 🧠 PHASE 2 — Groq API Integration & Agent Orchestration
+
+### Objective
+Replace the hardcoded reply with real LLM inference via Groq. Build the orchestrator that routes questions to the correct domain agent persona and generates expert responses.
+
+> ⚠️ **PREREQUISITE:** Phase 1 must be fully working. GitHub Actions must be successfully commenting on and closing issues before starting Phase 2.
+
+---
+
+### PHASE 2 — PROMPT BLOCK (Copy this exactly)
+
+```
+PHASE 2 TASK: Integrate Groq API for live AI inference in the GitHub Issue response pipeline.
+
+CONTEXT: Phase 1 is complete. GitHub Actions can read issues, comment, and close them. Now replace the hardcoded reply with Groq-powered LLM responses.
+
+## Step 2.1 — Groq Client Module
+
+Create: scripts/groq-client.js
+
+Requirements:
+- Use the native fetch API (Node.js 18+, no npm packages for HTTP)
+- Read GROQ_API_KEY from environment variables — never hardcode it
+- Use model: "llama3-70b-8192"
+- max_tokens: 1500
+- temperature: 0.3 (precise, technical responses)
+- Export a single async function: generateResponse(systemPrompt, userQuery)
+- Include retry logic: 3 attempts with exponential backoff (1s, 2s, 4s)
+- On error, throw a descriptive error message that includes the HTTP status code
+- Log token usage to console for monitoring
+
+The Groq API endpoint is: https://api.groq.com/openai/v1/chat/completions
+It uses the OpenAI-compatible chat format.
+
+## Step 2.2 — Agent Persona System Prompts
+
+Create: scripts/agent-personas.js
+
+Define and export a JavaScript object containing system prompts for each of the 5 agents:
+
+MASTER AGENT system prompt must instruct it to:
+- Identify itself as the Master Orchestrator
+- Answer cross-domain questions by synthesizing knowledge across Frontend, Backend, Database, and DevOps
+- Be direct, technical, and concise
+- Reference specific technologies, patterns, and architectural decisions
+- End responses with: "— Master Agent | Neural Office"
+
+FRONTEND AGENT system prompt must instruct it to:
+- Identify itself as a Frontend specialist
+- Speak authoritatively about React, TypeScript, CSS, performance, accessibility, and UI/UX patterns
+- Reference real tools: Vite, TailwindCSS, React Query, Zustand, Storybook, Playwright
+- End responses with: "— Frontend Agent | Neural Office"
+
+BACKEND AGENT system prompt must instruct it to:
+- Identify itself as a Backend/API specialist  
+- Speak authoritatively about Node.js, REST APIs, GraphQL, authentication, BYOK architectures, microservices
+- Reference real tools: Express, Fastify, Prisma, Redis, JWT, OAuth2
+- End responses with: "— Backend Agent | Neural Office"
+
+DATABASE AGENT system prompt must instruct it to:
+- Identify itself as a Database/Data specialist
+- Speak authoritatively about SQL, NoSQL, query optimization, indexing, migrations, RBAC
+- Reference real tools: PostgreSQL, Supabase, Redis, ChromaDB, pgvector, Prisma
+- End responses with: "— Database Agent | Neural Office"
+
+DEVOPS AGENT system prompt must instruct it to:
+- Identify itself as a DevOps/Infrastructure specialist
+- Speak authoritatively about CI/CD, containers, IaC, monitoring, GitHub Actions, cloud platforms
+- Reference real tools: Docker, Kubernetes, Terraform, GitHub Actions, Vercel, AWS, Datadog
+- End responses with: "— DevOps Agent | Neural Office"
+
+## Step 2.3 — Intent Router
+
+Create: scripts/intent-router.js
+
+Export an async function: routeQuery(issueTitle, issueBody, issueLabels)
+
+Logic:
+1. First, check issueLabels array. If it contains "ask-master", "ask-frontend", "ask-backend", "ask-database", or "ask-devops" → route directly to that agent
+2. If no label match, use Groq API to classify the query:
+   - Send a classification prompt asking the model to return ONLY one of: "master", "frontend", "backend", "database", "devops"
+   - Parse the response and map to an agent ID
+   - If parsing fails, default to "master"
+3. Return: { agentId: string, agentName: string, systemPrompt: string }
+
+## Step 2.4 — Update respond-to-issue.yml
+
+Update the GitHub Actions workflow to:
+- Add GROQ_API_KEY to env vars (must be stored as a GitHub Secret named GROQ_API_KEY)
+- Install Node.js 20 using actions/setup-node@v4
+- Run: node scripts/respond-to-issue.js
+- Pass the following as environment variables to the script:
+  - ISSUE_NUMBER, ISSUE_TITLE, ISSUE_BODY, ISSUE_LABELS (as JSON string), GITHUB_TOKEN, REPO_OWNER, REPO_NAME
+
+Create: scripts/respond-to-issue.js
+
+This script must:
+1. Read all env vars
+2. Call routeQuery() to determine the correct agent
+3. Call generateResponse(systemPrompt, issueTitle + "\n\n" + issueBody)
+4. Format the final GitHub comment as markdown:
+   - Start with: "## 🤖 [AGENT_NAME] Response"
+   - Include the LLM response body
+   - Add a footer: "---\n*Powered by Groq (llama3-70b-8192) | [Neural Office](README link)*"
+5. POST the comment to the GitHub Issues API using fetch + GITHUB_TOKEN
+6. PATCH the issue status to "closed"
+7. Log every step with timestamps
+
+✅ DONE CHECK: Open a GitHub Issue labeled "ask-backend" with a real technical question. Within 90 seconds, the Backend Agent should post a detailed, technical AI-generated response and close the issue.
+```
+
+---
+
+## 🗃️ PHASE 3 — RAG Memory Pipeline (Vector DB + Knowledge Ingestion)
+
+### Objective
+Give the agents real memory. Every time you push code, GitHub Actions will extract the diff, embed it, and upsert it into ChromaDB. When a recruiter asks a question, the system retrieves relevant context before calling Groq.
+
+> ⚠️ **PREREQUISITE:** Phase 2 must be working. Agents must be responding to issues with live Groq-generated answers.
+
+---
+
+### PHASE 3 — PROMPT BLOCK (Copy this exactly)
+
+```
+PHASE 3 TASK: Build the RAG (Retrieval-Augmented Generation) memory pipeline using ChromaDB.
+
+CONTEXT: Groq inference is working. Now give agents persistent memory of the codebase using vector embeddings.
+
+## Step 3.1 — ChromaDB Setup
+
+We use chromadb in local/serverless mode (no external server). The DB will be persisted as a file on the GitHub Actions runner and cached between runs using GitHub Actions cache.
+
+Create: scripts/vector-store.js
+
+Install in package.json (create if not exists):
+- chromadb: ^1.8.1
+- @xenova/transformers: ^2.17.0 (for local embedding generation — no OpenAI key required)
+
+The vector-store.js module must export:
+1. initDB() — initializes ChromaDB with persistent storage at ./chroma-db/
+2. upsertChunks(chunks) — takes array of { id, text, metadata } and upserts into collection "neural-office-memory"
+3. queryMemory(queryText, agentId, topK = 5) — embeds the query text locally, searches the collection filtered by metadata.agentId, returns top K results as an array of { text, metadata, distance }
+
+Embedding strategy: Use @xenova/transformers with model "Xenova/all-MiniLM-L6-v2" for local inference. No API keys needed.
+
+## Step 3.2 — Code Ingestion Pipeline
+
+Create: scripts/ingest-codebase.js
+
+This script runs when triggered by a push to main. It must:
+1. Accept a DIFF_FILES env var (JSON array of changed file paths)
+2. For each file:
+   a. Read the file content
+   b. Determine the agent domain by file extension and path:
+      - .tsx, .jsx, .css, .html → frontend
+      - .ts, .js, api/, routes/ → backend
+      - .sql, migrations/, schema/ → database
+      - .yml, .yaml, Dockerfile, terraform/ → devops
+      - Everything else → master
+   c. Chunk the file content into segments of ~500 tokens (split on function boundaries if possible, otherwise on newlines every 50 lines)
+   d. For each chunk, create: { id: "filepath-chunk-N", text: chunk, metadata: { agentId, filePath, language, timestamp } }
+3. Call upsertChunks() with all generated chunks
+4. Log: total files processed, total chunks upserted, per-agent chunk counts
+
+## Step 3.3 — Update update-svg.yml to Run Ingestion
+
+Update .github/workflows/update-svg.yml:
+- Trigger: on push to main
+- Steps:
+  1. Checkout with fetch-depth: 2 (to get the diff)
+  2. Get changed files: git diff --name-only HEAD~1 HEAD → store as JSON
+  3. Setup Node.js 20
+  4. Restore ChromaDB cache: actions/cache@v4 with key "chroma-db-${{ runner.os }}"
+  5. npm install
+  6. Run: node scripts/ingest-codebase.js with DIFF_FILES env var
+  7. Save ChromaDB cache
+
+## Step 3.4 — Connect RAG to Response Pipeline
+
+Update scripts/respond-to-issue.js to:
+1. After routing the query to an agent, call: queryMemory(issueTitle + " " + issueBody, agentId, 5)
+2. Format the retrieved context as a string:
+   "RELEVANT CODEBASE CONTEXT:\n" + results.map(r => `File: ${r.metadata.filePath}\n${r.text}`).join("\n---\n")
+3. Prepend this context to the user message sent to Groq
+4. Update the system prompt to instruct the agent: "You have been given relevant code snippets from the developer's actual codebase. Reference them specifically in your answer when applicable."
+5. Add to the GitHub comment footer: "*Context retrieved from [N] codebase chunks via RAG*"
+
+✅ DONE CHECK: Push any code file to main. Check the Action logs — you should see "X chunks upserted" for the correct agent domain. Then open an issue asking about that code. The agent's response should reference actual file names or code patterns from your push.
+```
+
+---
+
+## 🎨 PHASE 4 — Dynamic SVG Manipulation & Agent Activity Visualization
+
+### Objective
+Make the SVG office react to real events. When an agent resolves a query, their sprite gets an animated "active" indicator. The ticker updates with the latest activity. New agents auto-spawn when new tech domains are detected.
+
+> ⚠️ **PREREQUISITE:** Phases 1–3 must all be working end-to-end.
+
+---
+
+### PHASE 4 — PROMPT BLOCK (Copy this exactly)
+
+```
+PHASE 4 TASK: Build the dynamic SVG engine that makes the virtual office visually reflect real agent activity.
+
+CONTEXT: The full pipeline (Issues → Groq → RAG → GitHub Comment) is working. Now make the SVG update to show agent activity, creating a living visual dashboard.
+
+## Step 4.1 — SVG State Schema
+
+Create: office/office-state.json
+
+This file tracks the current visual state of the office. The GitHub Action updates it on every resolved issue and every push. Structure:
+
+{
+  "lastUpdated": "ISO timestamp",
+  "ticker": "Latest activity message string (max 120 chars)",
+  "agents": {
+    "master": {
+      "status": "idle | active | thinking | completed",
+      "lastQuery": "short summary of last question (max 60 chars)",
+      "lastActive": "ISO timestamp",
+      "queriesResolved": 0
+    },
+    "frontend": { ... },
+    "backend": { ... },
+    "database": { ... },
+    "devops": { ... }
+  }
+}
+
+## Step 4.2 — SVG Generator Script
+
+Create: office/generate-svg.js (replacing the static base-office.svg with a generated one)
+
+This Node.js script must:
+1. Read office/office-state.json
+2. Read office/agent-config.json
+3. Programmatically construct the full SVG string (900×600px) using template literals
+4. For each agent, conditionally render visual state indicators:
+
+   STATUS INDICATORS (rendered as SVG elements inside each agent's desk group):
+   - "idle": Soft pulsing ring in agent's accent color (opacity 0.3–0.6, 2s cycle)
+   - "thinking": Animated ellipsis (three dots that appear sequentially using CSS animation)
+   - "active": Bright glowing aura (drop-shadow filter + animated opacity 0.7–1.0, 0.5s cycle — fast pulse)
+   - "completed": Green checkmark badge (✓ text in a green circle) with a 30-second fade-out animation
+
+5. Update the ticker bar with the current state's ticker message using CSS scroll animation
+6. Render a "Queries Resolved: N" counter badge above each agent's desk
+7. For each agent with lastActive within the past 1 hour, render a speech bubble with lastQuery text
+8. Write the final SVG string to office/base-office.svg
+
+SVG CSS ANIMATIONS TO IMPLEMENT (all embedded in <style> tag):
+- @keyframes float: translateY(0px) → translateY(-4px) → translateY(0px), 2.5s ease-in-out infinite
+- @keyframes pulse-idle: opacity 0.3 → 0.6 → 0.3, 2s ease-in-out infinite
+- @keyframes pulse-active: opacity 0.7 → 1.0 → 0.7, 0.5s ease-in-out infinite
+- @keyframes thinking-dot: opacity 0 → 1 → 0, 1.5s ease-in-out infinite (dot1: 0s delay, dot2: 0.3s delay, dot3: 0.6s delay)
+- @keyframes ticker-scroll: transform translateX(900px) → translateX(-100%), 25s linear infinite
+- @keyframes golden-spin: rotate(0deg) → rotate(360deg), 8s linear infinite (for Master Agent ring)
+- @keyframes badge-fadeout: opacity 1 → 1 → 0, 30s linear forwards (for completed indicator)
+- @keyframes glow-pulse: filter drop-shadow(0 0 4px COLOR) → drop-shadow(0 0 12px COLOR), 0.5s ease-in-out alternate infinite
+
+## Step 4.3 — State Updater Script
+
+Create: scripts/update-office-state.js
+
+This script accepts CLI arguments or environment variables:
+- ACTION_TYPE: "query_resolved" | "push_ingested" | "agent_spawned"
+- AGENT_ID: target agent
+- QUERY_SUMMARY: short description (for query_resolved)
+
+Logic:
+- Read office-state.json
+- Update the target agent's status, lastActive, and queriesResolved
+- Update the global ticker message based on action type:
+  - query_resolved: "🤖 [Agent Name] just resolved: '[query summary]'"
+  - push_ingested: "📚 [Agent Name] ingested [N] new code chunks"
+  - agent_spawned: "🌱 New agent spawned: [Agent Name]"
+- Write updated office-state.json
+- Run node office/generate-svg.js to regenerate the SVG
+- Stage and commit both files using git with message: "chore(office): update agent state [skip ci]"
+- Push to main using GITHUB_TOKEN
+
+## Step 4.4 — Auto-Spawn New Agents
+
+Update scripts/ingest-codebase.js to include auto-spawn detection:
+
+After ingestion, count chunks per technology tag:
+- If any unrecognized technology accumulates > 20 chunks in a single push (e.g., many .rs Rust files, .go Go files, .py Python files):
+  1. Call Groq API with classification prompt: "Given these file extensions and directory names: [list], what single software engineering domain does this represent? Respond with ONLY: domain_name|AgentName|AccentHexColor"
+  2. Parse the response
+  3. Append the new agent to agent-config.json
+  4. Add the new agent to office-state.json with status "idle"
+  5. Call generate-svg.js — the generator must handle N agents dynamically by arranging extra desks in a grid
+  6. Log: "🌱 New agent spawned: [name]"
+
+Dynamic desk positioning algorithm for N agents:
+- Pre-defined positions for 5 base agents (as in Phase 1)
+- Additional agents: arrange in a row at y=480, starting at x=50, spacing x+180 per agent
+- Maximum 8 agents before triggering a "office expansion" that increases SVG height to 800px
+
+## Step 4.5 — Wire State Updates into Pipeline
+
+Update respond-to-issue.js:
+- After posting the GitHub comment, run: node scripts/update-office-state.js with ACTION_TYPE=query_resolved, AGENT_ID=[agentId], QUERY_SUMMARY=[first 60 chars of issue title]
+
+Update update-svg.yml:
+- After ingest-codebase.js completes, run update-office-state.js with ACTION_TYPE=push_ingested
+
+## Step 4.6 — Issue Template
+
+Create: .github/ISSUE_TEMPLATE/query_template.md
+
+This is the pre-filled template that opens when a recruiter clicks an agent sprite:
+
+---
+name: Agent Query
+about: Ask an AI agent a technical question
+title: 'Query for [Agent Name]: '
+labels: ask-agent
+body:
+  - type: markdown
+    attributes:
+      value: "## 🤖 Ask the Neural Office AI Agents\nYour question will be answered within 60 seconds by the AI agent. The response will appear as a comment below."
+  - type: input
+    id: question
+    attributes:
+      label: Your Question
+      placeholder: "How does the authentication system work? What tech stack is used?"
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent should answer?
+      options:
+        - Master Agent (general / cross-domain)
+        - Frontend Agent (React, UI, CSS)
+        - Backend Agent (APIs, auth, server)
+        - Database Agent (SQL, queries, schema)
+        - DevOps Agent (CI/CD, Docker, cloud)
+    validations:
+      required: true
+---
+
+✅ DONE CHECK: 
+1. Open a GitHub Issue. Within 90 seconds, the agent should respond AND the office-state.json and base-office.svg should be committed to your repo with the agent in "completed" state.
+2. Visit your GitHub profile — the SVG should show the agent's completed badge and the ticker should display the latest activity.
+3. Push 25+ Rust (.rs) files to your repo — a new "Systems Agent" should auto-spawn and appear in the SVG.
+```
+
+---
+
+## 🔐 ENVIRONMENT & SECRETS REFERENCE
+
+Create these GitHub Secrets in your repository settings before running any phase:
+
+| Secret Name | Value | Used In |
+|---|---|---|
+| `GROQ_API_KEY` | Your Groq API key from console.groq.com | Phase 2+ |
+| `GITHUB_TOKEN` | Auto-provided by GitHub Actions | All phases |
+
+---
+
+## 📋 PHASE COMPLETION CHECKLIST
+
+Use this to track progress before moving to the next phase:
+
+### Phase 1 ✅
+- [ ] SVG renders correctly in README.md on GitHub profile
+- [ ] All 5 agent sprites are visible with pixel-art design
+- [ ] Clicking a sprite opens a pre-filled GitHub Issue
+- [ ] GitHub Action triggers on issue open
+- [ ] Hardcoded comment posted and issue closed automatically
+
+### Phase 2 ✅
+- [ ] GROQ_API_KEY secret added to repository
+- [ ] Issue routing works via labels
+- [ ] Groq API returns a response (check Action logs)
+- [ ] Agent-persona system prompt reflected in response tone
+- [ ] Comment is properly formatted markdown
+
+### Phase 3 ✅
+- [ ] ChromaDB initializes without error in Action logs
+- [ ] Code push triggers ingestion (see "X chunks upserted" in logs)
+- [ ] RAG context appears in agent response (check for file references)
+- [ ] Cache hits on subsequent runs (ChromaDB not rebuilt from scratch)
+
+### Phase 4 ✅
+- [ ] office-state.json updates after each issue resolution
+- [ ] base-office.svg regenerates and commits automatically
+- [ ] Agent status indicator changes are visible in SVG
+- [ ] Ticker message updates with latest activity
+- [ ] Auto-spawn triggers correctly for new technology domains
+
+---
+
+## 🚨 TROUBLESHOOTING PROMPTS
+
+If an agent gives you incorrect output during any phase, use these correction prompts:
+
+**If SVG doesn't render on GitHub:**
+> "The SVG is not rendering in the GitHub README. GitHub sanitizes SVGs — remove all `<script>` tags, `foreignObject` elements, and external `xlink:href` references pointing outside the repo. Use only CSS animations, no JavaScript in the SVG."
+
+**If GitHub Action fails with permission errors:**
+> "The GitHub Action is failing with a 403 permission error. Add `permissions: issues: write` and `contents: write` at the top of the workflow YAML. Also ensure the workflow uses `${{ secrets.GITHUB_TOKEN }}` not a personal access token."
+
+**If Groq API returns timeout:**
+> "Groq API is timing out. Switch model from llama3-70b-8192 to llama3-8b-8192 for faster inference. Also reduce max_tokens from 1500 to 800 for speed."
+
+**If ChromaDB fails in GitHub Actions:**
+> "ChromaDB is failing to initialize in the GitHub Actions environment. Use chromadb's EphemeralClient instead of PersistentClient for the Actions runner, and save/restore the embedding data manually as a JSON file using the GitHub Actions cache."
+
+**If SVG animations don't work:**
+> "GitHub's SVG renderer strips keyframe animations with certain timing functions. Replace all `ease-in-out` with `linear` in @keyframes blocks. Also wrap all animation styles in a `<![CDATA[...]]>` block inside the `<style>` tag."
+
+---
+
+*Built for: GitHub Profile README — Serverless AI Agent Virtual Office*
+*Stack: GitHub Actions · Groq API · ChromaDB · SVG · Node.js*
+*Prompt version: 1.0 — Antigravity Edition*
+</file>
+
+<file path="office/interactive-office.html">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Virtual Agent Office</title>
+  <style>
+    :root {
+      --ink: #09111f;
+      --panel: #111a2b;
+      --panel-2: #18263c;
+      --paper: #fff8e6;
+      --line: #31425f;
+      --cyan: #61dafb;
+      --green: #68d391;
+      --gold: #ffd700;
+      --violet: #b794f4;
+      --orange: #f6ad55;
+      --wood-a: #8b4f2f;
+      --wood-b: #b8693d;
+      --floor: #182235;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #eaf2ff;
+      font-family: "Trebuchet MS", "Lucida Console", monospace;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(97, 218, 251, 0.24), transparent 28rem),
+        radial-gradient(circle at 80% 20%, rgba(246, 173, 85, 0.22), transparent 24rem),
+        linear-gradient(135deg, #070b12 0%, #101827 52%, #20130f 100%);
+      overflow-x: hidden;
+    }
+
+    .shell {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 24px 0 36px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4.7rem);
+      line-height: 0.94;
+      letter-spacing: -0.08em;
+      text-transform: uppercase;
+      text-shadow: 0 8px 0 #080b12, 0 0 34px rgba(125, 211, 252, 0.22);
+    }
+
+    .note {
+      max-width: 520px;
+      padding: 14px 16px;
+      border: 2px solid rgba(125, 211, 252, 0.38);
+      background: rgba(8, 13, 24, 0.72);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      font-size: 0.92rem;
+      color: #bcd0e8;
+    }
+
+    .office {
+      position: relative;
+      height: min(68vw, 660px);
+      min-height: 560px;
+      border: 7px solid #26334a;
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        repeating-linear-gradient(0deg, var(--wood-a) 0 30px, #7b432a 30px 34px),
+        var(--floor);
+      background-size: 54px 54px, 54px 54px, 100% 64px, auto;
+      box-shadow: inset 0 0 0 14px rgba(8, 13, 24, 0.26), 0 24px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    .office::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 46%, transparent 0 16rem, rgba(2, 6, 23, 0.28) 35rem);
+      pointer-events: none;
+    }
+
+    .wall-title {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 22px;
+      border: 4px solid #0b1220;
+      background: #f8fafc;
+      color: #0b1220;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      box-shadow: 6px 6px 0 #0b1220;
+      z-index: 3;
+    }
+
+    .pipe {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: linear-gradient(#293548, #5f7896, #293548);
+      box-shadow: 8px 0 0 #0b1220;
+      opacity: 0.85;
+    }
+
+    .pipe.a { left: 51%; }
+    .pipe.b { left: 55%; width: 8px; }
+
+    .server {
+      position: absolute;
+      left: 48%;
+      top: 15%;
+      width: 130px;
+      height: 90px;
+      border: 5px solid #0b1220;
+      border-radius: 10px;
+      background: #2b3548;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px;
+      z-index: 2;
+    }
+
+    .server span {
+      display: block;
+      background: #101826;
+      border: 3px solid #3b4a63;
+      position: relative;
+    }
+
+    .server span::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      width: 9px;
+      height: 70%;
+      transform: translateX(-50%);
+      background: currentColor;
+      color: #7dd3fc;
+      animation: blink 1.7s steps(2) infinite;
+    }
+
+    .agent-card {
+      --accent: var(--cyan);
+      position: absolute;
+      width: 188px;
+      height: 190px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      z-index: 4;
+      transform: translate(-50%, -50%);
+      transition: transform 180ms ease, filter 180ms ease;
+    }
+
+    .agent-card:hover,
+    .agent-card:focus-visible {
+      transform: translate(-50%, -50%) translateY(-8px);
+      filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent), transparent 25%));
+      outline: none;
+    }
+
+    .badge {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 0;
+      padding: 5px 7px;
+      border: 3px solid var(--accent);
+      background: #070b12;
+      color: #f8fafc;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-align: center;
+      box-shadow: 4px 4px 0 #0b1220;
+      z-index: 5;
+    }
+
+    .desk {
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 18px;
+      height: 92px;
+      border: 5px solid #2e1d18;
+      border-radius: 10px;
+      background: linear-gradient(#bd7144 0 22%, #8b4f2f 22% 100%);
+      box-shadow: inset 0 -10px 0 rgba(46, 29, 24, 0.28), 0 12px 0 rgba(7, 11, 18, 0.24);
+      z-index: 1;
+    }
+
+    .screen {
+      position: absolute;
+      left: 50%;
+      top: 54px;
+      width: 76px;
+      height: 48px;
+      transform: translateX(-50%);
+      border: 5px solid #151b28;
+      border-radius: 4px;
+      background: var(--accent);
+      box-shadow: inset 0 0 0 8px #101826;
+      animation: screenPulse 1.6s infinite linear;
+      z-index: 3;
+    }
+
+    .screen::before,
+    .screen::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      height: 4px;
+      background: rgba(255,255,255,0.68);
+    }
+
+    .screen::before { top: 14px; }
+    .screen::after { top: 25px; width: 24px; right: auto; }
+
+    .sprite {
+      position: absolute;
+      left: 50%;
+      top: 36px;
+      width: 46px;
+      height: 86px;
+      transform: translateX(-50%);
+      animation: float 2.4s infinite linear;
+      z-index: 4;
+    }
+
+    .head, .body, .hair, .arm, .leg, .eye { position: absolute; }
+    .hair { left: 10px; top: 0; width: 26px; height: 25px; background: #1d2a3f; }
+    .head { left: 13px; top: 8px; width: 20px; height: 20px; background: #ffd7a8; }
+    .eye { top: 16px; width: 4px; height: 4px; background: #0b1220; }
+    .eye.a { left: 17px; } .eye.b { right: 17px; }
+    .body { left: 10px; top: 34px; width: 28px; height: 34px; background: var(--accent); }
+    .arm { top: 40px; width: 9px; height: 26px; background: var(--accent); animation: type 0.55s steps(2) infinite; }
+    .arm.a { left: 2px; } .arm.b { right: 0; animation-direction: reverse; }
+    .leg { top: 68px; width: 10px; height: 18px; background: #101826; }
+    .leg.a { left: 12px; } .leg.b { right: 10px; }
+
+    .agent-master { left: 50%; top: 48%; --accent: var(--gold); width: 220px; height: 215px; }
+    .agent-frontend { left: 17%; top: 28%; --accent: var(--cyan); }
+    .agent-backend { left: 78%; top: 28%; --accent: var(--green); }
+    .agent-database { left: 20%; top: 76%; --accent: var(--violet); }
+    .agent-devops { left: 78%; top: 76%; --accent: var(--orange); }
+
+    .orbit {
+      position: absolute;
+      left: -16px;
+      top: 18px;
+      width: 250px;
+      height: 164px;
+      border: 4px dashed var(--gold);
+      border-radius: 50%;
+      animation: spin 9s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .flow {
+      position: absolute;
+      height: 5px;
+      background: repeating-linear-gradient(90deg, transparent 0 12px, currentColor 12px 30px);
+      color: #5eead4;
+      filter: drop-shadow(0 0 8px currentColor);
+      animation: flow 1s linear infinite;
+      z-index: 2;
+    }
+
+    .flow.one { left: 27%; top: 32%; width: 20%; transform: rotate(9deg); color: #5eead4; }
+    .flow.two { right: 28%; top: 32%; width: 19%; transform: rotate(-10deg); color: #67e8f9; }
+    .flow.three { left: 30%; bottom: 28%; width: 22%; transform: rotate(-24deg); color: #c4b5fd; }
+    .flow.four { right: 30%; bottom: 28%; width: 22%; transform: rotate(24deg); color: #fdba74; }
+
+    .walker {
+      position: absolute;
+      width: 44px;
+      height: 84px;
+      left: 32%;
+      top: 43%;
+      z-index: 5;
+      animation: walkRoute 14s linear infinite;
+    }
+
+    .walker.two { animation: walkRouteTwo 18s linear infinite 2s; --accent: #68d391; }
+    .walker.three { animation: walkRouteThree 20s linear infinite 4s; --accent: #f6ad55; }
+
+    .plant, .bot, .poster {
+      position: absolute;
+      z-index: 3;
+    }
+
+    .plant { width: 50px; height: 58px; bottom: 28px; left: 36px; border-bottom: 22px solid #26334a; border-left: 12px solid transparent; border-right: 12px solid transparent; }
+    .plant::before { content: ""; position: absolute; left: 14px; top: 2px; width: 9px; height: 38px; background: #65d59b; box-shadow: -13px 11px 0 #43b97a, 15px 9px 0 #88e6b4; }
+    .bot { right: 46px; bottom: 120px; width: 72px; height: 62px; border: 5px solid #0b1220; border-radius: 12px; background: #dbeafe; color: #0b1220; }
+    .bot::before { content: ""; position: absolute; left: 25px; top: -18px; width: 20px; height: 18px; border: 5px solid #0b1220; background: #dbeafe; }
+    .bot::after { content: "MEMORY"; position: absolute; left: 50%; top: 70px; transform: translateX(-50%); color: #dbeafe; font-size: 0.7rem; font-weight: 900; }
+    .poster { right: 50px; top: 95px; width: 126px; padding: 12px; border: 5px solid #0b1220; background: #f8fafc; color: #0b1220; font-weight: 900; text-align: center; box-shadow: 6px 6px 0 #0b1220; }
+
+    .chat {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: min(430px, calc(100vw - 28px));
+      border: 3px solid #7dd3fc;
+      background: rgba(8, 13, 24, 0.96);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.58), 0 0 0 8px rgba(125, 211, 252, 0.08);
+      transform: translateY(calc(100% + 44px));
+      transition: transform 260ms ease;
+      z-index: 20;
+    }
+
+    .chat.open { transform: translateY(0); }
+    .chat-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 14px; background: #101826; border-bottom: 2px solid #26334a; }
+    .chat-title { margin: 0; font-size: 1rem; font-weight: 900; color: #f8fafc; }
+    .chat-subtitle { margin: 4px 0 0; font-size: 0.78rem; color: #a8bfd9; }
+    .close { border: 0; background: #26334a; color: #fff; width: 32px; height: 32px; cursor: pointer; font-size: 1.1rem; }
+    .chat-body { padding: 14px; }
+    .bubble { margin: 0 0 12px; padding: 12px; background: #fff8e6; color: #111827; border: 3px solid #111827; box-shadow: 5px 5px 0 #111827; }
+    textarea { width: 100%; min-height: 118px; resize: vertical; border: 2px solid #3b4a63; background: #070b12; color: #eaf2ff; padding: 12px; font: inherit; }
+    .actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .send, .secondary { border: 0; padding: 11px 13px; font: inherit; font-weight: 900; cursor: pointer; }
+    .send { background: #7dd3fc; color: #07111f; }
+    .secondary { background: #26334a; color: #eaf2ff; }
+    .hint { margin: 11px 0 0; color: #9fb3c8; font-size: 0.78rem; line-height: 1.45; }
+
+    @keyframes screenPulse { 0%,100% { opacity: 0.7; filter: none; } 50% { opacity: 1; filter: drop-shadow(0 0 18px var(--accent)); } }
+    @keyframes float { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+    @keyframes type { 0%,100% { rotate: 0deg; } 50% { rotate: 10deg; } }
+    @keyframes spin { to { rotate: 360deg; } }
+    @keyframes flow { to { background-position: 42px 0; } }
+    @keyframes blink { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+    @keyframes walkRoute { 0% { left: 31%; top: 43%; } 25% { left: 42%; top: 36%; } 50% { left: 61%; top: 45%; } 75% { left: 48%; top: 58%; } 100% { left: 31%; top: 43%; } }
+    @keyframes walkRouteTwo { 0% { left: 69%; top: 22%; } 30% { left: 57%; top: 36%; } 60% { left: 43%; top: 32%; } 100% { left: 69%; top: 22%; } }
+    @keyframes walkRouteThree { 0% { left: 76%; top: 61%; } 35% { left: 57%; top: 58%; } 72% { left: 30%; top: 62%; } 100% { left: 76%; top: 61%; } }
+
+    @media (max-width: 760px) {
+      header { grid-template-columns: 1fr; }
+      .office { min-height: 720px; }
+      .agent-card { scale: 0.82; }
+      .agent-frontend { left: 26%; top: 23%; }
+      .agent-backend { left: 74%; top: 23%; }
+      .agent-master { left: 50%; top: 47%; }
+      .agent-database { left: 27%; top: 76%; }
+      .agent-devops { left: 73%; top: 76%; }
+      .flow, .walker, .server, .pipe { opacity: 0.5; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <h1>Virtual Agent Office</h1>
+      <p class="note">Click any agent to open the in-room chatbox. Submitting creates a pre-filled GitHub Issue so your existing GitHub Actions agent pipeline can answer safely without exposing API keys in the browser.</p>
+    </header>
+
+    <section class="office" aria-label="Interactive pixel art office">
+      <div class="wall-title">NEURAL OFFICE</div>
+      <div class="pipe a"></div>
+      <div class="pipe b"></div>
+      <div class="server"><span></span><span></span></div>
+      <div class="flow one"></div><div class="flow two"></div><div class="flow three"></div><div class="flow four"></div>
+      <div class="poster">SEARCH<br>MEMORY</div>
+      <div class="plant"></div>
+      <div class="bot"></div>
+
+      <button class="agent-card agent-frontend" data-id="frontend" data-name="Frontend Agent" data-label="ask-frontend" style="--accent: var(--cyan)">
+        <span class="badge">FRONTEND_AGENT</span><span class="screen"></span><span class="sprite"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></span><span class="desk"></span>
+      </button>
+      <button class="agent-card agent-backend" data-id="backend" data-name="Backend Agent" data-label="ask-backend" style="--accent: var(--green)">
+        <span class="badge">BACKEND_AGENT</span><span class="screen"></span><span class="sprite"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></span><span class="desk"></span>
+      </button>
+      <button class="agent-card agent-master" data-id="master" data-name="Master Agent" data-label="ask-master" style="--accent: var(--gold)">
+        <span class="orbit"></span><span class="badge">MASTER_AGENT</span><span class="screen"></span><span class="sprite"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></span><span class="desk"></span>
+      </button>
+      <button class="agent-card agent-database" data-id="database" data-name="Database Agent" data-label="ask-database" style="--accent: var(--violet)">
+        <span class="badge">DATABASE_AGENT</span><span class="screen"></span><span class="sprite"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></span><span class="desk"></span>
+      </button>
+      <button class="agent-card agent-devops" data-id="devops" data-name="DevOps Agent" data-label="ask-devops" style="--accent: var(--orange)">
+        <span class="badge">DEVOPS_AGENT</span><span class="screen"></span><span class="sprite"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></span><span class="desk"></span>
+      </button>
+
+      <div class="walker" style="--accent: var(--cyan)"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></div>
+      <div class="walker two" style="--accent: var(--green)"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></div>
+      <div class="walker three" style="--accent: var(--orange)"><span class="hair"></span><span class="head"></span><span class="eye a"></span><span class="eye b"></span><span class="body"></span><span class="arm a"></span><span class="arm b"></span><span class="leg a"></span><span class="leg b"></span></div>
+    </section>
+  </main>
+
+  <aside class="chat" id="chat" aria-live="polite">
+    <div class="chat-head">
+      <div><p class="chat-title" id="chatTitle">Ask an agent</p><p class="chat-subtitle" id="chatSubtitle">Choose an agent in the room.</p></div>
+      <button class="close" type="button" id="closeChat" aria-label="Close chat">x</button>
+    </div>
+    <div class="chat-body">
+      <p class="bubble" id="agentIntro">I am ready. Click an agent desk, type your question, and I will route it into the GitHub Actions workflow.</p>
+      <textarea id="question" placeholder="Ask about the project, architecture, stack, deployment, database, or UI..."></textarea>
+      <div class="actions">
+        <button class="send" id="sendQuestion" type="button">Send to GitHub Agent</button>
+        <button class="secondary" id="copyLink" type="button">Copy Issue Link</button>
+      </div>
+      <p class="hint">Static pages cannot safely call Groq directly because that would expose your API key. This chatbox prepares the question and hands it to your secure GitHub Issue automation.</p>
+    </div>
+  </aside>
+
+  <script>
+    const repo = 'https://github.com/RJScripts-24/RJScripts-24';
+    let selectedAgent = { name: 'Master Agent', label: 'ask-master', id: 'master' };
+
+    const chat = document.querySelector('#chat');
+    const chatTitle = document.querySelector('#chatTitle');
+    const chatSubtitle = document.querySelector('#chatSubtitle');
+    const agentIntro = document.querySelector('#agentIntro');
+    const question = document.querySelector('#question');
+
+    function issueUrl() {
+      const title = `Query for ${selectedAgent.name}: ${question.value.slice(0, 60)}`;
+      const body = `### Question\n${question.value}\n\n### Routed Agent\n${selectedAgent.name}`;
+      const params = new URLSearchParams({
+        template: 'query_template.yml',
+        labels: `ask-agent,${selectedAgent.label}`,
+        title,
+        question: question.value,
+        agent: selectedAgent.id,
+        body
+      });
+      return `${repo}/issues/new?${params.toString()}`;
+    }
+
+    document.querySelectorAll('.agent-card').forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedAgent = {
+          id: button.dataset.id,
+          name: button.dataset.name,
+          label: button.dataset.label
+        };
+        chatTitle.textContent = `${selectedAgent.name} Chat`; 
+        chatSubtitle.textContent = `Routing label: ${selectedAgent.label}`;
+        agentIntro.textContent = `You are talking to ${selectedAgent.name}. Type the question here first; then I will create the correct GitHub Issue for the automation to answer.`;
+        chat.classList.add('open');
+        setTimeout(() => question.focus(), 120);
+      });
+    });
+
+    document.querySelector('#closeChat').addEventListener('click', () => chat.classList.remove('open'));
+    document.querySelector('#sendQuestion').addEventListener('click', () => {
+      if (!question.value.trim()) {
+        question.focus();
+        return;
+      }
+      window.open(issueUrl(), '_blank', 'noopener');
+    });
+    document.querySelector('#copyLink').addEventListener('click', async () => {
+      if (!question.value.trim()) {
+        question.focus();
+        return;
+      }
+      await navigator.clipboard.writeText(issueUrl());
+      agentIntro.textContent = 'Issue link copied. Share or open it to send the question into the agent workflow.';
+    });
+  </script>
+</body>
+</html>
+</file>
+
+<file path="scripts/agent-personas.js">
+const personas = {
+  master: `You are the Master Orchestrator at the Neural Office.
+Your role is to answer cross-domain questions by synthesizing knowledge across Frontend, Backend, Database, and DevOps.
+Be direct, technical, and concise.
+Reference specific technologies, patterns, and architectural decisions.
+End responses with: "— Master Agent | Neural Office"`,
+
+  frontend: `You are the Frontend specialist at the Neural Office.
+Speak authoritatively about React, TypeScript, CSS, performance, accessibility, and UI/UX patterns.
+Reference real tools: Vite, TailwindCSS, React Query, Zustand, Storybook, Playwright.
+End responses with: "— Frontend Agent | Neural Office"`,
+
+  backend: `You are the Backend/API specialist at the Neural Office.
+Speak authoritatively about Node.js, REST APIs, GraphQL, authentication, BYOK architectures, microservices.
+Reference real tools: Express, Fastify, Prisma, Redis, JWT, OAuth2.
+End responses with: "— Backend Agent | Neural Office"`,
+
+  database: `You are the Database/Data specialist at the Neural Office.
+Speak authoritatively about SQL, NoSQL, query optimization, indexing, migrations, RBAC.
+Reference real tools: PostgreSQL, Supabase, Redis, ChromaDB, pgvector, Prisma.
+End responses with: "— Database Agent | Neural Office"`,
+
+  devops: `You are the DevOps/Infrastructure specialist at the Neural Office.
+Speak authoritatively about CI/CD, containers, IaC, monitoring, GitHub Actions, cloud platforms.
+Reference real tools: Docker, Kubernetes, Terraform, GitHub Actions, Vercel, AWS, Datadog.
+End responses with: "— DevOps Agent | Neural Office"`
+};
+
+module.exports = { personas };
+</file>
+
+<file path="scripts/groq-client.js">
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+if (!GROQ_API_KEY) {
+  console.error("Missing GROQ_API_KEY environment variable.");
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function generateResponse(systemPrompt, userQuery) {
+  const url = "https://api.groq.com/openai/v1/chat/completions";
+  
+  const payload = {
+    model: "llama3-70b-8192",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userQuery }
+    ],
+    max_tokens: 1500,
+    temperature: 0.3
+  };
+
+  const backoffDelays = [1000, 2000, 4000];
+  
+  for (let attempt = 0; attempt <= backoffDelays.length; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Groq API Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log(`Token usage: ${JSON.stringify(data.usage)}`);
+      return data.choices[0].message.content;
+    } catch (error) {
+      console.error(`Attempt ${attempt + 1} failed: ${error.message}`);
+      if (attempt < backoffDelays.length) {
+        console.log(`Retrying in ${backoffDelays[attempt]}ms...`);
+        await sleep(backoffDelays[attempt]);
+      } else {
+        throw new Error(`All attempts to call Groq API failed. Last error: ${error.message}`);
+      }
+    }
+  }
+}
+
+module.exports = { generateResponse };
+</file>
+
+<file path="scripts/intent-router.js">
+const { generateResponse } = require("./groq-client");
+const { personas } = require("./agent-personas");
+
+const agentNames = {
+  master: "Master Agent",
+  frontend: "Frontend Agent",
+  backend: "Backend Agent",
+  database: "Database Agent",
+  devops: "DevOps Agent"
+};
+
+async function routeQuery(issueTitle, issueBody, issueLabels) {
+  let agentId = null;
+
+  // 1. Check labels
+  if (issueLabels && issueLabels.length > 0) {
+    const labels = issueLabels.map(l => (typeof l === 'string' ? l : l.name));
+    if (labels.includes("ask-master")) agentId = "master";
+    else if (labels.includes("ask-frontend")) agentId = "frontend";
+    else if (labels.includes("ask-backend")) agentId = "backend";
+    else if (labels.includes("ask-database")) agentId = "database";
+    else if (labels.includes("ask-devops")) agentId = "devops";
+  }
+
+  // 2. Classify if no label matches
+  if (!agentId) {
+    const classificationPrompt = `Analyze the following issue and classify it into exactly one of the following domains: "master", "frontend", "backend", "database", "devops".
+Return ONLY the domain word, nothing else.`;
+    const query = `Title: ${issueTitle}\n\nBody: ${issueBody}`;
+    try {
+      const result = await generateResponse(classificationPrompt, query);
+      const cleanResult = result.trim().toLowerCase();
+      if (agentNames[cleanResult]) {
+        agentId = cleanResult;
+      } else {
+        agentId = "master";
+      }
+    } catch (e) {
+      console.error("Classification failed, defaulting to master:", e.message);
+      agentId = "master";
+    }
+  }
+
+  return {
+    agentId: agentId,
+    agentName: agentNames[agentId],
+    systemPrompt: personas[agentId]
+  };
+}
+
+module.exports = { routeQuery };
+</file>
+
+<file path="scripts/post-comment.js">
+// Post comment script initialized.
+</file>
+
+<file path="scripts/vector-store.js">
+const { ChromaClient } = require("chromadb");
+const { pipeline } = require("@xenova/transformers");
+
+let client = null;
+let collection = null;
+let embedder = null;
+
+async function initDB() {
+  if (!client) {
+    // Note: Node.js chromadb client expects a running server. We initialize with defaults.
+    // In a real local GitHub action, you'd run a chroma docker container as a service.
+    client = new ChromaClient();
+    
+    try {
+      collection = await client.getOrCreateCollection({
+        name: "neural-office-memory",
+      });
+    } catch (e) {
+      console.error("Failed to init collection:", e);
+    }
+  }
+
+  if (!embedder) {
+    embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+  }
+
+  return { client, collection, embedder };
+}
+
+async function getEmbeddings(texts) {
+  const output = await embedder(texts, { pooling: "mean", normalize: true });
+  return output.tolist();
+}
+
+async function upsertChunks(chunks) {
+  await initDB();
+  
+  const ids = chunks.map(c => c.id);
+  const documents = chunks.map(c => c.text);
+  const metadatas = chunks.map(c => c.metadata);
+  
+  const embeddings = await getEmbeddings(documents);
+
+  await collection.upsert({
+    ids: ids,
+    embeddings: embeddings,
+    metadatas: metadatas,
+    documents: documents
+  });
+}
+
+async function queryMemory(queryText, agentId, topK = 5) {
+  await initDB();
+  
+  const queryEmbedding = await getEmbeddings([queryText]);
+  
+  const results = await collection.query({
+    queryEmbeddings: queryEmbedding,
+    nResults: topK,
+    where: { agentId: agentId }
+  });
+
+  const formattedResults = [];
+  if (results && results.documents && results.documents[0]) {
+    for (let i = 0; i < results.documents[0].length; i++) {
+      formattedResults.push({
+        text: results.documents[0][i],
+        metadata: results.metadatas[0][i],
+        distance: results.distances[0][i]
+      });
+    }
+  }
+  
+  return formattedResults;
+}
+
+module.exports = { initDB, upsertChunks, queryMemory };
+</file>
+
+<file path=".github/ISSUE_TEMPLATE/query_template.md">
+---
+name: Agent Query (legacy fallback)
+about: Ask a Neural Office agent a technical question.
+title: "Query for [Agent Name]: "
+labels: ask-agent
+---
+
+### Your Question
+
+<!-- Type your question here. For the best routed experience, use query_template.yml or the interactive office page. -->
+
+### Preferred Agent
+
+<!-- master | frontend | backend | database | devops -->
+</file>
+
+<file path="office/agent-config.json">
+{
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master Agent",
+      "role": "Orchestrator - routes queries and synthesizes cross-domain answers",
+      "issueLabel": "ask-master",
+      "accentColor": "#FFD700",
+      "deskPosition": { "x": 380, "y": 250 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend Agent",
+      "role": "Frontend specialist - React, UI, CSS, accessibility, performance",
+      "issueLabel": "ask-frontend",
+      "accentColor": "#61DAFB",
+      "deskPosition": { "x": 100, "y": 100 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "backend",
+      "name": "Backend Agent",
+      "role": "Backend specialist - APIs, auth, services, integrations",
+      "issueLabel": "ask-backend",
+      "accentColor": "#68D391",
+      "deskPosition": { "x": 660, "y": 100 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "database",
+      "name": "Database Agent",
+      "role": "Database specialist - schema, queries, indexing, memory",
+      "issueLabel": "ask-database",
+      "accentColor": "#B794F4",
+      "deskPosition": { "x": 100, "y": 400 },
+      "status": "idle",
+      "lastActivity": null
+    },
+    {
+      "id": "devops",
+      "name": "DevOps Agent",
+      "role": "DevOps specialist - CI/CD, deploys, cloud, observability",
+      "issueLabel": "ask-devops",
+      "accentColor": "#F6AD55",
+      "deskPosition": { "x": 660, "y": 400 },
+      "status": "idle",
+      "lastActivity": null
+    }
+  ]
+}
+</file>
+
+<file path="office/office-state.json">
+{
+  "lastUpdated": "2023-01-01T00:00:00.000Z",
+  "ticker": "AI Agents Online | Open the live office chat to ask a question.",
+  "agents": {
+    "master": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "frontend": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "backend": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "database": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    },
+    "devops": {
+      "status": "idle",
+      "lastQuery": null,
+      "lastActive": null,
+      "queriesResolved": 0
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "neural-office",
+  "version": "1.0.0",
+  "description": "GitHub Profile 2D Virtual AI Agent Office",
+  "main": "scripts/respond-to-issue.js",
+  "scripts": {
+    "generate:office": "node office/generate-svg.js",
+    "check": "node office/generate-svg.js"
+  },
+  "dependencies": {
+    "@xenova/transformers": "^2.17.0",
+    "chromadb": "^1.8.1"
+  }
+}
+</file>
+
+<file path="scripts/ingest-codebase.js">
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require('child_process');
+const { upsertChunks } = require("./vector-store");
+const { generateResponse } = require("./groq-client");
+
+async function main() {
+  const diffFilesJson = process.env.DIFF_FILES;
+  if (!diffFilesJson) {
+    console.log("No DIFF_FILES provided, skipping ingestion.");
+    return;
+  }
+
+  let files = [];
+  try {
+    files = JSON.parse(diffFilesJson);
+  } catch (e) {
+    console.error("Failed to parse DIFF_FILES");
+    return;
+  }
+
+  let totalUpserted = 0;
+  const perAgentCounts = {
+    frontend: 0,
+    backend: 0,
+    database: 0,
+    devops: 0,
+    master: 0
+  };
+
+  const chunks = [];
+
+  for (const file of files) {
+    if (!fs.existsSync(file)) continue;
+
+    const content = fs.readFileSync(file, "utf8");
+    const ext = path.extname(file).toLowerCase();
+    
+    let agentId = "master";
+    if ([".tsx", ".jsx", ".css", ".html"].includes(ext)) agentId = "frontend";
+    else if ([".ts", ".js"].includes(ext) || file.includes("api/") || file.includes("routes/")) agentId = "backend";
+    else if ([".sql"].includes(ext) || file.includes("migrations/") || file.includes("schema/")) agentId = "database";
+    else if ([".yml", ".yaml"].includes(ext) || file.includes("Dockerfile") || file.includes("terraform/")) agentId = "devops";
+
+    const lines = content.split("\n");
+    let currentChunk = "";
+    let chunkIndex = 0;
+    
+    for (let i = 0; i < lines.length; i++) {
+      currentChunk += lines[i] + "\n";
+      if ((i + 1) % 50 === 0 || i === lines.length - 1) {
+        chunks.push({
+          id: `${file}-chunk-${chunkIndex}`,
+          text: currentChunk,
+          metadata: {
+            agentId,
+            filePath: file,
+            language: ext.replace(".", ""),
+            timestamp: new Date().toISOString()
+          }
+        });
+        perAgentCounts[agentId]++;
+        chunkIndex++;
+        currentChunk = "";
+      }
+    }
+  }
+
+  if (chunks.length > 0) {
+    await upsertChunks(chunks);
+    totalUpserted = chunks.length;
+  }
+
+  // 4.4 Auto-spawn detection
+  const unknownCount = Object.keys(perAgentCounts)
+    .filter(k => k !== 'frontend' && k !== 'backend' && k !== 'database' && k !== 'devops' && k !== 'master')
+    .reduce((sum, k) => sum + perAgentCounts[k], 0);
+
+  // Simple heuristic: if we have lots of master chunks (default for unknowns), analyze them
+  if (perAgentCounts.master > 20) {
+    try {
+      console.log("Analyzing for new agent spawn...");
+      const extensions = Array.from(new Set(files.map(f => path.extname(f))));
+      const dirs = Array.from(new Set(files.map(f => path.dirname(f))));
+      const prompt = `Given these file extensions and directory names: [${extensions.join(',')}], [${dirs.join(',')}], what single software engineering domain does this represent? Respond with ONLY: domain_name|AgentName|AccentHexColor`;
+      
+      const response = await generateResponse("You classify technical domains.", prompt);
+      const [domainId, agentName, color] = response.split('|').map(s => s.trim());
+      
+      if (domainId && agentName && color && !Object.keys(perAgentCounts).includes(domainId)) {
+        console.log(`Spawning new agent: ${agentName} (${domainId})`);
+        
+        const configPath = path.join(__dirname, '../office/agent-config.json');
+        const statePath = path.join(__dirname, '../office/office-state.json');
+        
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+        
+        const baseCount = config.agents.length;
+        const newX = 50 + ((baseCount - 5) * 180);
+        const newY = 480;
+        
+        config.agents.push({
+          id: domainId,
+          name: agentName,
+          role: `${agentName} specialist`,
+          issueLabel: `ask-${domainId}`,
+          accentColor: color,
+          deskPosition: { x: newX, y: newY },
+          status: "idle",
+          lastActivity: null
+        });
+        
+        state.agents[domainId] = {
+          status: "idle",
+          lastQuery: null,
+          lastActive: null,
+          queriesResolved: 0
+        };
+        
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+        fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
+        
+        execSync(`node scripts/update-office-state.js agent_spawned ${domainId} ""`, { stdio: 'inherit' });
+      }
+    } catch (e) {
+      console.error("Auto-spawn failed:", e.message);
+    }
+  }
+
+  console.log(`Total files processed: ${files.length}`);
+  console.log(`Total chunks upserted: ${totalUpserted}`);
+  console.log(`Per-agent chunk counts:`, perAgentCounts);
+}
+
+main().catch(console.error);
+</file>
+
+<file path="scripts/update-office-state.js">
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+const actionType = process.env.ACTION_TYPE || process.argv[2];
+const agentId = process.env.AGENT_ID || process.argv[3];
+const querySummary = process.env.QUERY_SUMMARY || process.argv[4] || '';
+
+const statePath = path.join(__dirname, '../office/office-state.json');
+const configPath = path.join(__dirname, '../office/agent-config.json');
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''));
+}
+
+const state = readJson(statePath);
+const config = readJson(configPath);
+
+const agentName = config.agents.find(a => a.id === agentId)?.name || agentId || 'Agents';
+const safeSummary = querySummary.substring(0, 60);
+
+if (actionType === 'query_resolved') {
+  if (state.agents[agentId]) {
+    state.agents[agentId].status = 'completed';
+    state.agents[agentId].lastQuery = safeSummary;
+    state.agents[agentId].lastActive = new Date().toISOString();
+    state.agents[agentId].queriesResolved = Number(state.agents[agentId].queriesResolved || 0) + 1;
+  }
+  state.ticker = `${agentName} just resolved: '${safeSummary}'`;
+} else if (actionType === 'push_ingested') {
+  state.ticker = `${agentName} ingested new code chunks`;
+} else if (actionType === 'agent_spawned') {
+  state.ticker = `New agent spawned: ${agentName}`;
+}
+
+state.lastUpdated = new Date().toISOString();
+fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
+
+execSync('node office/generate-svg.js', { stdio: 'inherit' });
+
+if (process.env.GITHUB_ACTIONS) {
+  try {
+    execSync('git config --global user.name "github-actions[bot]"');
+    execSync('git config --global user.email "github-actions[bot]@users.noreply.github.com"');
+    execSync('git add office/office-state.json office/base-office.svg office/agent-config.json');
+    execSync('git commit -m "chore(office): update agent state [skip ci]"');
+    execSync(`git push "https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git"`);
+    console.log('State committed and pushed to repo.');
+  } catch (e) {
+    console.error('Git push failed (possibly no changes or permission issue):', e.message);
+  }
+}
+</file>
+
+<file path=".github/workflows/respond-to-issue.yml">
+name: Respond to Issue
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: write
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Comment and close issue via AI
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels) }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: node scripts/respond-to-issue.js
+</file>
+
+<file path="office/base-office.svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" width="1100" height="640" role="img" aria-label="Animated pixel art virtual office with AI agents">
+  <defs>
+    <linearGradient id="floorGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18324a"/>
+      <stop offset="0.45" stop-color="#101827"/>
+      <stop offset="1" stop-color="#3b2119"/>
+    </linearGradient>
+    <pattern id="wood" width="56" height="32" patternUnits="userSpaceOnUse">
+      <rect width="56" height="32" fill="#8b4f2f"/>
+      <path d="M0 31 h56 M0 15 h56 M14 0 v15 M42 16 v16" stroke="#6f3b24" stroke-width="2" opacity="0.8"/>
+      <path d="M8 7 q12 -6 24 0 M28 24 q9 -5 20 0" stroke="#b86a3f" stroke-width="1.5" fill="none" opacity="0.55"/>
+    </pattern>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <style><![CDATA[
+    @media (prefers-reduced-motion: no-preference) {
+      .screen-pulse { animation: screenPulse 1.8s linear infinite; }
+      .sprite-wrap, .agent-sprite { animation: float 2.4s linear infinite; }
+      .arm-left { animation: typeLeft 0.55s steps(2) infinite; transform-origin: 10px 36px; }
+      .arm-right { animation: typeRight 0.55s steps(2) infinite; transform-origin: 38px 36px; }
+      .leg-left { animation: walkLegA 0.45s steps(2) infinite; transform-origin: 18px 64px; }
+      .leg-right { animation: walkLegB 0.45s steps(2) infinite; transform-origin: 31px 64px; }
+      .idle-ring { animation: idlePulse 2s linear infinite; }
+      .active-aura { animation: activePulse 0.55s linear infinite; filter: url(#softGlow); }
+      .active-aura.slow { animation-duration: 1.1s; }
+      .completed-badge { animation: badgePop 30s linear forwards; }
+      .dot-one { animation: thinkDot 1.4s linear infinite; }
+      .dot-two { animation: thinkDot 1.4s linear infinite 0.25s; }
+      .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
+      .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
+      .data-flow { animation: dash 1.3s linear infinite; }
+      .ticker-text { animation: ticker 24s linear infinite; }
+      .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
+      .blink { animation: blink 2.8s steps(2) infinite; }
+    }
+    @keyframes screenPulse { 0%,100%{opacity:.68} 50%{opacity:1;filter:drop-shadow(0 0 10px currentColor)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    @keyframes typeLeft { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(8deg)} }
+    @keyframes typeRight { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-8deg)} }
+    @keyframes walkLegA { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(10deg)} }
+    @keyframes walkLegB { 0%,100%{transform:rotate(10deg)} 50%{transform:rotate(0deg)} }
+    @keyframes idlePulse { 0%,100%{opacity:.25} 50%{opacity:.7} }
+    @keyframes activePulse { 0%,100%{opacity:.55;stroke-width:3} 50%{opacity:1;stroke-width:6} }
+    @keyframes badgePop { 0%,88%{opacity:1;transform:scale(1)} 92%{transform:scale(1.15)} 100%{opacity:0;transform:scale(.8)} }
+    @keyframes thinkDot { 0%,100%{opacity:.15} 50%{opacity:1} }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @keyframes dash { to{stroke-dashoffset:-68} }
+    @keyframes ticker { from{transform:translateX(1100px)} to{transform:translateX(-1300px)} }
+    @keyframes blink { 0%,80%,100%{opacity:1} 82%,88%{opacity:.2} }
+    .title { font: 900 34px Consolas, Monaco, monospace; fill:#f8fafc; letter-spacing:3px; text-anchor:middle; }
+    .subtitle { font: 700 13px Consolas, Monaco, monospace; fill:#9fb3c8; text-anchor:middle; letter-spacing:1px; }
+    .agent-label { font: 900 15px Consolas, Monaco, monospace; fill:#f8fafc; text-anchor:middle; letter-spacing:1px; }
+    .role-label { font: 700 10px Consolas, Monaco, monospace; fill:#cbd5e1; text-anchor:middle; }
+    .counter-text { font: 800 10px Consolas, Monaco, monospace; fill:#9fb3c8; text-anchor:middle; }
+    .bubble-title { font: 900 8px Consolas, Monaco, monospace; fill:#334155; text-anchor:middle; }
+    .bubble-copy { font: 700 10px Consolas, Monaco, monospace; fill:#111827; text-anchor:middle; }
+    .tiny { font: 700 10px Consolas, Monaco, monospace; fill:#dbeafe; text-anchor:middle; }
+    .ticker-text { font: 800 16px Consolas, Monaco, monospace; fill:#7dd3fc; }
+    a { cursor:pointer; }
+  ]]></style>
+
+  <rect width="1100" height="640" fill="#080b12"/>
+  <rect x="30" y="58" width="1040" height="528" rx="18" fill="url(#floorGlow)" stroke="#26334a" stroke-width="6"/>
+  <rect x="52" y="92" width="996" height="470" fill="url(#wood)" opacity="0.96"/>
+  <path d="M52 92 h996 v470 h-996z" fill="none" stroke="#3e536f" stroke-width="4" opacity="0.65"/>
+
+  <g opacity="0.95">
+    <rect x="72" y="105" width="94" height="58" fill="#111827" stroke="#2f3b52" stroke-width="4"/>
+    <rect x="83" y="116" width="72" height="36" fill="#123b5d"/>
+    <path d="M91 143 h55 M92 132 h38 M92 123 h48" stroke="#67e8f9" stroke-width="3" class="blink"/>
+    <rect x="928" y="104" width="94" height="58" fill="#111827" stroke="#2f3b52" stroke-width="4"/>
+    <rect x="939" y="115" width="72" height="36" fill="#173b25"/>
+    <path d="M948 126 h50 M948 137 h38 M948 146 h58" stroke="#86efac" stroke-width="3" class="blink"/>
+    <g class="fan" transform="translate(548 117)">
+      <circle cx="0" cy="0" r="15" fill="#172033" stroke="#6b7b94" stroke-width="3"/>
+      <path d="M0 -4 l58 -9 l3 16 l-61 7z M0 4 l-58 9 l-3 -16 l61 -7z M-4 0 l-9 -58 l16 -3 l7 61z M4 0 l9 58 l-16 3 l-7 -61z" fill="#5d728e" opacity="0.75"/>
+      <circle cx="0" cy="0" r="5" fill="#dbeafe"/>
+    </g>
+  </g>
+
+  <text x="550" y="39" class="title">GITHUB VIRTUAL AGENT OFFICE</text>
+  <text x="550" y="61" class="subtitle">Animated SVG preview - click works when the SVG is opened directly; README image links to the live chat room</text>
+
+  <g class="data-layer" opacity="0.9">
+    <path d="M250 215 L410 215 L505 294" fill="none" stroke="#5eead4" stroke-width="5" stroke-linecap="square" stroke-dasharray="18 16" class="data-flow" style="animation-delay:0s"/>
+    <path d="M720 215 L615 215 L560 294" fill="none" stroke="#67e8f9" stroke-width="5" stroke-linecap="square" stroke-dasharray="18 16" class="data-flow" style="animation-delay:.25s"/>
+    <path d="M295 472 L420 430 L503 345" fill="none" stroke="#c4b5fd" stroke-width="5" stroke-linecap="square" stroke-dasharray="18 16" class="data-flow" style="animation-delay:.5s"/>
+    <path d="M780 472 L650 430 L570 346" fill="none" stroke="#fdba74" stroke-width="5" stroke-linecap="square" stroke-dasharray="18 16" class="data-flow" style="animation-delay:.75s"/>
+    <polygon points="410,215 392,205 392,225" fill="#5eead4"/>
+    <polygon points="615,215 633,205 633,225" fill="#67e8f9"/>
+    <polygon points="420,430 401,425 411,444" fill="#c4b5fd"/>
+    <polygon points="650,430 668,424 659,444" fill="#fdba74"/>
+  </g>
+
+  <g class="office-props">
+    <rect x="486" y="104" width="126" height="82" rx="8" fill="#2b3548" stroke="#111827" stroke-width="5"/>
+    <rect x="500" y="117" width="38" height="55" fill="#111827"/><rect x="559" y="117" width="38" height="55" fill="#111827"/>
+    <rect x="511" y="128" width="16" height="34" fill="#67e8f9" opacity="0.7"/><rect x="570" y="128" width="16" height="34" fill="#fca5a5" opacity="0.7"/>
+    <rect x="523" y="420" width="58" height="86" rx="8" fill="#1f2937" stroke="#111827" stroke-width="5"/>
+    <rect x="535" y="432" width="34" height="12" fill="#475569"/><rect x="535" y="454" width="34" height="12" fill="#475569"/><rect x="535" y="476" width="34" height="12" fill="#475569"/>
+    <circle cx="88" cy="548" r="18" fill="#1f2937"/><path d="M78 546 q10 -20 22 0" stroke="#6ee7b7" stroke-width="5" fill="none"/>
+    <circle cx="1016" cy="548" r="18" fill="#1f2937"/><path d="M1006 546 q10 -20 22 0" stroke="#f9a8d4" stroke-width="5" fill="none"/>
+  </g>
+
+  
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-master&amp;title=Query%20for%20Master%20Agent%3A%20" target="_blank" rel="noopener">
+    <g class="station station-master" transform="translate(475 260)">
+      <g class="master-orbit" transform="translate(85 22)">
+        <ellipse cx="0" cy="0" rx="110" ry="72" fill="none" stroke="#ffd700" stroke-width="4" stroke-dasharray="16 12" opacity="0.9"/>
+        <circle cx="110" cy="0" r="7" fill="#fff0a0"/>
+      </g>
+      
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#FFD700" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">MASTER_AGENT</text>
+      <text x="88" y="168" class="role-label">Orchestrator - routes queries and synthe...</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED 0</text>
+      </g>
+      <circle cx="83" cy="11" r="34" fill="none" stroke="#FFD700" stroke-width="3" class="idle-ring"/>
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="#FFD700" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      <rect x="-3" y="66" width="45" height="82" fill="#243044"/><rect x="2" y="75" width="35" height="42" fill="#121826"/><rect x="8" y="82" width="23" height="26" fill="#FFD700" class="screen-pulse"/>
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        
+    <g class="agent-sprite" transform="scale(1)">
+      <rect x="21" y="-7" width="5" height="9" fill="#ffe66d"/><rect x="19" y="-11" width="9" height="5" fill="#fff3a6"/>
+      <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+      <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#FFD700"/>
+      <rect x="6" y="35" width="8" height="24" fill="#FFD700" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#FFD700" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+      </g>
+    </g>
+  </a>
+
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-frontend&amp;title=Query%20for%20Frontend%20Agent%3A%20" target="_blank" rel="noopener">
+    <g class="station station-frontend" transform="translate(145 150)">
+      
+      
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#61DAFB" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">FRONTEND_AGENT</text>
+      <text x="88" y="168" class="role-label">Frontend specialist - React, UI, CSS, ac...</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED 0</text>
+      </g>
+      <circle cx="83" cy="11" r="34" fill="none" stroke="#61DAFB" stroke-width="3" class="idle-ring"/>
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="#61DAFB" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      <rect x="-3" y="66" width="45" height="82" fill="#243044"/><rect x="2" y="75" width="35" height="42" fill="#121826"/><rect x="8" y="82" width="23" height="26" fill="#61DAFB" class="screen-pulse"/>
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        
+    <g class="agent-sprite" transform="scale(1)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+      <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#61DAFB"/>
+      <rect x="6" y="35" width="8" height="24" fill="#61DAFB" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#61DAFB" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+      </g>
+    </g>
+  </a>
+
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-backend&amp;title=Query%20for%20Backend%20Agent%3A%20" target="_blank" rel="noopener">
+    <g class="station station-backend" transform="translate(790 150)">
+      
+      
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#68D391" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">BACKEND_AGENT</text>
+      <text x="88" y="168" class="role-label">Backend specialist - APIs, auth, service...</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED 0</text>
+      </g>
+      <circle cx="83" cy="11" r="34" fill="none" stroke="#68D391" stroke-width="3" class="idle-ring"/>
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="#68D391" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      <rect x="128" y="66" width="45" height="82" fill="#243044"/><rect x="133" y="75" width="35" height="42" fill="#121826"/><rect x="139" y="82" width="23" height="26" fill="#68D391" class="screen-pulse"/>
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        
+    <g class="agent-sprite" transform="scale(1)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+      <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#68D391"/>
+      <rect x="6" y="35" width="8" height="24" fill="#68D391" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#68D391" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+      </g>
+    </g>
+  </a>
+
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-database&amp;title=Query%20for%20Database%20Agent%3A%20" target="_blank" rel="noopener">
+    <g class="station station-database" transform="translate(175 430)">
+      
+      
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#B794F4" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">DATABASE_AGENT</text>
+      <text x="88" y="168" class="role-label">Database specialist - schema, queries, i...</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED 0</text>
+      </g>
+      <circle cx="83" cy="11" r="34" fill="none" stroke="#B794F4" stroke-width="3" class="idle-ring"/>
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="#B794F4" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      <rect x="-3" y="66" width="45" height="82" fill="#243044"/><rect x="2" y="75" width="35" height="42" fill="#121826"/><rect x="8" y="82" width="23" height="26" fill="#B794F4" class="screen-pulse"/>
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        
+    <g class="agent-sprite" transform="scale(1)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+      <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#B794F4"/>
+      <rect x="6" y="35" width="8" height="24" fill="#B794F4" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#B794F4" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+      </g>
+    </g>
+  </a>
+
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-devops&amp;title=Query%20for%20DevOps%20Agent%3A%20" target="_blank" rel="noopener">
+    <g class="station station-devops" transform="translate(790 430)">
+      
+      
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#F6AD55" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">DEVOPS_AGENT</text>
+      <text x="88" y="168" class="role-label">DevOps specialist - CI/CD, deploys, clou...</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED 0</text>
+      </g>
+      <circle cx="83" cy="11" r="34" fill="none" stroke="#F6AD55" stroke-width="3" class="idle-ring"/>
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="#F6AD55" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      <rect x="128" y="66" width="45" height="82" fill="#243044"/><rect x="133" y="75" width="35" height="42" fill="#121826"/><rect x="139" y="82" width="23" height="26" fill="#F6AD55" class="screen-pulse"/>
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        
+    <g class="agent-sprite" transform="scale(1)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#223047"/>
+      <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#F6AD55"/>
+      <rect x="6" y="35" width="8" height="24" fill="#F6AD55" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#F6AD55" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+      </g>
+    </g>
+  </a>
+
+  
+  <g class="walker" aria-label="Frontend agent walking between desks">
+    <animateTransform attributeName="transform" type="translate" values="320 285; 405 285; 405 365; 690 365; 690 285; 320 285" dur="16s" begin="0s" repeatCount="indefinite"/>
+    <ellipse cx="22" cy="91" rx="21" ry="6" fill="#0b1220" opacity="0.45"/>
+    
+    <g class="agent-sprite" transform="scale(0.9)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#243044"/>
+      <rect x="15" y="8" width="18" height="17" fill="#c8f7ff"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#61DAFB"/>
+      <rect x="6" y="35" width="8" height="24" fill="#61DAFB" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#61DAFB" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+  </g>
+  
+  <g class="walker" aria-label="Backend agent walking code route">
+    <animateTransform attributeName="transform" type="translate" values="642 122; 610 235; 530 260; 452 235; 410 122; 642 122" dur="13s" begin="2s" repeatCount="indefinite"/>
+    <ellipse cx="22" cy="91" rx="21" ry="6" fill="#0b1220" opacity="0.45"/>
+    
+    <g class="agent-sprite" transform="scale(0.9)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#243044"/>
+      <rect x="15" y="8" width="18" height="17" fill="#c8f7ff"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#68D391"/>
+      <rect x="6" y="35" width="8" height="24" fill="#68D391" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#68D391" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+  </g>
+  
+  <g class="walker" aria-label="DevOps agent walking infrastructure route">
+    <animateTransform attributeName="transform" type="translate" values="870 365; 690 330; 575 405; 355 385; 205 365; 870 365" dur="19s" begin="4s" repeatCount="indefinite"/>
+    <ellipse cx="22" cy="91" rx="21" ry="6" fill="#0b1220" opacity="0.45"/>
+    
+    <g class="agent-sprite" transform="scale(0.9)">
+      
+      <rect x="12" y="2" width="24" height="23" fill="#243044"/>
+      <rect x="15" y="8" width="18" height="17" fill="#c8f7ff"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="#F6AD55"/>
+      <rect x="6" y="35" width="8" height="24" fill="#F6AD55" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="#F6AD55" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>
+  </g>
+
+  <g transform="translate(934 248)">
+    <rect x="0" y="0" width="118" height="78" rx="12" fill="#f8fafc" stroke="#111827" stroke-width="4"/>
+    <text x="59" y="28" class="bubble-copy">SEARCH</text>
+    <text x="59" y="46" class="bubble-copy">MEMORY</text>
+    <path d="M20 78 l-18 20 l34 -20" fill="#f8fafc" stroke="#111827" stroke-width="4"/>
+  </g>
+  <g transform="translate(986 348)">
+    <rect x="0" y="0" width="58" height="52" rx="10" fill="#dbeafe" stroke="#111827" stroke-width="4"/>
+    <rect x="14" y="-12" width="30" height="14" fill="#dbeafe" stroke="#111827" stroke-width="4"/>
+    <circle cx="18" cy="23" r="4" fill="#111827"/><circle cx="40" cy="23" r="4" fill="#111827"/>
+    <path d="M20 37 h18" stroke="#111827" stroke-width="4"/>
+    <text x="29" y="72" class="tiny">MEMORY</text>
+  </g>
+
+  <rect x="30" y="593" width="1040" height="32" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="3"/>
+  <svg x="42" y="597" width="1016" height="28" overflow="hidden">
+    <text x="0" y="20" class="ticker-text">AI Agents Online | Open the live office chat to ask a question.  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
+  </svg>
+</svg>
+</file>
+
+<file path="scripts/respond-to-issue.js">
+const { routeQuery } = require("./intent-router");
+const { generateResponse } = require("./groq-client");
+const { queryMemory } = require("./vector-store");
+const { execFileSync } = require("child_process");
+
+async function main() {
+  console.log(`[${new Date().toISOString()}] Started respond-to-issue workflow`);
+
+  const issueNumber = process.env.ISSUE_NUMBER;
+  const issueTitle = process.env.ISSUE_TITLE;
+  const issueBody = process.env.ISSUE_BODY || "";
+  let issueLabels = [];
+  try {
+    issueLabels = JSON.parse(process.env.ISSUE_LABELS || "[]");
+  } catch (e) {
+    console.error("Could not parse labels:", e);
+  }
+  const githubToken = process.env.GITHUB_TOKEN;
+  const repoOwner = process.env.REPO_OWNER;
+  const repoName = process.env.REPO_NAME;
+
+  if (!githubToken || !issueNumber || !repoOwner || !repoName) {
+    console.error("Missing required environment variables.");
+    process.exit(1);
+  }
+
+  // 1. Determine Agent
+  console.log(`[${new Date().toISOString()}] Routing query...`);
+  const agentInfo = await routeQuery(issueTitle, issueBody, issueLabels);
+  console.log(`[${new Date().toISOString()}] Routed to: ${agentInfo.agentId}`);
+
+  // 2. Fetch RAG Context
+  console.log(`[${new Date().toISOString()}] Fetching RAG context...`);
+  let contextStr = "";
+  let contextCount = 0;
+  try {
+    const results = await queryMemory(`${issueTitle} ${issueBody}`, agentInfo.agentId, 5);
+    if (results.length > 0) {
+      contextCount = results.length;
+      contextStr = "RELEVANT CODEBASE CONTEXT:\n" + results.map(r => `File: ${r.metadata.filePath}\n${r.text}`).join("\n---\n");
+    }
+  } catch (e) {
+    console.error("Failed to fetch memory:", e);
+  }
+
+  // 3. Generate Response
+  console.log(`[${new Date().toISOString()}] Generating AI response...`);
+  let userQuery = `${issueTitle}\n\n${issueBody}`;
+  if (contextStr) {
+    userQuery = `${contextStr}\n\n${userQuery}`;
+  }
+  
+  let systemPrompt = agentInfo.systemPrompt;
+  systemPrompt += "\n\nYou have been given relevant code snippets from the developer's actual codebase. Reference them specifically in your answer when applicable.";
+
+  let aiResponse = "";
+  try {
+    aiResponse = await generateResponse(systemPrompt, userQuery);
+  } catch (e) {
+    console.error("Failed to generate response:", e);
+    aiResponse = "I'm sorry, my neural circuits are currently experiencing interference and I could not process your request.";
+  }
+
+  // 4. Format Comment
+  const finalComment = `## 🤖 ${agentInfo.agentName} Response\n\n${aiResponse}\n\n---\n*Powered by Groq (llama3-70b-8192) | [Neural Office](https://github.com/${repoOwner}/${repoName})*\n*Context retrieved from ${contextCount} codebase chunks via RAG*`;
+
+  // 4. Post Comment
+  const issueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}`;
+  console.log(`[${new Date().toISOString()}] Posting comment to GitHub...`);
+  
+  const commentRes = await fetch(`${issueUrl}/comments`, {
+    method: "POST",
+    headers: {
+      "Authorization": `token ${githubToken}`,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ body: finalComment })
+  });
+  
+  if (!commentRes.ok) {
+    const errText = await commentRes.text();
+    console.error("Failed to post comment:", errText);
+    process.exit(1);
+  }
+
+  // 5. Close Issue
+  console.log(`[${new Date().toISOString()}] Closing issue...`);
+  const closeRes = await fetch(issueUrl, {
+    method: "PATCH",
+    headers: {
+      "Authorization": `token ${githubToken}`,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ state: "closed" })
+  });
+
+  if (!closeRes.ok) {
+    const errText = await closeRes.text();
+    console.error("Failed to close issue:", errText);
+    process.exit(1);
+  }
+
+  // 6. Update SVG State
+  console.log(`[${new Date().toISOString()}] Updating office state...`);
+  try {
+    const summary = issueTitle.substring(0, 60);
+    execFileSync("node", ["scripts/update-office-state.js", "query_resolved", agentInfo.agentId, summary], { stdio: "inherit" });
+  } catch (e) {
+    console.error("Failed to update office state:", e.message);
+  }
+
+  console.log(`[${new Date().toISOString()}] Workflow completed successfully!`);
+}
+
+main().catch(err => {
+  console.error("Unhandled exception:", err);
+  process.exit(1);
+});
+</file>
+
+<file path=".github/workflows/update-svg.yml">
+name: Update SVG and Ingest Memory
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-and-ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          DIFF=$(git diff --name-only HEAD~1 HEAD | jq -R -s -c 'split("\n")[:-1]') || echo '[]'
+          echo "DIFF_FILES=$DIFF" >> $GITHUB_ENV
+
+      - name: Restore ChromaDB cache
+        uses: actions/cache@v4
+        with:
+          path: ./chroma-db/
+          key: chroma-db-${{ runner.os }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Ingestion
+        run: node scripts/ingest-codebase.js
+
+      - name: Update Office State
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/update-office-state.js push_ingested master
+</file>
+
+<file path="office/generate-svg.js">
+const fs = require('fs');
+const path = require('path');
+
+const configPath = path.join(__dirname, 'agent-config.json');
+const statePath = path.join(__dirname, 'office-state.json');
+const svgPath = path.join(__dirname, 'base-office.svg');
+
+const REPO_OWNER = 'RJScripts-24';
+const REPO_NAME = 'RJScripts-24';
+const WIDTH = 1100;
+const BASE_HEIGHT = 640;
+
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, ''));
+}
+
+const config = readJson(configPath);
+const state = readJson(statePath);
+
+const basePositions = {
+  frontend: { x: 145, y: 150, side: 'left' },
+  master: { x: 475, y: 260, side: 'center' },
+  backend: { x: 790, y: 150, side: 'right' },
+  database: { x: 175, y: 430, side: 'left' },
+  devops: { x: 790, y: 430, side: 'right' }
+};
+
+const agents = config.agents.map((agent, index) => {
+  const fallback = {
+    x: 85 + ((index - 5) % 5) * 190,
+    y: 545 + Math.floor(Math.max(0, index - 5) / 5) * 165,
+    side: 'extra'
+  };
+  return { ...agent, scenePosition: basePositions[agent.id] || fallback };
+});
+
+const extraRows = Math.max(0, Math.ceil(Math.max(0, agents.length - 5) / 5));
+const HEIGHT = BASE_HEIGHT + extraRows * 165;
+
+function esc(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function issueUrl(agent) {
+  const title = encodeURIComponent(`Query for ${agent.name}: `);
+  const labels = encodeURIComponent(`ask-agent,${agent.issueLabel}`);
+  return `https://github.com/${REPO_OWNER}/${REPO_NAME}/issues/new?template=query_template.yml&amp;labels=${labels}&amp;title=${title}`;
+}
+
+function shorten(text, max) {
+  if (!text) return '';
+  return text.length > max ? `${text.slice(0, max - 3)}...` : text;
+}
+
+function statusMarkup(agent, agentState) {
+  const color = agent.accentColor;
+  const status = agentState.status || 'idle';
+
+  if (status === 'thinking') {
+    return `
+      <g transform="translate(92 -58)" class="thinking-bubble">
+        <path d="M0 0 h70 v28 h-26 l-8 9 -8 -9 h-28z" fill="#f5f7fb" stroke="#0b1220" stroke-width="3"/>
+        <circle cx="24" cy="15" r="3.5" fill="#0b1220" class="dot-one"/>
+        <circle cx="36" cy="15" r="3.5" fill="#0b1220" class="dot-two"/>
+        <circle cx="48" cy="15" r="3.5" fill="#0b1220" class="dot-three"/>
+      </g>`;
+  }
+
+  if (status === 'active') {
+    return `
+      <circle cx="83" cy="11" r="34" fill="none" stroke="${color}" stroke-width="4" class="active-aura"/>
+      <circle cx="83" cy="11" r="43" fill="none" stroke="${color}" stroke-width="2" opacity="0.5" class="active-aura slow"/>`;
+  }
+
+  if (status === 'completed') {
+    return `
+      <g transform="translate(127 -34)" class="completed-badge">
+        <circle cx="0" cy="0" r="16" fill="#2ea043" stroke="#eafff1" stroke-width="3"/>
+        <path d="M-7 0 l5 6 l10 -13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+      </g>`;
+  }
+
+  return `<circle cx="83" cy="11" r="34" fill="none" stroke="${color}" stroke-width="3" class="idle-ring"/>`;
+}
+
+function sprite(agent, options = {}) {
+  const color = agent.accentColor || '#61DAFB';
+  const skin = options.skin || '#ffd7a8';
+  const hair = options.hair || '#223047';
+  const scale = options.scale || 1;
+  const antenna = agent.id === 'master' ? `<rect x="21" y="-7" width="5" height="9" fill="#ffe66d"/><rect x="19" y="-11" width="9" height="5" fill="#fff3a6"/>` : '';
+  return `
+    <g class="agent-sprite" transform="scale(${scale})">
+      ${antenna}
+      <rect x="12" y="2" width="24" height="23" fill="${hair}"/>
+      <rect x="15" y="8" width="18" height="17" fill="${skin}"/>
+      <rect x="18" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="28" y="15" width="4" height="4" fill="#111827"/>
+      <rect x="18" y="25" width="14" height="5" fill="#152033" opacity="0.55"/>
+      <rect x="11" y="31" width="26" height="32" fill="${color}"/>
+      <rect x="6" y="35" width="8" height="24" fill="${color}" class="arm-left"/>
+      <rect x="34" y="35" width="8" height="24" fill="${color}" class="arm-right"/>
+      <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
+      <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
+      <rect x="11" y="82" width="12" height="5" fill="#0b0f17"/>
+      <rect x="26" y="82" width="12" height="5" fill="#0b0f17"/>
+    </g>`;
+}
+
+function desk(agent) {
+  const { x, y, side } = agent.scenePosition;
+  const agentState = state.agents[agent.id] || { status: 'idle', queriesResolved: 0 };
+  const color = agent.accentColor;
+  const label = esc(agent.name.toUpperCase().replace(/ /g, '_'));
+  const role = esc(shorten(agent.role, 43));
+  const isMaster = agent.id === 'master';
+  const lastActive = agentState.lastActive ? new Date(agentState.lastActive).getTime() : 0;
+  const showBubble = agentState.lastQuery && Date.now() - lastActive < 60 * 60 * 1000;
+  const bubble = showBubble
+    ? `<g transform="translate(30 -82)">
+        <path d="M0 0 h155 v38 h-76 l-10 11 -10 -11 h-59z" fill="#fff8e6" stroke="#1f2937" stroke-width="3"/>
+        <text x="77" y="16" class="bubble-title">LAST QUERY</text>
+        <text x="77" y="31" class="bubble-copy">${esc(shorten(agentState.lastQuery, 30))}</text>
+      </g>`
+    : '';
+  const masterRing = isMaster
+    ? `<g class="master-orbit" transform="translate(85 22)">
+        <ellipse cx="0" cy="0" rx="110" ry="72" fill="none" stroke="#ffd700" stroke-width="4" stroke-dasharray="16 12" opacity="0.9"/>
+        <circle cx="110" cy="0" r="7" fill="#fff0a0"/>
+      </g>`
+    : '';
+  const leftDeskDetails = side === 'right'
+    ? `<rect x="128" y="66" width="45" height="82" fill="#243044"/><rect x="133" y="75" width="35" height="42" fill="#121826"/><rect x="139" y="82" width="23" height="26" fill="${color}" class="screen-pulse"/>`
+    : `<rect x="-3" y="66" width="45" height="82" fill="#243044"/><rect x="2" y="75" width="35" height="42" fill="#121826"/><rect x="8" y="82" width="23" height="26" fill="${color}" class="screen-pulse"/>`;
+
+  return `
+  <a href="${issueUrl(agent)}" target="_blank" rel="noopener">
+    <g class="station station-${esc(agent.id)}" transform="translate(${x} ${y})">
+      ${masterRing}
+      ${bubble}
+      <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="${color}" stroke-width="3"/>
+      <text x="88" y="-8" class="agent-label">${label}</text>
+      <text x="88" y="168" class="role-label">${role}</text>
+      <g class="counter">
+        <rect x="36" y="14" width="104" height="21" rx="10" fill="#101826" stroke="#2f3b52"/>
+        <text x="88" y="29" class="counter-text">RESOLVED ${Number(agentState.queriesResolved || 0)}</text>
+      </g>
+      ${statusMarkup(agent, agentState)}
+      <ellipse cx="86" cy="156" rx="68" ry="14" fill="#111827" opacity="0.42"/>
+      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
+      <rect x="18" y="55" width="140" height="17" fill="#b8693d" opacity="0.82"/>
+      <path d="M28 89 h120 M28 113 h120" stroke="#63331f" stroke-width="3" opacity="0.65"/>
+      <rect x="36" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="123" y="126" width="18" height="26" fill="#4b2a1d"/>
+      <rect x="54" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
+      <rect x="61" y="81" width="50" height="24" fill="${color}" class="screen-pulse"/>
+      <rect x="78" y="113" width="18" height="8" fill="#293548"/>
+      <rect x="61" y="122" width="51" height="8" fill="#151b28"/>
+      <rect x="55" y="139" width="62" height="6" fill="#172033"/>
+      <rect x="124" y="80" width="19" height="14" fill="#f5f1df"/>
+      <path d="M127 86 h12 M127 91 h9" stroke="#334155" stroke-width="2"/>
+      <circle cx="132" cy="111" r="8" fill="#67e8f9" opacity="0.72"/>
+      <path d="M140 111 q9 -7 13 2" fill="none" stroke="#67e8f9" stroke-width="4" opacity="0.72"/>
+      ${leftDeskDetails}
+      <g class="sprite-wrap" transform="translate(62 -20)">
+        ${sprite(agent)}
+      </g>
+    </g>
+  </a>`;
+}
+
+function flowLine(points, color, delay = '0s') {
+  const d = points.map((point, index) => `${index === 0 ? 'M' : 'L'}${point[0]} ${point[1]}`).join(' ');
+  return `<path d="${d}" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="square" stroke-dasharray="18 16" class="data-flow" style="animation-delay:${delay}"/>`;
+}
+
+function walkingAgent(id, agent, values, dur, delay, note) {
+  return `
+  <g class="walker" aria-label="${esc(note)}">
+    <animateTransform attributeName="transform" type="translate" values="${values}" dur="${dur}" begin="${delay}" repeatCount="indefinite"/>
+    <ellipse cx="22" cy="91" rx="21" ry="6" fill="#0b1220" opacity="0.45"/>
+    ${sprite(agent, { skin: '#c8f7ff', hair: '#243044', scale: 0.9 })}
+  </g>`;
+}
+
+const deskSvg = agents.map(desk).join('\n');
+const ticker = esc(state.ticker || 'AI Agents Online | Open the live office chat to ask a question.');
+
+const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}" role="img" aria-label="Animated pixel art virtual office with AI agents">
+  <defs>
+    <linearGradient id="floorGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18324a"/>
+      <stop offset="0.45" stop-color="#101827"/>
+      <stop offset="1" stop-color="#3b2119"/>
+    </linearGradient>
+    <pattern id="wood" width="56" height="32" patternUnits="userSpaceOnUse">
+      <rect width="56" height="32" fill="#8b4f2f"/>
+      <path d="M0 31 h56 M0 15 h56 M14 0 v15 M42 16 v16" stroke="#6f3b24" stroke-width="2" opacity="0.8"/>
+      <path d="M8 7 q12 -6 24 0 M28 24 q9 -5 20 0" stroke="#b86a3f" stroke-width="1.5" fill="none" opacity="0.55"/>
+    </pattern>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <style><![CDATA[
+    @media (prefers-reduced-motion: no-preference) {
+      .screen-pulse { animation: screenPulse 1.8s linear infinite; }
+      .sprite-wrap, .agent-sprite { animation: float 2.4s linear infinite; }
+      .arm-left { animation: typeLeft 0.55s steps(2) infinite; transform-origin: 10px 36px; }
+      .arm-right { animation: typeRight 0.55s steps(2) infinite; transform-origin: 38px 36px; }
+      .leg-left { animation: walkLegA 0.45s steps(2) infinite; transform-origin: 18px 64px; }
+      .leg-right { animation: walkLegB 0.45s steps(2) infinite; transform-origin: 31px 64px; }
+      .idle-ring { animation: idlePulse 2s linear infinite; }
+      .active-aura { animation: activePulse 0.55s linear infinite; filter: url(#softGlow); }
+      .active-aura.slow { animation-duration: 1.1s; }
+      .completed-badge { animation: badgePop 30s linear forwards; }
+      .dot-one { animation: thinkDot 1.4s linear infinite; }
+      .dot-two { animation: thinkDot 1.4s linear infinite 0.25s; }
+      .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
+      .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
+      .data-flow { animation: dash 1.3s linear infinite; }
+      .ticker-text { animation: ticker 24s linear infinite; }
+      .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
+      .blink { animation: blink 2.8s steps(2) infinite; }
+    }
+    @keyframes screenPulse { 0%,100%{opacity:.68} 50%{opacity:1;filter:drop-shadow(0 0 10px currentColor)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    @keyframes typeLeft { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(8deg)} }
+    @keyframes typeRight { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-8deg)} }
+    @keyframes walkLegA { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(10deg)} }
+    @keyframes walkLegB { 0%,100%{transform:rotate(10deg)} 50%{transform:rotate(0deg)} }
+    @keyframes idlePulse { 0%,100%{opacity:.25} 50%{opacity:.7} }
+    @keyframes activePulse { 0%,100%{opacity:.55;stroke-width:3} 50%{opacity:1;stroke-width:6} }
+    @keyframes badgePop { 0%,88%{opacity:1;transform:scale(1)} 92%{transform:scale(1.15)} 100%{opacity:0;transform:scale(.8)} }
+    @keyframes thinkDot { 0%,100%{opacity:.15} 50%{opacity:1} }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @keyframes dash { to{stroke-dashoffset:-68} }
+    @keyframes ticker { from{transform:translateX(${WIDTH}px)} to{transform:translateX(-1300px)} }
+    @keyframes blink { 0%,80%,100%{opacity:1} 82%,88%{opacity:.2} }
+    .title { font: 900 34px Consolas, Monaco, monospace; fill:#f8fafc; letter-spacing:3px; text-anchor:middle; }
+    .subtitle { font: 700 13px Consolas, Monaco, monospace; fill:#9fb3c8; text-anchor:middle; letter-spacing:1px; }
+    .agent-label { font: 900 15px Consolas, Monaco, monospace; fill:#f8fafc; text-anchor:middle; letter-spacing:1px; }
+    .role-label { font: 700 10px Consolas, Monaco, monospace; fill:#cbd5e1; text-anchor:middle; }
+    .counter-text { font: 800 10px Consolas, Monaco, monospace; fill:#9fb3c8; text-anchor:middle; }
+    .bubble-title { font: 900 8px Consolas, Monaco, monospace; fill:#334155; text-anchor:middle; }
+    .bubble-copy { font: 700 10px Consolas, Monaco, monospace; fill:#111827; text-anchor:middle; }
+    .tiny { font: 700 10px Consolas, Monaco, monospace; fill:#dbeafe; text-anchor:middle; }
+    .ticker-text { font: 800 16px Consolas, Monaco, monospace; fill:#7dd3fc; }
+    a { cursor:pointer; }
+  ]]></style>
+
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="#080b12"/>
+  <rect x="30" y="58" width="${WIDTH - 60}" height="${HEIGHT - 112}" rx="18" fill="url(#floorGlow)" stroke="#26334a" stroke-width="6"/>
+  <rect x="52" y="92" width="${WIDTH - 104}" height="${HEIGHT - 170}" fill="url(#wood)" opacity="0.96"/>
+  <path d="M52 92 h${WIDTH - 104} v${HEIGHT - 170} h-${WIDTH - 104}z" fill="none" stroke="#3e536f" stroke-width="4" opacity="0.65"/>
+
+  <g opacity="0.95">
+    <rect x="72" y="105" width="94" height="58" fill="#111827" stroke="#2f3b52" stroke-width="4"/>
+    <rect x="83" y="116" width="72" height="36" fill="#123b5d"/>
+    <path d="M91 143 h55 M92 132 h38 M92 123 h48" stroke="#67e8f9" stroke-width="3" class="blink"/>
+    <rect x="928" y="104" width="94" height="58" fill="#111827" stroke="#2f3b52" stroke-width="4"/>
+    <rect x="939" y="115" width="72" height="36" fill="#173b25"/>
+    <path d="M948 126 h50 M948 137 h38 M948 146 h58" stroke="#86efac" stroke-width="3" class="blink"/>
+    <g class="fan" transform="translate(548 117)">
+      <circle cx="0" cy="0" r="15" fill="#172033" stroke="#6b7b94" stroke-width="3"/>
+      <path d="M0 -4 l58 -9 l3 16 l-61 7z M0 4 l-58 9 l-3 -16 l61 -7z M-4 0 l-9 -58 l16 -3 l7 61z M4 0 l9 58 l-16 3 l-7 -61z" fill="#5d728e" opacity="0.75"/>
+      <circle cx="0" cy="0" r="5" fill="#dbeafe"/>
+    </g>
+  </g>
+
+  <text x="${WIDTH / 2}" y="39" class="title">GITHUB VIRTUAL AGENT OFFICE</text>
+  <text x="${WIDTH / 2}" y="61" class="subtitle">Animated SVG preview - click works when the SVG is opened directly; README image links to the live chat room</text>
+
+  <g class="data-layer" opacity="0.9">
+    ${flowLine([[250,215],[410,215],[505,294]], '#5eead4', '0s')}
+    ${flowLine([[720,215],[615,215],[560,294]], '#67e8f9', '.25s')}
+    ${flowLine([[295,472],[420,430],[503,345]], '#c4b5fd', '.5s')}
+    ${flowLine([[780,472],[650,430],[570,346]], '#fdba74', '.75s')}
+    <polygon points="410,215 392,205 392,225" fill="#5eead4"/>
+    <polygon points="615,215 633,205 633,225" fill="#67e8f9"/>
+    <polygon points="420,430 401,425 411,444" fill="#c4b5fd"/>
+    <polygon points="650,430 668,424 659,444" fill="#fdba74"/>
+  </g>
+
+  <g class="office-props">
+    <rect x="486" y="104" width="126" height="82" rx="8" fill="#2b3548" stroke="#111827" stroke-width="5"/>
+    <rect x="500" y="117" width="38" height="55" fill="#111827"/><rect x="559" y="117" width="38" height="55" fill="#111827"/>
+    <rect x="511" y="128" width="16" height="34" fill="#67e8f9" opacity="0.7"/><rect x="570" y="128" width="16" height="34" fill="#fca5a5" opacity="0.7"/>
+    <rect x="523" y="420" width="58" height="86" rx="8" fill="#1f2937" stroke="#111827" stroke-width="5"/>
+    <rect x="535" y="432" width="34" height="12" fill="#475569"/><rect x="535" y="454" width="34" height="12" fill="#475569"/><rect x="535" y="476" width="34" height="12" fill="#475569"/>
+    <circle cx="88" cy="548" r="18" fill="#1f2937"/><path d="M78 546 q10 -20 22 0" stroke="#6ee7b7" stroke-width="5" fill="none"/>
+    <circle cx="1016" cy="548" r="18" fill="#1f2937"/><path d="M1006 546 q10 -20 22 0" stroke="#f9a8d4" stroke-width="5" fill="none"/>
+  </g>
+
+  ${deskSvg}
+
+  ${walkingAgent('walk-a', agents.find(a => a.id === 'frontend') || agents[0], '320 285; 405 285; 405 365; 690 365; 690 285; 320 285', '16s', '0s', 'Frontend agent walking between desks')}
+  ${walkingAgent('walk-b', agents.find(a => a.id === 'backend') || agents[0], '642 122; 610 235; 530 260; 452 235; 410 122; 642 122', '13s', '2s', 'Backend agent walking code route')}
+  ${walkingAgent('walk-c', agents.find(a => a.id === 'devops') || agents[0], '870 365; 690 330; 575 405; 355 385; 205 365; 870 365', '19s', '4s', 'DevOps agent walking infrastructure route')}
+
+  <g transform="translate(934 248)">
+    <rect x="0" y="0" width="118" height="78" rx="12" fill="#f8fafc" stroke="#111827" stroke-width="4"/>
+    <text x="59" y="28" class="bubble-copy">SEARCH</text>
+    <text x="59" y="46" class="bubble-copy">MEMORY</text>
+    <path d="M20 78 l-18 20 l34 -20" fill="#f8fafc" stroke="#111827" stroke-width="4"/>
+  </g>
+  <g transform="translate(986 348)">
+    <rect x="0" y="0" width="58" height="52" rx="10" fill="#dbeafe" stroke="#111827" stroke-width="4"/>
+    <rect x="14" y="-12" width="30" height="14" fill="#dbeafe" stroke="#111827" stroke-width="4"/>
+    <circle cx="18" cy="23" r="4" fill="#111827"/><circle cx="40" cy="23" r="4" fill="#111827"/>
+    <path d="M20 37 h18" stroke="#111827" stroke-width="4"/>
+    <text x="29" y="72" class="tiny">MEMORY</text>
+  </g>
+
+  <rect x="30" y="${HEIGHT - 47}" width="${WIDTH - 60}" height="32" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="3"/>
+  <svg x="42" y="${HEIGHT - 43}" width="${WIDTH - 84}" height="28" overflow="hidden">
+    <text x="0" y="20" class="ticker-text">${ticker}  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
+  </svg>
+</svg>`;
+
+fs.writeFileSync(svgPath, svgContent);
+console.log(`SVG regenerated: ${svgPath}`);
+</file>
+
+<file path="README.md">
+<div align="center">
+  <h1>Neural Office - AI Agent Swarm</h1>
+  <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
+    <img src="office/base-office.svg" alt="Animated GitHub virtual agent office">
+  </a>
+</div>
+
+### Ask an Agent
+
+GitHub profile READMEs cannot run an in-place JavaScript chatbox inside an image, so the office above is the GitHub-safe animated SVG preview.
+
+Open the live room to click an agent and get the chatbox:
+
+[Launch the interactive agent office](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
+
+The chatbox creates a correctly labelled GitHub Issue, then the GitHub Actions agent pipeline replies and closes it.
+
+### Direct Agent Links
+
+[Master Agent](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-master&title=Query%20for%20Master%20Agent:%20)
+| [Frontend Agent](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-frontend&title=Query%20for%20Frontend%20Agent:%20)
+| [Backend Agent](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-backend&title=Query%20for%20Backend%20Agent:%20)
+| [Database Agent](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-database&title=Query%20for%20Database%20Agent:%20)
+| [DevOps Agent](https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&labels=ask-agent,ask-devops&title=Query%20for%20DevOps%20Agent:%20)
+
+### Recent Activity
+<!-- ACTIVITY_LOG -->
+</file>
+
+</files>

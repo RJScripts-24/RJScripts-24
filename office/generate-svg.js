@@ -46,10 +46,15 @@ function esc(value) {
     .replace(/'/g, '&apos;');
 }
 
-function issueUrl(agent) {
+/** Full new-issue URL; only the title segment is encodeURIComponent per Issue-Ops spec. */
+function buildIssueUrl(agent) {
   const title = encodeURIComponent(`Query for ${agent.name}: `);
-  const labels = encodeURIComponent(`ask-agent,${agent.issueLabel}`);
-  return `https://github.com/${REPO_OWNER}/${REPO_NAME}/issues/new?template=query_template.yml&amp;labels=${labels}&amp;title=${title}`;
+  return `https://github.com/${REPO_OWNER}/${REPO_NAME}/issues/new?template=query_template.yml&labels=ask-agent,ask-${agent.id}&title=${title}`;
+}
+
+/** `&` must be `&amp;` inside XML/SVG attribute values. */
+function xmlAttrUrl(url) {
+  return String(url).replace(/&/g, '&amp;');
 }
 
 function shorten(text, max) {
@@ -112,22 +117,51 @@ function sprite(agent, options = {}) {
     </g>`;
 }
 
+/**
+ * Renders a speech bubble above the agent desk when showBubble is true.
+ * Positioned relative to the desk group origin (translate applied by caller).
+ * deskWidth is 140px (rect starts at x=18, width=140 → centre ≈ x=88).
+ */
+function renderSpeechBubble(agent, agentState) {
+  if (!agentState.showBubble) return '';
+  const color = agent.accentColor;
+  const short = esc(agentState.lastQueryShort || '');
+  // Wrap at 22 chars per line, max 2 lines
+  const words = short.split(' ');
+  const lines = [];
+  let current = '';
+  for (const word of words) {
+    if ((current + ' ' + word).trim().length > 22) {
+      if (current) lines.push(current);
+      current = word;
+    } else {
+      current = (current + ' ' + word).trim();
+    }
+    if (lines.length === 2) { current = ''; break; }
+  }
+  if (current && lines.length < 2) lines.push(current);
+  const line1 = lines[0] || '';
+  const line2 = lines[1] || '';
+
+  return `
+    <g class="speech-bubble" transform="translate(23 -82)">
+      <rect x="0" y="0" width="130" height="52" rx="8" fill="#f8fafc" stroke="${color}" stroke-width="2"/>
+      <polygon points="55,52 65,66 75,52" fill="#f8fafc" stroke="${color}" stroke-width="2"/>
+      <polygon points="56,52 74,52 65,64" fill="#f8fafc"/>
+      <text x="65" y="16" style="font:900 8px Consolas,Monaco,monospace;fill:${color};text-anchor:middle;">💬 Just answered:</text>
+      <text x="65" y="30" style="font:700 9px Consolas,Monaco,monospace;fill:#111827;text-anchor:middle;">${line1}</text>
+      ${line2 ? `<text x="65" y="43" style="font:700 9px Consolas,Monaco,monospace;fill:#111827;text-anchor:middle;">${line2}</text>` : ''}
+    </g>`;
+}
+
 function desk(agent) {
   const { x, y, side } = agent.scenePosition;
-  const agentState = state.agents[agent.id] || { status: 'idle', queriesResolved: 0 };
+  const agentState = state.agents[agent.id] || { status: 'idle', queriesResolved: 0, showBubble: false };
   const color = agent.accentColor;
   const label = esc(agent.name.toUpperCase().replace(/ /g, '_'));
   const role = esc(shorten(agent.role, 43));
   const isMaster = agent.id === 'master';
-  const lastActive = agentState.lastActive ? new Date(agentState.lastActive).getTime() : 0;
-  const showBubble = agentState.lastQuery && Date.now() - lastActive < 60 * 60 * 1000;
-  const bubble = showBubble
-    ? `<g transform="translate(30 -82)">
-        <path d="M0 0 h155 v38 h-76 l-10 11 -10 -11 h-59z" fill="#fff8e6" stroke="#1f2937" stroke-width="3"/>
-        <text x="77" y="16" class="bubble-title">LAST QUERY</text>
-        <text x="77" y="31" class="bubble-copy">${esc(shorten(agentState.lastQuery, 30))}</text>
-      </g>`
-    : '';
+  const bubble = renderSpeechBubble(agent, agentState);
   const masterRing = isMaster
     ? `<g class="master-orbit" transform="translate(85 22)">
         <ellipse cx="0" cy="0" rx="110" ry="72" fill="none" stroke="#ffd700" stroke-width="4" stroke-dasharray="16 12" opacity="0.9"/>
@@ -138,9 +172,11 @@ function desk(agent) {
     ? `<rect x="128" y="66" width="45" height="82" fill="#243044"/><rect x="133" y="75" width="35" height="42" fill="#121826"/><rect x="139" y="82" width="23" height="26" fill="${color}" class="screen-pulse"/>`
     : `<rect x="-3" y="66" width="45" height="82" fill="#243044"/><rect x="2" y="75" width="35" height="42" fill="#121826"/><rect x="8" y="82" width="23" height="26" fill="${color}" class="screen-pulse"/>`;
 
+  const issueHref = xmlAttrUrl(buildIssueUrl(agent));
   return `
-  <a href="${issueUrl(agent)}" target="_blank" rel="noopener">
+  <a href="${issueHref}" xlink:href="${issueHref}" target="_blank" rel="noopener">
     <g class="station station-${esc(agent.id)}" transform="translate(${x} ${y})">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="${color}" stroke-width="2" opacity="0" pointer-events="none"/>
       ${masterRing}
       ${bubble}
       <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="${color}" stroke-width="3"/>
@@ -189,9 +225,11 @@ function walkingAgent(id, agent, values, dur, delay, note) {
 }
 
 const deskSvg = agents.map(desk).join('\n');
-const ticker = esc(state.ticker || 'AI Agents Online | Open the live office chat to ask a question.');
+const tickerRaw = (state.ticker || 'AI Agents Online | Open the live office chat to ask a question.') + '  |  Click any agent to ask a question →';
+const ticker = esc(tickerRaw);
+const tickerDur = Math.max(20, tickerRaw.length * 0.3).toFixed(1) + 's';
 
-const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}" role="img" aria-label="Animated pixel art virtual office with AI agents">
+const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}" role="img" aria-label="Animated pixel art virtual office with AI agents">
   <defs>
     <linearGradient id="floorGlow" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#18324a"/>
@@ -225,7 +263,7 @@ const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH
       .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
       .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
       .data-flow { animation: dash 1.3s linear infinite; }
-      .ticker-text { animation: ticker 24s linear infinite; }
+      .ticker-text { animation: ticker ${tickerDur} linear infinite; }
       .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
       .blink { animation: blink 2.8s steps(2) infinite; }
     }
@@ -253,6 +291,9 @@ const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH
     .tiny { font: 700 10px Consolas, Monaco, monospace; fill:#dbeafe; text-anchor:middle; }
     .ticker-text { font: 800 16px Consolas, Monaco, monospace; fill:#7dd3fc; }
     a { cursor:pointer; }
+    a:hover rect.hover-outline { opacity: 0.4; }
+    @keyframes bubble-fadeout { 0%,85%{opacity:1} 100%{opacity:0} }
+    .speech-bubble { animation: bubble-fadeout 1800s linear forwards; }
   ]]></style>
 
   <rect width="${WIDTH}" height="${HEIGHT}" fill="#080b12"/>

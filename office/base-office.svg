@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" width="1100" height="640" role="img" aria-label="Animated pixel art virtual office with AI agents">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1100 640" width="1100" height="640" role="img" aria-label="Animated pixel art virtual office with AI agents">
   <defs>
     <linearGradient id="floorGlow" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#18324a"/>
@@ -32,7 +32,7 @@
       .dot-three { animation: thinkDot 1.4s linear infinite 0.5s; }
       .master-orbit { transform-origin: 85px 22px; animation: spin 9s linear infinite; }
       .data-flow { animation: dash 1.3s linear infinite; }
-      .ticker-text { animation: ticker 24s linear infinite; }
+      .ticker-text { animation: ticker 29.4s linear infinite; }
       .fan { transform-origin: center; animation: spin 3.5s linear infinite; }
       .blink { animation: blink 2.8s steps(2) infinite; }
     }
@@ -60,6 +60,9 @@
     .tiny { font: 700 10px Consolas, Monaco, monospace; fill:#dbeafe; text-anchor:middle; }
     .ticker-text { font: 800 16px Consolas, Monaco, monospace; fill:#7dd3fc; }
     a { cursor:pointer; }
+    a:hover rect.hover-outline { opacity: 0.4; }
+    @keyframes bubble-fadeout { 0%,85%{opacity:1} 100%{opacity:0} }
+    .speech-bubble { animation: bubble-fadeout 1800s linear forwards; }
   ]]></style>
 
   <rect width="1100" height="640" fill="#080b12"/>
@@ -106,8 +109,9 @@
   </g>
 
   
-  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-master&amp;title=Query%20for%20Master%20Agent%3A%20" target="_blank" rel="noopener">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-master&amp;title=Query%20for%20Master%20Agent%3A%20" xlink:href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-master&amp;title=Query%20for%20Master%20Agent%3A%20" target="_blank" rel="noopener">
     <g class="station station-master" transform="translate(475 260)">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="#FFD700" stroke-width="2" opacity="0" pointer-events="none"/>
       <g class="master-orbit" transform="translate(85 22)">
         <ellipse cx="0" cy="0" rx="110" ry="72" fill="none" stroke="#ffd700" stroke-width="4" stroke-dasharray="16 12" opacity="0.9"/>
         <circle cx="110" cy="0" r="7" fill="#fff0a0"/>
@@ -158,8 +162,9 @@
     </g>
   </a>
 
-  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-frontend&amp;title=Query%20for%20Frontend%20Agent%3A%20" target="_blank" rel="noopener">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-frontend&amp;title=Query%20for%20Frontend%20Agent%3A%20" xlink:href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-frontend&amp;title=Query%20for%20Frontend%20Agent%3A%20" target="_blank" rel="noopener">
     <g class="station station-frontend" transform="translate(145 150)">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="#61DAFB" stroke-width="2" opacity="0" pointer-events="none"/>
       
       
       <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#61DAFB" stroke-width="3"/>
@@ -207,8 +212,9 @@
     </g>
   </a>
 
-  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-backend&amp;title=Query%20for%20Backend%20Agent%3A%20" target="_blank" rel="noopener">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-backend&amp;title=Query%20for%20Backend%20Agent%3A%20" xlink:href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-backend&amp;title=Query%20for%20Backend%20Agent%3A%20" target="_blank" rel="noopener">
     <g class="station station-backend" transform="translate(790 150)">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="#68D391" stroke-width="2" opacity="0" pointer-events="none"/>
       
       
       <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#68D391" stroke-width="3"/>
@@ -256,8 +262,9 @@
     </g>
   </a>
 
-  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-database&amp;title=Query%20for%20Database%20Agent%3A%20" target="_blank" rel="noopener">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-database&amp;title=Query%20for%20Database%20Agent%3A%20" xlink:href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-database&amp;title=Query%20for%20Database%20Agent%3A%20" target="_blank" rel="noopener">
     <g class="station station-database" transform="translate(175 430)">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="#B794F4" stroke-width="2" opacity="0" pointer-events="none"/>
       
       
       <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#B794F4" stroke-width="3"/>
@@ -305,8 +312,9 @@
     </g>
   </a>
 
-  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent%2Cask-devops&amp;title=Query%20for%20DevOps%20Agent%3A%20" target="_blank" rel="noopener">
+  <a href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-devops&amp;title=Query%20for%20DevOps%20Agent%3A%20" xlink:href="https://github.com/RJScripts-24/RJScripts-24/issues/new?template=query_template.yml&amp;labels=ask-agent,ask-devops&amp;title=Query%20for%20DevOps%20Agent%3A%20" target="_blank" rel="noopener">
     <g class="station station-devops" transform="translate(790 430)">
+      <rect class="hover-outline" x="-28" y="-98" width="236" height="302" rx="10" fill="transparent" stroke="#F6AD55" stroke-width="2" opacity="0" pointer-events="none"/>
       
       
       <rect x="22" y="-28" width="132" height="30" rx="3" fill="#0b0f17" stroke="#F6AD55" stroke-width="3"/>
@@ -434,6 +442,6 @@
 
   <rect x="30" y="593" width="1040" height="32" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="3"/>
   <svg x="42" y="597" width="1016" height="28" overflow="hidden">
-    <text x="0" y="20" class="ticker-text">AI Agents Online | Open the live office chat to ask a question.  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
+    <text x="0" y="20" class="ticker-text">🤖 Neural Office Online | Click an agent to ask a question  |  Click any agent to ask a question →  |  Open office/interactive-office.html for the in-page chatbox experience.</text>
   </svg>
 </svg>

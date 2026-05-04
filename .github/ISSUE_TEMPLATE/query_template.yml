@@ -1,32 +1,49 @@
-﻿name: Agent Query
-description: Ask one of the Neural Office agents a technical question.
-title: "Query for [Agent Name]: "
-labels:
-  - ask-agent
+﻿name: 🤖 Ask a Neural Office Agent
+description: >
+  Click Submit and the AI agent will reply within 60 seconds.
+  Your GitHub Issue IS the chatbox — the response appears as a comment below.
+# Note: GitHub issue forms cannot add labels dynamically based on dropdown selection.
+# The agent-specific label (ask-master, ask-frontend, etc.) is injected via the URL
+# ?labels= parameter when the user clicks an agent in the SVG or uses a direct link.
+# The dropdown below is a UX hint only — routing is entirely label-driven.
+title: "Query for [Agent]: "
+labels: ["ask-agent"]
 body:
   - type: markdown
     attributes:
       value: |
-        ## Ask the Neural Office AI Agents
-        Your question will be answered by the GitHub Actions agent workflow. The response will appear as a comment, then the issue will be closed.
-  - type: textarea
+        ## 🤖 Neural Office — AI Agent Chatbox
+
+        > **How this works:** When you click Submit, a GitHub Action wakes up, sends your question to the Groq AI (llama3-70b-8192), and posts the agent's reply as a comment below. The issue then closes automatically. Come back in ~60 seconds.
+
+        ---
+
+  - type: input
     id: question
     attributes:
-      label: Your Question
-      description: Ask about the project, architecture, stack, deployment, database, UI, or codebase.
-      placeholder: "How does the authentication system work? What tech stack is used?"
+      label: "Your Question"
+      description: "Ask about the architecture, tech stack, codebase, specific features, or engineering decisions."
+      placeholder: "How does the CIOS LLM routing layer work? What database is used for auth?"
     validations:
       required: true
+
   - type: dropdown
-    id: agent
+    id: agent_hint
     attributes:
-      label: Which agent should answer?
-      description: The link label routes automatically, but this helps humans see the intended agent.
+      label: "Which agent should answer? (for your reference — routing is automatic via the link you clicked)"
       options:
-        - master
-        - frontend
-        - backend
-        - database
-        - devops
+        - "🎯 Master Agent — cross-domain, architecture, general"
+        - "🎨 Frontend Agent — React, TypeScript, CSS, UI/UX"
+        - "⚙️ Backend Agent — APIs, auth, routing, server logic"
+        - "🗃️ Database Agent — SQL, schema, queries, migrations"
+        - "🚀 DevOps Agent — CI/CD, Docker, cloud, GitHub Actions"
     validations:
-      required: true
+      required: false
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: "Acknowledgement"
+      options:
+        - label: "I understand this is an AI-powered demo and responses are generated, not pre-written."
+          required: false

@@ -1,7 +1,7 @@
+const fs = require("fs");
 const { routeQuery } = require("./intent-router");
 const { generateResponse } = require("./groq-client");
 const { queryMemory } = require("./vector-store");
-const { execFileSync } = require("child_process");
 
 async function main() {
   console.log(`[${new Date().toISOString()}] Started respond-to-issue workflow`);
@@ -24,10 +24,20 @@ async function main() {
     process.exit(1);
   }
 
+  // Failure mode 1: GROQ_API_KEY missing — set a flag so we can post a graceful fallback comment
+  const groqKeyMissing = !process.env.GROQ_API_KEY;
+
   // 1. Determine Agent
   console.log(`[${new Date().toISOString()}] Routing query...`);
   const agentInfo = await routeQuery(issueTitle, issueBody, issueLabels);
   console.log(`[${new Date().toISOString()}] Routed to: ${agentInfo.agentId}`);
+  // Write to $GITHUB_ENV so the next workflow step can read RESOLVED_AGENT_ID and ISSUE_TITLE_SHORT
+  process.env.RESOLVED_AGENT_ID = agentInfo.agentId;
+  process.env.ISSUE_TITLE_SHORT = issueTitle.substring(0, 60);
+  if (process.env.GITHUB_ENV) {
+    fs.appendFileSync(process.env.GITHUB_ENV, `RESOLVED_AGENT_ID=${agentInfo.agentId}\n`);
+    fs.appendFileSync(process.env.GITHUB_ENV, `ISSUE_TITLE_SHORT=${issueTitle.substring(0, 60)}\n`);
+  }
 
   // 2. Fetch RAG Context
   console.log(`[${new Date().toISOString()}] Fetching RAG context...`);
@@ -54,27 +64,34 @@ async function main() {
   systemPrompt += "\n\nYou have been given relevant code snippets from the developer's actual codebase. Reference them specifically in your answer when applicable.";
 
   let aiResponse = "";
-  try {
-    aiResponse = await generateResponse(systemPrompt, userQuery);
-  } catch (e) {
-    console.error("Failed to generate response:", e);
-    aiResponse = "I'm sorry, my neural circuits are currently experiencing interference and I could not process your request.";
+  if (groqKeyMissing) {
+    console.warn("GROQ_API_KEY is not set — posting graceful fallback comment.");
+    aiResponse = "⚠️ This Neural Office instance is not yet configured. The repository owner needs to add the `GROQ_API_KEY` secret under **Settings → Secrets and variables → Actions**. Once added, reopen this issue and the agent will respond properly.";
+  } else {
+    try {
+      aiResponse = await generateResponse(systemPrompt, userQuery);
+    } catch (e) {
+      console.error("Failed to generate response:", e);
+      aiResponse = "I'm sorry, my neural circuits are currently experiencing interference. Please try again in a moment.";
+    }
   }
 
   // 4. Format Comment
-  const finalComment = `## 🤖 ${agentInfo.agentName} Response\n\n${aiResponse}\n\n---\n*Powered by Groq (llama3-70b-8192) | [Neural Office](https://github.com/${repoOwner}/${repoName})*\n*Context retrieved from ${contextCount} codebase chunks via RAG*`;
+  const askAgainUrl = `https://github.com/${repoOwner}/${repoName}/issues/new?template=query_template.yml&labels=ask-agent&title=Query%3A%20`;
+  const finalComment = `## 🤖 ${agentInfo.agentName} — Neural Office Response\n\n${aiResponse}\n\n---\n*Powered by [Groq](https://groq.com) (llama3-70b-8192) · [Ask another question](${askAgainUrl}) · [Neural Office](https://github.com/${repoOwner}/${repoName})*`;
 
-  // 4. Post Comment
+  // 5. Post Comment
   const issueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}`;
+  const authHeaders = {
+    "Authorization": `Bearer ${githubToken}`,
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json"
+  };
   console.log(`[${new Date().toISOString()}] Posting comment to GitHub...`);
   
   const commentRes = await fetch(`${issueUrl}/comments`, {
     method: "POST",
-    headers: {
-      "Authorization": `token ${githubToken}`,
-      "Accept": "application/vnd.github.v3+json",
-      "Content-Type": "application/json"
-    },
+    headers: authHeaders,
     body: JSON.stringify({ body: finalComment })
   });
   
@@ -84,15 +101,11 @@ async function main() {
     process.exit(1);
   }
 
-  // 5. Close Issue
+  // 6. Close Issue
   console.log(`[${new Date().toISOString()}] Closing issue...`);
   const closeRes = await fetch(issueUrl, {
     method: "PATCH",
-    headers: {
-      "Authorization": `token ${githubToken}`,
-      "Accept": "application/vnd.github.v3+json",
-      "Content-Type": "application/json"
-    },
+    headers: authHeaders,
     body: JSON.stringify({ state: "closed" })
   });
 
@@ -102,14 +115,8 @@ async function main() {
     process.exit(1);
   }
 
-  // 6. Update SVG State
-  console.log(`[${new Date().toISOString()}] Updating office state...`);
-  try {
-    const summary = issueTitle.substring(0, 60);
-    execFileSync("node", ["scripts/update-office-state.js", "query_resolved", agentInfo.agentId, summary], { stdio: "inherit" });
-  } catch (e) {
-    console.error("Failed to update office state:", e.message);
-  }
+  // Visual state update is handled by the next workflow step (update-office-state.js)
+  // RESOLVED_AGENT_ID and ISSUE_TITLE_SHORT have been written to $GITHUB_ENV above.
 
   console.log(`[${new Date().toISOString()}] Workflow completed successfully!`);
 }

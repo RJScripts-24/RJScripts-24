@@ -1,37 +1,46 @@
 {
   "lastUpdated": "2023-01-01T00:00:00.000Z",
-  "ticker": "AI Agents Online | Open the live office chat to ask a question.",
+  "ticker": "🤖 Neural Office Online | Click an agent to ask a question",
   "agents": {
     "master": {
       "status": "idle",
-      "lastQuery": null,
+      "lastQuery": "",
+      "lastQueryShort": "",
       "lastActive": null,
-      "queriesResolved": 0
+      "queriesResolved": 0,
+      "showBubble": false
     },
     "frontend": {
       "status": "idle",
-      "lastQuery": null,
+      "lastQuery": "",
+      "lastQueryShort": "",
       "lastActive": null,
-      "queriesResolved": 0
+      "queriesResolved": 0,
+      "showBubble": false
     },
     "backend": {
       "status": "idle",
-      "lastQuery": null,
+      "lastQuery": "",
+      "lastQueryShort": "",
       "lastActive": null,
-      "queriesResolved": 0
+      "queriesResolved": 0,
+      "showBubble": false
     },
     "database": {
       "status": "idle",
-      "lastQuery": null,
+      "lastQuery": "",
+      "lastQueryShort": "",
       "lastActive": null,
-      "queriesResolved": 0
+      "queriesResolved": 0,
+      "showBubble": false
     },
     "devops": {
       "status": "idle",
-      "lastQuery": null,
+      "lastQuery": "",
+      "lastQueryShort": "",
       "lastActive": null,
-      "queriesResolved": 0
+      "queriesResolved": 0,
+      "showBubble": false
     }
   }
 }
-
