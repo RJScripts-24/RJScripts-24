@@ -42,19 +42,6 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.l
 <tr>
 <td width="50%" valign="top">
 
-### 🚀 [CIOS](https://github.com/RJScripts-24/CIOS)
-> Client Intelligence Operating System
-
-**Snapshot:**
-- Language: TypeScript
-- Stars: 1
-- Updated: 2026-05-04
-
-[![Stars](https://img.shields.io/github/stars/RJScripts-24/CIOS?style=social)](https://github.com/RJScripts-24/CIOS)
-
-</td>
-<td width="50%" valign="top">
-
 ### 🚀 [DataReaperX](https://github.com/RJScripts-24/DataReaperX)
 > DataReaper is an autonomous, multi-agent AI system designed to be a personal privacy "Search &amp; Destroy" unit
 
@@ -66,8 +53,6 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.l
 [![Stars](https://img.shields.io/github/stars/RJScripts-24/DataReaperX?style=social)](https://github.com/RJScripts-24/DataReaperX)
 
 </td>
-</tr>
-<tr>
 <td width="50%" valign="top">
 
 ### 🚀 [InfraZero](https://github.com/RJScripts-24/InfraZero)
@@ -81,6 +66,8 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.l
 [![Stars](https://img.shields.io/github/stars/RJScripts-24/InfraZero?style=social)](https://github.com/RJScripts-24/InfraZero)
 
 </td>
+</tr>
+<tr>
 <td width="50%" valign="top">
 
 ### 🚀 [Velocis](https://github.com/RJScripts-24/Velocis)
@@ -94,6 +81,7 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.l
 [![Stars](https://img.shields.io/github/stars/RJScripts-24/Velocis?style=social)](https://github.com/RJScripts-24/Velocis)
 
 </td>
+<td width="50%" valign="top" align="center"><br><br><em>More starred projects soon.</em></td>
 </tr>
 </table>
 <!-- STARRED_PROJECTS:END -->
