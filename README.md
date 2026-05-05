@@ -95,22 +95,6 @@ You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.l
 
 </td>
 </tr>
-<tr>
-<td width="50%" valign="top">
-
-### 🚀 [GeoCortex](https://github.com/RJScripts-24/GeoCortex)
-> A web app that uses Google earth engine and 3D map tiles to point out heat maps and flood prone regions along with AI assisted solution and gesture controlled navigation
-
-**Snapshot:**
-- Language: JavaScript
-- Stars: 2
-- Updated: 2026-02-08
-
-[![Stars](https://img.shields.io/github/stars/RJScripts-24/GeoCortex?style=social)](https://github.com/RJScripts-24/GeoCortex)
-
-</td>
-<td width="50%" valign="top" align="center"><br><br><em>More starred projects soon.</em></td>
-</tr>
 </table>
 <!-- STARRED_PROJECTS:END -->
 
