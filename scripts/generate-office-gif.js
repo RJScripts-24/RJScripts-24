@@ -12,12 +12,13 @@ const ROOT = path.join(__dirname, "..");
 const OFFICE_SVG_PATH = path.join(ROOT, "office", "base-office.svg");
 const OUT_GIF_PATH = path.join(ROOT, "office", "neural-office.gif");
 
-const WIDTH = 860;
-const HEIGHT = 600;
+// Keep in sync with office/generate-svg.js
+const WIDTH = 560;
+const HEIGHT = 400;
 
 const LOOP_SECONDS = Number(process.env.LOOP_SECONDS || 8);
 // Smaller size: fewer frames + fewer colors.
-const FPS = Number(process.env.FPS || 8);
+const FPS = Number(process.env.FPS || 6);
 const FRAMES = Math.max(1, Math.round(LOOP_SECONDS * FPS));
 
 function runGenerateSvg(frame) {
@@ -59,7 +60,7 @@ function main() {
   }
 
   // Global palette (smaller size vs per-frame palettes)
-  const palette = quantize(frames[0], 96); // smaller than 128 for smaller GIF
+  const palette = quantize(frames[0], 64); // smaller palette => smaller GIF
 
   for (let i = 0; i < frames.length; i++) {
     const indexed = applyPalette(frames[i], palette);

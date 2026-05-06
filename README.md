@@ -6,26 +6,15 @@
 
 [![Open Interactive Office](https://img.shields.io/badge/Open_Interactive_Office-Live_View-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
-<a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-  <img
-    src="office/neural-office.gif"
-    alt="Neural Office — pixel office animation"
-    width="860"
-    height="600"
-  />
-</a>
-
-*High-quality pixel office animation (GIF) for reliable README playback.*
-
 </div>
 
 ---
 
-<div align="center">
+<table>
+  <tr>
+    <td width="55%" valign="top">
 
 ## About Me
-
-</div>
 
 I am **Rishabh Kumar Jha**, a full-stack software engineer and AI builder based in Bangalore, India.  
 I focus on building autonomous multi-agent systems, LLM orchestration workflows, and scalable microservice platforms.
@@ -33,6 +22,22 @@ I focus on building autonomous multi-agent systems, LLM orchestration workflows,
 I am currently pursuing a **B.E. in Computer Science and Business Systems** at NMIT with a **9.25/10 GPA**.
 
 You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.linkedin.com/in/rishabh-kumar-jha-8b5761325/), or explore my work on [GitHub](https://github.com/RJScripts-24).
+
+    </td>
+    <td width="45%" valign="top" align="right">
+      <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
+        <img
+          src="office/neural-office.gif"
+          alt="Neural Office — pixel office animation"
+          width="560"
+          height="400"
+        />
+      </a>
+      <br/>
+      <sub>Looping pixel-office GIF (README-safe).</sub>
+    </td>
+  </tr>
+</table>
 
 ---
 

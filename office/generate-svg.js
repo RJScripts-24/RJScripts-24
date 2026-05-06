@@ -5,8 +5,9 @@ const configPath = path.join(__dirname, "agent-config.json");
 const statePath = path.join(__dirname, "office-state.json");
 const svgPath = path.join(__dirname, "base-office.svg");
 
-const WIDTH = 860;
-const HEIGHT = 600;
+// Smaller GIF artboard (README-friendly)
+const WIDTH = 560;
+const HEIGHT = 400;
 const INTERACTIVE_URL = "https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html";
 
 function readJson(filePath) {
@@ -44,16 +45,16 @@ const ROLE_COLORS = {
 };
 
 const ROOM = {
-  headerH: 64,
-  floorTop: 90,
-  footerH: 46,
+  headerH: 36,
+  floorTop: 58,
+  footerH: 0,
 };
 
 const DESKS = {
-  frontend: { x: 92,  y: 130 },
-  backend:  { x: 550, y: 130 },
-  database: { x: 92,  y: 360 },
-  devops:   { x: 550, y: 360 },
+  frontend: { x: 40,  y: 80 },
+  backend:  { x: 310, y: 80 },
+  database: { x: 40,  y: 210 },
+  devops:   { x: 310, y: 210 },
 };
 
 // ?? State reading ??????????????????????????????????????????????????????????????
@@ -81,10 +82,49 @@ const speechLines = {
   devops:   getSpeechLine("devops")   || "Deploy to prod done",
 };
 
-const tickerRaw = `${state.ticker || "Neural Office online"} | Static pixel office scene`;
-const commitSha    = state.lastCommit?.sha ? short(state.lastCommit.sha, 8) : "n/a";
-const commitAuthor = state.lastCommit?.author || "unknown";
-const commitMsg    = state.lastCommit?.message ? short(state.lastCommit.message, 64) : "no message";
+// Commit/state text is intentionally NOT rendered in the README animation.
+
+function prng(seed) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 0xffffffff;
+  };
+}
+
+function hashStr(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function lerp(a, b, p) {
+  return a + (b - a) * p;
+}
+
+function roam(kind, baseX, baseY, radiusX, radiusY) {
+  // Deterministic ùrandom arbitrary orderù path per agent.
+  const rand = prng(hashStr(kind));
+  const points = [];
+  for (let i = 0; i < 5; i++) {
+    points.push({
+      x: baseX + (rand() * 2 - 1) * radiusX,
+      y: baseY + (rand() * 2 - 1) * radiusY,
+    });
+  }
+  const segs = points.length - 1;
+  const p = FRAMES > 1 ? (FRAME % FRAMES) / FRAMES : 0;
+  const segFloat = p * segs;
+  const seg = Math.min(segs - 1, Math.floor(segFloat));
+  const segP = segFloat - seg;
+  const a = points[seg];
+  const b = points[seg + 1];
+  const e = segP * segP * (3 - 2 * segP);
+  return { x: lerp(a.x, b.x, e), y: lerp(a.y, b.y, e) };
+}
 
 // ?? Drawing helpers ????????????????????????????????????????????????????????????
 
@@ -149,28 +189,28 @@ function drawWall() {
   parts.push(`<rect x="0" y="0" width="${WIDTH}" height="${ROOM.floorTop}" fill="#0b1220"/>`);
   parts.push(`<rect x="0" y="${ROOM.floorTop - 4}" width="${WIDTH}" height="4" fill="#111c33"/>`);
   parts.push(`<rect x="0" y="0" width="${WIDTH}" height="2" fill="rgba(255,255,255,0.05)"/>`);
-  parts.push(`<rect x="28" y="14" width="70" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
-  parts.push(`<text x="63" y="38" font-size="10" font-family="monospace" fill="#7dd3fc" text-anchor="middle">NEURAL</text>`);
-  parts.push(`<rect x="760" y="14" width="72" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
-  parts.push(`<text x="796" y="38" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">OFFICE</text>`);
+  parts.push(`<rect x="16" y="10" width="70" height="32" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
+  parts.push(`<text x="51" y="30" font-size="10" font-family="monospace" fill="#7dd3fc" text-anchor="middle">NEURAL</text>`);
+  parts.push(`<rect x="${WIDTH - 86}" y="10" width="70" height="32" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
+  parts.push(`<text x="${WIDTH - 51}" y="30" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">OFFICE</text>`);
   return parts.join("\n");
 }
 
 function drawDeskCluster(x, y, role) {
   const c = ROLE_COLORS[role] || ROLE_COLORS.devops;
   const parts = [];
-  parts.push(`<rect x="${x}" y="${y + 48}" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>`);
-  parts.push(`<rect x="${x + 12}" y="${y + 70}" width="226" height="78" rx="10" fill="#6b4e2e"/>`);
-  parts.push(`<rect x="${x + 92}" y="${y + 10}" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>`);
-  const glow = 0.18 + 0.12 * (0.5 + 0.5 * Math.sin(TAU * t + (role.charCodeAt(0) % 7)));
-  parts.push(`<rect x="${x + 98}" y="${y + 16}" width="80" height="46" rx="8" fill="${c.accent}" opacity="${glow.toFixed(2)}"/>`);
-  parts.push(`<rect x="${x + 134}" y="${y + 68}" width="10" height="18" rx="3" fill="#475569"/>`);
-  parts.push(`<rect x="${x + 104}" y="${y + 86}" width="68" height="12" rx="4" fill="#334155"/>`);
-  parts.push(`<rect x="${x + 26}" y="${y + 62}" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>`);
-  parts.push(`<rect x="${x + 200}" y="${y + 82}" width="14" height="16" rx="3" fill="#0f172a"/>`);
-  parts.push(`<rect x="${x + 214}" y="${y + 86}" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>`);
-  parts.push(`<rect x="${x + 28}" y="${y + 30}" width="14" height="12" rx="3" fill="#14532d"/>`);
-  parts.push(`<circle cx="${x + 35}" cy="${y + 26}" r="7" fill="#22c55e" opacity="0.9"/>`);
+  parts.push(`<rect x="${x}" y="${y + 34}" width="200" height="18" rx="7" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>`);
+  parts.push(`<rect x="${x + 10}" y="${y + 52}" width="180" height="60" rx="10" fill="#6b4e2e"/>`);
+  parts.push(`<rect x="${x + 74}" y="${y + 6}" width="74" height="46" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>`);
+  const glow = 0.16 + 0.14 * (0.5 + 0.5 * Math.sin(TAU * t + (role.charCodeAt(0) % 7)));
+  parts.push(`<rect x="${x + 79}" y="${y + 11}" width="64" height="36" rx="8" fill="${c.accent}" opacity="${glow.toFixed(2)}"/>`);
+  parts.push(`<rect x="${x + 108}" y="${y + 52}" width="8" height="14" rx="3" fill="#475569"/>`);
+  parts.push(`<rect x="${x + 84}" y="${y + 66}" width="56" height="10" rx="4" fill="#334155"/>`);
+  parts.push(`<rect x="${x + 18}" y="${y + 46}" width="30" height="44" rx="10" fill="#111827" opacity="0.65"/>`);
+  parts.push(`<rect x="${x + 158}" y="${y + 64}" width="12" height="14" rx="3" fill="#0f172a"/>`);
+  parts.push(`<rect x="${x + 170}" y="${y + 68}" width="5" height="7" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>`);
+  parts.push(`<rect x="${x + 20}" y="${y + 22}" width="12" height="10" rx="3" fill="#14532d"/>`);
+  parts.push(`<circle cx="${x + 26}" cy="${y + 18}" r="6" fill="#22c55e" opacity="0.9"/>`);
   return `<g>${parts.join("\n")}</g>`;
 }
 
@@ -212,16 +252,7 @@ function drawAgentSprite(x, y, kind) {
   </g>`;
 }
 
-function drawSpeechBox(x, y, role, text) {
-  const c = ROLE_COLORS[role] || ROLE_COLORS.frontend;
-  const msg = truncate(text, 34);
-  const w = 200;
-  const h = 36;
-  return `<g>
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#0f172a" stroke="${c.accent}" stroke-width="2"/>
-    <text x="${x + 10}" y="${y + 22}" font-size="11" font-family="monospace" fill="#ffffff">${esc(msg)}</text>
-  </g>`;
-}
+// (intentionally no speech boxes in GIF mode)
 
 // ?? Main SVG ???????????????????????????????????????????????????????????????????
 
@@ -242,10 +273,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
 
   <!-- Header -->
   <rect x="0" y="0" width="${WIDTH}" height="${ROOM.headerH}" fill="url(#hdrGrad)"/>
-  <text x="${WIDTH / 2}" y="30" font-size="18" font-family="monospace" font-weight="900"
-    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ù PIXEL FLOOR</text>
-  <text x="${WIDTH / 2}" y="50" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)} ù ${esc(commitMsg)}</text>
+  <text x="${WIDTH / 2}" y="24" font-size="14" font-family="monospace" font-weight="900"
+    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ù LIVE</text>
 
   <!-- Desks -->
   ${drawDeskCluster(DESKS.frontend.x, DESKS.frontend.y, "frontend")}
@@ -253,35 +282,19 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   ${drawDeskCluster(DESKS.database.x, DESKS.database.y, "database")}
   ${drawDeskCluster(DESKS.devops.x,   DESKS.devops.y,   "devops")}
 
-  <!-- Main agents -->
-  ${drawLabelTag(DESKS.frontend.x + 18, DESKS.frontend.y - 10, "FRONTEND_AGENT", ROLE_COLORS.frontend.accent)}
-  ${drawAgentSprite(DESKS.frontend.x + 46, DESKS.frontend.y + 36, "frontend")}
-  ${drawSpeechBox(DESKS.frontend.x + 18, DESKS.frontend.y + 150, "frontend", speechLines.frontend)}
+  <!-- Main agents roaming -->
+  ${(() => { const p = roam("frontend", DESKS.frontend.x + 70, DESKS.frontend.y + 55, 60, 32); return drawLabelTag(DESKS.frontend.x + 8, DESKS.frontend.y - 14, "FRONTEND", ROLE_COLORS.frontend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "frontend"); })()}
+  ${(() => { const p = roam("backend", DESKS.backend.x + 78, DESKS.backend.y + 55, 60, 32); return drawLabelTag(DESKS.backend.x + 16, DESKS.backend.y - 14, "BACKEND", ROLE_COLORS.backend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "backend"); })()}
+  ${(() => { const p = roam("database", DESKS.database.x + 70, DESKS.database.y + 55, 60, 32); return drawLabelTag(DESKS.database.x + 8, DESKS.database.y - 14, "DATABASE", ROLE_COLORS.database.accent) + "\\n" + drawAgentSprite(p.x, p.y, "database"); })()}
+  ${(() => { const p = roam("devops", DESKS.devops.x + 78, DESKS.devops.y + 55, 60, 32); return drawLabelTag(DESKS.devops.x + 24, DESKS.devops.y - 14, "DEVOPS", ROLE_COLORS.devops.accent) + "\\n" + drawAgentSprite(p.x, p.y, "devops"); })()}
 
-  ${drawLabelTag(DESKS.backend.x + 48, DESKS.backend.y - 10, "BACKEND_AGENT", ROLE_COLORS.backend.accent)}
-  ${drawAgentSprite(DESKS.backend.x + 74, DESKS.backend.y + 36, "backend")}
-  ${drawSpeechBox(DESKS.backend.x + 48, DESKS.backend.y + 150, "backend", speechLines.backend)}
+  <!-- NPCs roaming -->
+  ${(() => { const p = roam("pm", WIDTH * 0.30, ROOM.floorTop + 34, 45, 22); return drawLabelTag(140, 38, "PM", "#e879f9") + "\\n" + drawAgentSprite(p.x, p.y, "pm"); })()}
+  ${(() => { const p = roam("intern", WIDTH * 0.48, ROOM.floorTop + 112, 55, 30); return drawLabelTag(220, 148, "NEW_HIRE", "#fbbf24") + "\\n" + drawAgentSprite(p.x, p.y, "intern"); })()}
+  ${(() => { const p = roam("qa", WIDTH * 0.76, ROOM.floorTop + 124, 45, 26); return drawLabelTag(WIDTH - 92, 160, "QA", "#22c55e") + "\\n" + drawAgentSprite(p.x, p.y, "qa"); })()}
 
-  ${drawLabelTag(DESKS.database.x + 18, DESKS.database.y - 10, "DATABASE_AGENT", ROLE_COLORS.database.accent)}
-  ${drawAgentSprite(DESKS.database.x + 46, DESKS.database.y + 36, "database")}
-  ${drawSpeechBox(DESKS.database.x + 18, DESKS.database.y + 150, "database", speechLines.database)}
-
-  ${drawLabelTag(DESKS.devops.x + 66, DESKS.devops.y - 10, "DEVOPS_AGENT", ROLE_COLORS.devops.accent)}
-  ${drawAgentSprite(DESKS.devops.x + 92, DESKS.devops.y + 36, "devops")}
-  ${drawSpeechBox(DESKS.devops.x + 66, DESKS.devops.y + 150, "devops", speechLines.devops)}
-
-  <!-- NPCs -->
-  ${drawLabelTag(250, 96, "PM_AGENT", "#e879f9")}
-  ${drawAgentSprite(258, 110, "pm")}
-
-  ${drawLabelTag(382, 286, "NEW_HIRE!", "#fbbf24")}
-  ${drawAgentSprite(376, 300, "intern")}
-
-  ${drawLabelTag(744, 332, "QA_AGENT", "#22c55e")}
-  ${drawAgentSprite(742, 346, "qa")}
-
-  ${drawLabelTag(704, 96, "MEMORY (SESSION 2)", "#93c5fd")}
-  <g transform="translate(770 110)">
+  ${drawLabelTag(WIDTH - 126, 38, "MEMORY", "#93c5fd")}
+  <g transform="translate(${WIDTH - 86} 56)">
     <rect x="0" y="10" width="52" height="56" rx="14" fill="#0b1220" opacity="0.55"/>
     <rect x="8" y="18" width="36" height="32" rx="10" fill="#1f2937"/>
     <circle cx="20" cy="34" r="4" fill="#93c5fd"/>
@@ -291,26 +304,19 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
 
   <!-- Task arrows -->
   <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t)).toFixed(2)}">
-    ${drawArrow(328, 140, 540, 140, "#2dd4bf")}
+    ${drawArrow(210, 110, 300, 110, "#2dd4bf")}
   </g>
   <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t + 1.7)).toFixed(2)}">
-    ${drawArrow(340, 410, 540, 410, "#60a5fa")}
+    ${drawArrow(210, 250, 300, 250, "#60a5fa")}
   </g>
   <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t + 3.2)).toFixed(2)}">
-    ${drawArrow(470, 320, 700, 320, "#34d399")}
+    ${drawArrow(290, 190, 420, 190, "#34d399")}
   </g>
 
-  <!-- Footer / ticker -->
-  <rect x="0" y="${HEIGHT - ROOM.footerH}" width="${WIDTH}" height="${ROOM.footerH}" fill="#070e1c" opacity="0.98"/>
-  <rect x="0" y="${HEIGHT - ROOM.footerH}" width="${WIDTH}" height="1" fill="#1e2d45"/>
-  <text x="18" y="${HEIGHT - 18}" font-size="12" font-family="monospace" font-weight="800" fill="#7dd3fc">
-    ${esc(tickerRaw)}
-  </text>
-
-  <!-- Click-through badge (not full overlay) -->
+  <!-- Click-through badge -->
   <a href="${linkAttr}" xlink:href="${linkAttr}" target="_blank" rel="noopener">
-    <rect x="${WIDTH - 210}" y="18" width="190" height="26" rx="10" fill="rgba(0,0,0,0.25)" stroke="#334155" stroke-width="2"/>
-    <text x="${WIDTH - 115}" y="36" font-size="11" font-family="monospace" fill="#e2e8f0" text-anchor="middle">OPEN_INTERACTIVE_VIEW</text>
+    <rect x="${WIDTH - 158}" y="10" width="146" height="20" rx="8" fill="rgba(0,0,0,0.25)" stroke="#334155" stroke-width="2"/>
+    <text x="${WIDTH - 85}" y="24" font-size="10" font-family="monospace" fill="#e2e8f0" text-anchor="middle">OPEN_VIEW</text>
   </a>
 </svg>`;
 
