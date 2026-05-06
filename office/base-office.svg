@@ -142,7 +142,7 @@
   <text x="430" y="28" font-size="18" font-family="monospace" font-weight="900"
     fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE · COMMIT CHOREOGRAPHY</text>
   <text x="430" y="46" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit 2a9ae... by rkj24</text>
+    fill="#9fb3c8" text-anchor="middle">commit 1adeb75 by rkj24</text>
 
   <!-- Scene indicator -->
   <text x="430" y="75" font-size="10" font-family="monospace"
@@ -669,7 +669,7 @@
       keyTimes="0;0.0625;0.1375"
       dur="40s" repeatCount="indefinite"/>
 
-    <g transform-origin="720 80">
+    <g transform-origin="720 90">
       <animateTransform attributeName="transform" type="scale"
         from="0" to="1" begin="2.5s" dur="0.3s" fill="freeze"
         additive="sum" repeatCount="indefinite" restart="always"/>
@@ -678,7 +678,7 @@
         additive="sum" repeatCount="indefinite" restart="always"/>
 
       <!-- bubble rect -->
-      <rect x="620" y="52" width="200" height="56" rx="12"
+      <rect x="620" y="72" width="200" height="36" rx="12"
         fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
       <!-- tail triangle -->
       <polygon points="720,120 710,108 730,108"
@@ -686,8 +686,8 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="720" y="72">CI/CD note: I&apos;ll monitor</tspan>
-        <tspan x="720" dy="14">workflow…</tspan>
+        <tspan x="720" y="92">CI pipeline green</tspan>
+        
       </text>
     </g>
   </g>
@@ -697,7 +697,7 @@
       keyTimes="0;0.3125;0.3875"
       dur="40s" repeatCount="indefinite"/>
 
-    <g transform-origin="180 330">
+    <g transform-origin="180 340">
       <animateTransform attributeName="transform" type="scale"
         from="0" to="1" begin="12.5s" dur="0.3s" fill="freeze"
         additive="sum" repeatCount="indefinite" restart="always"/>
@@ -706,7 +706,7 @@
         additive="sum" repeatCount="indefinite" restart="always"/>
 
       <!-- bubble rect -->
-      <rect x="80" y="302" width="200" height="56" rx="12"
+      <rect x="80" y="322" width="200" height="36" rx="12"
         fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
       <!-- tail triangle -->
       <polygon points="180,370 170,358 190,358"
@@ -714,8 +714,8 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="180" y="322">I reviewed commit 2a9ae0c.</tspan>
-        <tspan x="180" dy="14">Main f…</tspan>
+        <tspan x="180" y="342">API schema updated</tspan>
+        
       </text>
     </g>
   </g>
@@ -725,7 +725,7 @@
       keyTimes="0;0.5625;0.6375"
       dur="40s" repeatCount="indefinite"/>
 
-    <g transform-origin="720 330">
+    <g transform-origin="720 340">
       <animateTransform attributeName="transform" type="scale"
         from="0" to="1" begin="22.5s" dur="0.3s" fill="freeze"
         additive="sum" repeatCount="indefinite" restart="always"/>
@@ -734,7 +734,7 @@
         additive="sum" repeatCount="indefinite" restart="always"/>
 
       <!-- bubble rect -->
-      <rect x="620" y="302" width="200" height="56" rx="12"
+      <rect x="620" y="322" width="200" height="36" rx="12"
         fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
       <!-- tail triangle -->
       <polygon points="720,370 710,358 730,358"
@@ -742,8 +742,8 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="720" y="322">Commit message says: &quot;Readme</tspan>
-        <tspan x="720" dy="14">auto…</tspan>
+        <tspan x="720" y="342">Migration complete</tspan>
+        
       </text>
     </g>
   </g>
@@ -753,7 +753,7 @@
       keyTimes="0;0.8125;0.8875"
       dur="40s" repeatCount="indefinite"/>
 
-    <g transform-origin="180 80">
+    <g transform-origin="180 90">
       <animateTransform attributeName="transform" type="scale"
         from="0" to="1" begin="32.5s" dur="0.3s" fill="freeze"
         additive="sum" repeatCount="indefinite" restart="always"/>
@@ -762,7 +762,7 @@
         additive="sum" repeatCount="indefinite" restart="always"/>
 
       <!-- bubble rect -->
-      <rect x="80" y="52" width="200" height="56" rx="12"
+      <rect x="80" y="72" width="200" height="36" rx="12"
         fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
       <!-- tail triangle -->
       <polygon points="180,120 170,108 190,108"
@@ -770,8 +770,8 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="180" y="72">Data implications look</tspan>
-        <tspan x="180" dy="14">manageable…</tspan>
+        <tspan x="180" y="92">Deploy to prod done</tspan>
+        
       </text>
     </g>
   </g>
@@ -782,10 +782,10 @@
   <svg x="10" y="574" width="840" height="20" overflow="hidden">
     <text x="860" y="14" font-size="12" font-family="monospace" font-weight="700"
       fill="#7dd3fc">
-      Agents reviewed 2a9ae0c: Readme automated | 4 files changed, 207 insertions(+), 27 deletions(-) | Pixel agent choreography active
+      Agents reviewed 1adeb75: Improved the svg again | Pixel agent choreography active
       <animateTransform attributeName="transform" type="translate"
-        from="860,0" to="-1032,0"
-        dur="38.7s" repeatCount="indefinite"/>
+        from="860,0" to="-648,0"
+        dur="24.3s" repeatCount="indefinite"/>
     </text>
   </svg>
 
