@@ -1,65 +1,45 @@
-name: Update SVG and Ingest Memory
+name: Update Neural Office SVG
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
-  issues: write
 
 jobs:
-  update-and-ingest:
-    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[skip ci]')
+  update-svg:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2          # IMPORTANT: need HEAD~1 for git diff
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Get changed files
-        id: changed-files
-        run: |
-          DIFF=$(git diff --name-only HEAD~1 HEAD | jq -R -s -c 'split("\n")[:-1]') || DIFF='[]'
-          echo "DIFF_FILES=$DIFF" >> $GITHUB_ENV
-
-      - name: Restore ChromaDB cache
-        uses: actions/cache@v4
-        with:
-          path: ./chroma-db/
-          key: chroma-db-${{ runner.os }}
-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run Ingestion
-        run: node scripts/ingest-codebase.js
-
-      - name: Generate Commit Conversation
+      - name: Run update pipeline
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: node scripts/generate-conversation.js
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/update-office-state.js
 
-      - name: Regenerate Office SVG
-        run: node office/generate-svg.js
-
-      - name: Configure bot git identity
+      - name: Commit updated SVG and state
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit SVG and state
-        run: |
-          git add office/office-state.json office/base-office.svg
+          git add office/base-office.svg office/office-state.json
           if git diff --staged --quiet; then
-            echo "No SVG/state changes to commit."
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "chore(office): update commit conversation [skip ci]"
+          git commit -m "chore(office): regenerate SVG from commit [skip ci]"
           git push

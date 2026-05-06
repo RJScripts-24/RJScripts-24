@@ -5,8 +5,8 @@ const configPath = path.join(__dirname, "agent-config.json");
 const statePath = path.join(__dirname, "office-state.json");
 const svgPath = path.join(__dirname, "base-office.svg");
 
-const WIDTH = 1100;
-const HEIGHT = 640;
+const WIDTH = 860;
+const HEIGHT = 600;
 const INTERACTIVE_URL = "https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html";
 
 function readJson(filePath) {
@@ -27,208 +27,472 @@ function short(text, max) {
   return s.length > max ? `${s.slice(0, max - 3)}...` : s;
 }
 
+function truncate(str, max = 34) {
+  if (!str) return "Reviewing commit...";
+  return str.length > max ? str.slice(0, max - 1) + "\u2026" : str;
+}
+
 function xmlAttrUrl(url) {
   return String(url).replace(/&/g, "&amp;");
 }
 
-function hashSeed(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i += 1) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return Math.abs(h >>> 0);
-}
-
-function shuffledBySeed(items, seed) {
-  const arr = [...items];
-  let s = seed || 1;
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    s = (s * 1664525 + 1013904223) >>> 0;
-    const j = s % (i + 1);
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-const config = readJson(configPath);
-const state = readJson(statePath);
-const agents = config.agents.filter((a) => ["frontend", "backend", "database", "devops"].includes(a.id));
-
-const deskPos = {
-  frontend: { x: 110, y: 120 },
-  backend: { x: 790, y: 120 },
-  database: { x: 130, y: 390 },
-  devops: { x: 790, y: 390 },
+const ROLE_COLORS = {
+  frontend: { shirt: "#38bdf8", hair: "#0ea5e9", skin: "#fbbf24", badge: "#fff", accent: "#38bdf8" },
+  backend:  { shirt: "#34d399", hair: "#10b981", skin: "#fbbf24", badge: "#fff", accent: "#34d399" },
+  database: { shirt: "#a78bfa", hair: "#7c3aed", skin: "#fbbf24", badge: "#fff", accent: "#a78bfa" },
+  devops:   { shirt: "#fb923c", hair: "#ea580c", skin: "#fbbf24", badge: "#fff", accent: "#fb923c" },
 };
 
-for (const a of agents) a.scenePosition = deskPos[a.id];
+const AGENT_POSITIONS = {
+  frontend: { x: 140, y: 90 },
+  backend:  { x: 680, y: 90 },
+  database: { x: 140, y: 340 },
+  devops:   { x: 680, y: 340 },
+};
 
-const commitSeed = hashSeed(String(state.lastCommit?.sha || state.lastCommit?.message || "neural-office"));
-const orderedIds = shuffledBySeed(["frontend", "backend", "database", "devops"], commitSeed);
-const turnBySpeaker = {};
-for (const turn of state.conversation?.turns || []) {
-  if (!turnBySpeaker[turn.speakerId]) turnBySpeaker[turn.speakerId] = turn;
+const WALK_POSITIONS = {
+  frontend: { x: 180, y: 180 },
+  backend:  { x: 720, y: 180 },
+  database: { x: 180, y: 430 },
+  devops:   { x: 720, y: 430 },
+};
+
+const WALK_ROUTES = [
+  { from: "frontend", to: "backend"  },
+  { from: "backend",  to: "database" },
+  { from: "database", to: "devops"   },
+  { from: "devops",   to: "frontend" },
+];
+
+const SCENE_DURATION = 10;
+const TOTAL_CYCLE = 40;
+
+// ?? State reading ??????????????????????????????????????????????????????????????
+
+const config = readJson(configPath);
+const state  = readJson(statePath);
+
+// Extract speech lines — Stage 4 writes strings; before that they may be objects
+const rawAgents = state.agents || {};
+function getSpeechLine(role) {
+  const val = rawAgents[role];
+  if (typeof val === "string") return val;
+  if (val && typeof val === "object" && val.lastLine) return val.lastLine;
+  return null;
 }
 
-function renderSprite(agent, scale = 1) {
-  return `
-  <g class="agent-sprite" transform="scale(${scale})">
-    <rect x="12" y="2" width="24" height="23" fill="#223047"/>
-    <rect x="15" y="8" width="18" height="17" fill="#ffd7a8"/>
-    <rect x="18" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="28" y="15" width="4" height="4" fill="#111827"/>
-    <rect x="11" y="31" width="26" height="32" fill="${agent.accentColor}"/>
-    <rect x="6" y="35" width="8" height="24" fill="${agent.accentColor}" class="arm-left"/>
-    <rect x="34" y="35" width="8" height="24" fill="${agent.accentColor}" class="arm-right"/>
-    <rect x="14" y="63" width="8" height="19" fill="#151b28" class="leg-left"/>
-    <rect x="27" y="63" width="8" height="19" fill="#151b28" class="leg-right"/>
-  </g>`;
-}
+const speechLines = {
+  frontend: getSpeechLine("frontend") || "CI pipeline green",
+  backend:  getSpeechLine("backend")  || "API schema updated",
+  database: getSpeechLine("database") || "Migration complete",
+  devops:   getSpeechLine("devops")   || "Deploy to prod done",
+};
 
-function bubbleForAgent(agent, phaseIdx) {
-  const turn = turnBySpeaker[agent.id];
-  if (!turn) return "";
-  const line = short(turn.text || "Reviewing latest commit details.", 44);
-  const x = agent.scenePosition.x + 18;
-  const y = agent.scenePosition.y - 78;
-  const delay = phaseIdx * 6;
-  return `
-  <g class="head-bubble" style="animation-delay:${delay}s" transform="translate(${x} ${y})">
-    <rect x="0" y="0" width="152" height="48" rx="8" fill="#f8fafc" stroke="${agent.accentColor}" stroke-width="2"/>
-    <path d="M66 48 l8 11 l8 -11" fill="#f8fafc" stroke="${agent.accentColor}" stroke-width="2"/>
-    <text x="76" y="16" class="bubble-speaker">${esc((turn.speakerName || agent.name).toUpperCase())}</text>
-    <text x="76" y="32" class="bubble-line">${esc(line)}</text>
-  </g>`;
-}
+const SCENE_SPEECH = [
+  { speaker: "frontend", pauseBegin: 2.5,  text: speechLines.frontend },
+  { speaker: "backend",  pauseBegin: 12.5, text: speechLines.backend  },
+  { speaker: "database", pauseBegin: 22.5, text: speechLines.database },
+  { speaker: "devops",   pauseBegin: 32.5, text: speechLines.devops   },
+];
 
-function renderDesk(agent, phaseIdx) {
-  const st = state.agents?.[agent.id] || {};
-  const pos = agent.scenePosition;
-  const href = xmlAttrUrl(INTERACTIVE_URL);
-  return `
-  <a href="${href}" xlink:href="${href}" target="_blank" rel="noopener">
-    <g class="desk-group" transform="translate(${pos.x} ${pos.y})">
-      <rect class="hover-outline" x="-24" y="-60" width="220" height="220" rx="10" fill="transparent" stroke="${agent.accentColor}" stroke-width="2" opacity="0"/>
-      ${bubbleForAgent(agent, phaseIdx)}
-      <rect x="24" y="-28" width="128" height="24" rx="3" fill="#0b0f17" stroke="${agent.accentColor}" stroke-width="2"/>
-      <text x="88" y="-11" class="agent-label">${esc(agent.name.toUpperCase().replace(/ /g, "_"))}</text>
-      <rect x="18" y="55" width="140" height="80" rx="8" fill="#8b4f2f" stroke="#2e1d18" stroke-width="5"/>
-      <rect x="55" y="74" width="64" height="38" rx="4" fill="#151b28" stroke="#293548" stroke-width="4"/>
-      <rect x="62" y="82" width="50" height="22" fill="${agent.accentColor}" class="screen-pulse"/>
-      <ellipse cx="86" cy="155" rx="66" ry="12" fill="#111827" opacity="0.42"/>
-      <text x="88" y="166" class="tiny">${esc(short(st.lastLine || "Monitoring latest commit", 30))}</text>
-      <g transform="translate(62 -20)">${renderSprite(agent)}</g>
-    </g>
-  </a>`;
-}
-
-function walkerRoute(fromId, toId) {
-  const from = deskPos[fromId];
-  const to = deskPos[toId];
-  const startX = from.x + 62;
-  const startY = from.y - 20;
-  const meetX = (from.x + to.x) / 2;
-  const meetY = (from.y + to.y) / 2 + 10;
-  return `${startX} ${startY}; ${meetX} ${meetY}; ${to.x + 62} ${to.y - 20}; ${startX} ${startY}`;
-}
-
-function renderWalkers() {
-  const cycle = 24;
-  return orderedIds
-    .map((fromId, idx) => {
-      const toId = orderedIds[(idx + 1) % orderedIds.length];
-      const agent = agents.find((a) => a.id === fromId);
-      if (!agent) return "";
-      const delay = idx * (cycle / 4);
-      const values = walkerRoute(fromId, toId);
-      return `
-      <g class="walker-seq" style="animation-delay:${delay}s">
-        <animateTransform attributeName="transform" type="translate" values="${values}" dur="${cycle}s" begin="0s" repeatCount="indefinite"/>
-        <ellipse cx="22" cy="91" rx="20" ry="6" fill="#0b1220" opacity="0.45"/>
-        ${renderSprite(agent, 0.9)}
-      </g>`;
-    })
-    .join("\n");
-}
-
-const tickerRaw = `${state.ticker || "Neural Office online"} | Randomized agent choreography active`;
+const tickerRaw = `${state.ticker || "Neural Office online"} | Pixel agent choreography active`;
 const tickerDur = `${Math.max(20, tickerRaw.length * 0.3).toFixed(1)}s`;
-const commitSha = state.lastCommit?.sha ? short(state.lastCommit.sha, 8) : "n/a";
+const commitSha    = state.lastCommit?.sha ? short(state.lastCommit.sha, 8) : "n/a";
 const commitAuthor = state.lastCommit?.author || "unknown";
 
-const desksMarkup = orderedIds
-  .map((id, idx) => renderDesk(agents.find((a) => a.id === id), idx))
-  .join("\n");
-const walkersMarkup = renderWalkers();
-const linkAttr = xmlAttrUrl(INTERACTIVE_URL);
+// ?? Drawing functions ??????????????????????????????????????????????????????????
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}" role="img" aria-label="Neural Office commit conversation view">
+function drawPixelAgent(x, y, role, label) {
+  const c = ROLE_COLORS[role] || ROLE_COLORS.devops;
+
+  // All measurements relative to anchor (x,y) = top-left of head
+  const headX   = x - 14;        // head width=28, centered on x
+  const headY   = y;
+  const eyeBaseY = headY + 8;
+  const neckX   = x - 5;         // neck width=10, centered on x
+  const neckY   = headY + 24;
+  const torsoX  = x - 18;        // torso width=36, centered on x
+  const torsoY  = neckY + 8;
+  const armLX   = torsoX - 10;   // left arm
+  const armRX   = torsoX + 36;   // right arm
+  const armY    = torsoY + 2;
+  const legLX   = x - 14;        // left leg width=14
+  const legRX   = x;             // right leg width=14
+  const legY    = torsoY + 32;
+  const shoeLX  = legLX - 1;     // shoes width=16
+  const shoeRX  = legRX - 1;
+  const shoeY   = legY + 28;
+
+  // label box width based on text length
+  const labelText = label || role.toUpperCase() + " AGENT";
+  const labelW    = labelText.length * 8 + 16;
+  const labelX    = x - labelW / 2;
+  const labelY    = headY - 28;
+
+  return `<g>
+    <!-- label -->
+    <rect x="${labelX}" y="${labelY}" width="${labelW}" height="20" rx="10"
+      fill="#0f172a" stroke="${c.accent}" stroke-width="2"/>
+    <text x="${x}" y="${labelY + 14}" font-size="11" font-family="monospace"
+      fill="${c.accent}" text-anchor="middle">${esc(labelText)}</text>
+
+    <!-- head -->
+    <rect x="${headX}" y="${headY}" width="28" height="24" rx="4" fill="${c.skin}"/>
+    <!-- hair strip -->
+    <rect x="${headX}" y="${headY}" width="28" height="6" rx="4" fill="${c.hair}"/>
+    <!-- left eye white -->
+    <rect x="${headX + 6}" y="${eyeBaseY}" width="6" height="6" fill="#ffffff"/>
+    <!-- right eye white -->
+    <rect x="${headX + 16}" y="${eyeBaseY}" width="6" height="6" fill="#ffffff"/>
+    <!-- left pupil -->
+    <rect x="${headX + 7}" y="${eyeBaseY + 1}" width="4" height="4" fill="#111827"/>
+    <!-- right pupil -->
+    <rect x="${headX + 17}" y="${eyeBaseY + 1}" width="4" height="4" fill="#111827"/>
+
+    <!-- neck -->
+    <rect x="${neckX}" y="${neckY}" width="10" height="8" fill="${c.skin}"/>
+
+    <!-- torso -->
+    <rect x="${torsoX}" y="${torsoY}" width="36" height="32" rx="2" fill="${c.shirt}"/>
+    <!-- badge -->
+    <rect x="${torsoX + 12}" y="${torsoY + 12}" width="12" height="8" rx="2"
+      fill="${c.badge}" opacity="0.7"/>
+
+    <!-- left arm -->
+    <rect x="${armLX}" y="${armY}" width="10" height="28" rx="4" fill="${c.shirt}"
+      transform="rotate(-8, ${armLX + 5}, ${armY})"/>
+    <!-- right arm -->
+    <rect x="${armRX}" y="${armY}" width="10" height="28" rx="4" fill="${c.shirt}"
+      transform="rotate(8, ${armRX + 5}, ${armY})"/>
+
+    <!-- left leg -->
+    <rect x="${legLX}" y="${legY}" width="14" height="28" rx="4" fill="#1e293b"/>
+    <!-- right leg -->
+    <rect x="${legRX}" y="${legY}" width="14" height="28" rx="4" fill="#1e293b"/>
+
+    <!-- left shoe -->
+    <rect x="${shoeLX}" y="${shoeY}" width="16" height="10" rx="3" fill="#0f172a"/>
+    <!-- right shoe -->
+    <rect x="${shoeRX}" y="${shoeY}" width="16" height="10" rx="3" fill="#0f172a"/>
+  </g>`;
+}
+
+function drawDesk(x, y, role) {
+  const c = ROLE_COLORS[role] || ROLE_COLORS.devops;
+  // x,y = left edge of desk surface
+  const surfaceW = 120;
+  const bodyW    = 100;
+  const bodyX    = x + (surfaceW - bodyW) / 2;
+  const monW     = 60;
+  const monH     = 40;
+  const monX     = x + (surfaceW - monW) / 2;
+  const monY     = y - 16 - monH - 16;   // above stand, above desk surface
+  const standX   = x + (surfaceW - 8) / 2;
+  const standY   = monY + monH;
+  const kbdX     = x + (surfaceW - 50) / 2;
+  const kbdY     = y - 2;
+
+  return `<g>
+    <!-- desk body -->
+    <rect x="${bodyX}" y="${y + 16}" width="${bodyW}" height="40" rx="4"
+      fill="#6b4e2e"/>
+    <!-- desk surface -->
+    <rect x="${x}" y="${y}" width="${surfaceW}" height="16" rx="4"
+      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
+    <!-- monitor stand -->
+    <rect x="${standX}" y="${standY}" width="8" height="16" fill="#555"/>
+    <!-- monitor -->
+    <rect x="${monX}" y="${monY}" width="${monW}" height="${monH}" rx="6"
+      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <!-- screen glow -->
+    <rect x="${monX + 3}" y="${monY + 3}" width="${monW - 6}" height="${monH - 6}" rx="4"
+      fill="${c.accent}" opacity="0.3"/>
+    <!-- keyboard -->
+    <rect x="${kbdX}" y="${kbdY}" width="50" height="10" rx="3" fill="#334155"/>
+  </g>`;
+}
+
+function drawWalkingAgent(agentId, fromPos, toPos, sceneIndex) {
+  const c = ROLE_COLORS[agentId] || ROLE_COLORS.devops;
+  const beginSec   = sceneIndex * SCENE_DURATION;
+  const walkDur    = 2;
+  const pauseDur   = 3;
+  const returnDur  = 2;
+  const totalDur   = SCENE_DURATION; // 10s
+
+  // Build the walk path
+  const pathGo     = `M ${fromPos.x},${fromPos.y} L ${toPos.x},${toPos.y}`;
+  const pathReturn = `M ${toPos.x},${toPos.y} L ${fromPos.x},${fromPos.y}`;
+
+  const standEnd   = beginSec + 0.5;
+  const walkEnd    = beginSec + walkDur;
+  const pauseEnd   = walkEnd + pauseDur;
+  const returnEnd  = pauseEnd + returnDur;
+  const sceneEnd   = beginSec + totalDur;
+
+  // draw a simplified pixel agent inline (no label, smaller scale for walker)
+  const wx = -14; // relative to group origin
+  const wy = 0;
+  const agentSprite = `
+    <rect x="${wx}" y="${wy}" width="28" height="24" rx="4" fill="${c.skin}"/>
+    <rect x="${wx}" y="${wy}" width="28" height="6" rx="4" fill="${c.hair}"/>
+    <rect x="${wx + 6}" y="${wy + 8}" width="6" height="6" fill="#ffffff"/>
+    <rect x="${wx + 16}" y="${wy + 8}" width="6" height="6" fill="#ffffff"/>
+    <rect x="${wx + 7}" y="${wy + 9}" width="4" height="4" fill="#111827"/>
+    <rect x="${wx + 17}" y="${wy + 9}" width="4" height="4" fill="#111827"/>
+    <rect x="-5" y="${wy + 24}" width="10" height="8" fill="${c.skin}"/>
+    <rect x="-18" y="${wy + 32}" width="36" height="32" rx="2" fill="${c.shirt}"/>
+    <rect x="-28" y="${wy + 34}" width="10" height="28" rx="4" fill="${c.shirt}"/>
+    <rect x="18" y="${wy + 34}" width="10" height="28" rx="4" fill="${c.shirt}"/>
+    <rect x="-14" y="${wy + 64}" width="14" height="28" rx="4" fill="#1e293b"/>
+    <rect x="0" y="${wy + 64}" width="14" height="28" rx="4" fill="#1e293b"/>
+    <rect x="-15" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>
+    <rect x="-1" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>`;
+
+  return `<g id="walker-${agentId}" visibility="hidden">
+    <animate attributeName="visibility"
+      values="hidden;visible;hidden"
+      keyTimes="0;${beginSec / TOTAL_CYCLE};${sceneEnd / TOTAL_CYCLE}"
+      dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
+
+    <!-- Stand-up bob group -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        values="${fromPos.x},${fromPos.y}; ${fromPos.x},${fromPos.y - 20}; ${fromPos.x},${fromPos.y - 20}; ${toPos.x},${toPos.y - 20}; ${toPos.x},${toPos.y - 20}; ${fromPos.x},${fromPos.y}"
+        keyTimes="0; ${0.5 / totalDur}; ${walkDur / totalDur}; ${walkDur / totalDur}; ${(walkDur + pauseDur) / totalDur}; 1"
+        calcMode="linear"
+        dur="${totalDur}s" begin="${beginSec}s" repeatCount="indefinite"/>
+      ${agentSprite}
+    </g>
+  </g>`;
+}
+
+function drawSpeechBubble(x, y, text, beginSec, durationSec) {
+  const MAX_CHARS = 28;
+  const truncated = truncate(text, 34);
+
+  let line1 = truncated;
+  let line2  = "";
+  if (truncated.length > MAX_CHARS) {
+    const breakAt = truncated.lastIndexOf(" ", MAX_CHARS) || MAX_CHARS;
+    line1 = truncated.slice(0, breakAt);
+    line2  = truncated.slice(breakAt + 1);
+  }
+
+  const twoLines   = line2.length > 0;
+  const bubbleH    = twoLines ? 56 : 36;
+  const bubbleW    = 200;
+  const bubbleX    = x - bubbleW / 2;
+  const bubbleY    = y - bubbleH - 12; // 12px above anchor
+  const tailCX     = x;
+  const tailY      = bubbleY + bubbleH;
+
+  const disappearBegin = beginSec + durationSec - 0.3;
+
+  return `<g id="bubble-${Math.round(beginSec)}" visibility="hidden">
+    <animate attributeName="visibility"
+      values="hidden;visible;hidden"
+      keyTimes="0;${beginSec / TOTAL_CYCLE};${(beginSec + durationSec) / TOTAL_CYCLE}"
+      dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
+
+    <g transform-origin="${x} ${bubbleY + bubbleH / 2}">
+      <animateTransform attributeName="transform" type="scale"
+        from="0" to="1" begin="${beginSec}s" dur="0.3s" fill="freeze"
+        additive="sum" repeatCount="indefinite" restart="always"/>
+      <animateTransform attributeName="transform" type="scale"
+        from="1" to="0" begin="${disappearBegin}s" dur="0.3s" fill="freeze"
+        additive="sum" repeatCount="indefinite" restart="always"/>
+
+      <!-- bubble rect -->
+      <rect x="${bubbleX}" y="${bubbleY}" width="${bubbleW}" height="${bubbleH}" rx="12"
+        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
+      <!-- tail triangle -->
+      <polygon points="${tailCX},${tailY + 12} ${tailCX - 10},${tailY} ${tailCX + 10},${tailY}"
+        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
+
+      <!-- text -->
+      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
+        <tspan x="${x}" y="${bubbleY + 20}">${esc(line1)}</tspan>
+        ${twoLines ? `<tspan x="${x}" dy="14">${esc(line2)}</tspan>` : ""}
+      </text>
+    </g>
+  </g>`;
+}
+
+// ?? Particles ??????????????????????????????????????????????????????????????????
+
+function drawParticles() {
+  const particles = [];
+  // Deterministic "random" using a simple LCG so SVG is stable across runs
+  let seed = 42;
+  function rand(min, max) {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return min + (seed % (max - min));
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const cx  = rand(40, 820);
+    const cy  = rand(100, 550);
+    const dur = (4 + (i % 5)).toFixed(1);
+    const del = (i * 0.7).toFixed(1);
+    particles.push(
+      `<circle cx="${cx}" cy="${cy}" r="2" fill="rgba(99,179,237,0.4)">
+        <animateTransform attributeName="transform" type="translate"
+          from="0,0" to="0,-40" dur="${dur}s" begin="${del}s"
+          repeatCount="indefinite"/>
+      </circle>`
+    );
+  }
+  return particles.join("\n");
+}
+
+// ?? Floor grid ????????????????????????????????????????????????????????????????
+
+function drawFloorGrid() {
+  const lines = [];
+  for (let i = 0; i < 6; i++) {
+    const yPos = 260 + i * (270 / 5);
+    lines.push(`<line x1="30" y1="${yPos.toFixed(0)}" x2="830" y2="${yPos.toFixed(0)}"
+      stroke="#1e2d45" stroke-width="1"/>`);
+  }
+  return lines.join("\n");
+}
+
+// ?? Glow rings ????????????????????????????????????????????????????????????????
+
+function drawGlowRings() {
+  return WALK_ROUTES.map(({ from }, i) => {
+    const pos       = AGENT_POSITIONS[from];
+    const c         = ROLE_COLORS[from];
+    const sceneBegin = i * SCENE_DURATION;
+    const sceneEnd   = sceneBegin + SCENE_DURATION;
+    return `<circle cx="${pos.x}" cy="${pos.y + 60}" r="36" fill="none"
+      stroke="${c.accent}" stroke-width="2" opacity="0" id="glow-${from}">
+      <animate attributeName="r" from="32" to="42" dur="1s"
+        begin="${sceneBegin}s" end="${sceneEnd}s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
+        begin="${sceneBegin}s" end="${sceneEnd}s" repeatCount="indefinite"/>
+    </circle>`;
+  }).join("\n");
+}
+
+// ?? Scene indicator ???????????????????????????????????????????????????????????
+
+function drawSceneIndicator() {
+  const labels = [
+    { role: "frontend", text: "\u25BA FRONTEND AGENT REPORTING", begin: 0,  end: 10 },
+    { role: "backend",  text: "\u25BA BACKEND AGENT REPORTING",  begin: 10, end: 20 },
+    { role: "database", text: "\u25BA DATABASE AGENT REPORTING", begin: 20, end: 30 },
+    { role: "devops",   text: "\u25BA DEVOPS AGENT REPORTING",   begin: 30, end: 40 },
+  ];
+
+  return labels.map(({ role, text, begin, end }) => {
+    const c = ROLE_COLORS[role];
+    return `<text x="430" y="75" font-size="10" font-family="monospace"
+      fill="${c.accent}" text-anchor="middle" visibility="hidden">
+      <animate attributeName="visibility"
+        values="hidden;visible;hidden"
+        keyTimes="0;${begin / TOTAL_CYCLE};${end / TOTAL_CYCLE}"
+        dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
+      ${esc(text)}
+    </text>`;
+  }).join("\n");
+}
+
+// ?? Main SVG assembly ?????????????????????????????????????????????????????????
+
+const desksMarkup = ["frontend", "backend", "database", "devops"].map(role => {
+  const pos = AGENT_POSITIONS[role];
+  // desk anchor: agent sits slightly overlapping the desk top
+  // agent body anchor = pos, desk top = pos.y + agentBodyHeight
+  const agentBodyH = 24 + 8 + 32 + 28 + 10; // head+neck+torso+legs+shoes ? 102
+  const deskY = pos.y + 80; // place desk about 80px below head anchor
+  return `${drawDesk(pos.x - 60, deskY, role)}
+${drawPixelAgent(pos.x, pos.y, role, role.toUpperCase() + " AGENT")}`;
+}).join("\n");
+
+const walkersMarkup = WALK_ROUTES.map(({ from, to }, i) => {
+  return drawWalkingAgent(from, WALK_POSITIONS[from], WALK_POSITIONS[to], i);
+}).join("\n");
+
+const bubblesMarkup = SCENE_SPEECH.map(({ speaker, pauseBegin, text }) => {
+  const targetRoute = WALK_ROUTES.find(r => r.from === speaker);
+  const toPos = targetRoute ? WALK_POSITIONS[targetRoute.to] : WALK_POSITIONS[speaker];
+  // bubble appears 60px above walking agent's head at target position
+  const bubX = toPos.x;
+  const bubY = toPos.y - 60;
+  return drawSpeechBubble(bubX, bubY, truncate(text, 34), pauseBegin, 3);
+}).join("\n");
+
+const glowRings       = drawGlowRings();
+const particles       = drawParticles();
+const floorGrid       = drawFloorGrid();
+const sceneIndicator  = drawSceneIndicator();
+const linkAttr        = xmlAttrUrl(INTERACTIVE_URL);
+
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}"
+  role="img" aria-label="Neural Office — 4 AI agents discussing your latest commit">
   <defs>
     <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0b1220"/>
-      <stop offset="1" stop-color="#251410"/>
+      <stop offset="1" stop-color="#0f1a2e"/>
     </linearGradient>
-    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
-      <path d="M0 0 H34 M0 0 V34" stroke="#26334a" stroke-width="1" opacity="0.35"/>
-    </pattern>
   </defs>
-  <style><![CDATA[
-    .title { font: 900 30px Consolas,Monaco,monospace; fill:#f8fafc; letter-spacing:2px; text-anchor:middle; }
-    .subtitle { font: 700 12px Consolas,Monaco,monospace; fill:#9fb3c8; text-anchor:middle; }
-    .agent-label { font: 900 12px Consolas,Monaco,monospace; fill:#f8fafc; text-anchor:middle; }
-    .tiny { font: 700 9px Consolas,Monaco,monospace; fill:#cbd5e1; text-anchor:middle; }
-    .bubble-speaker { font: 800 8px Consolas,Monaco,monospace; fill:#334155; text-anchor:middle; }
-    .bubble-line { font: 700 9px Consolas,Monaco,monospace; fill:#111827; text-anchor:middle; }
-    .ticker-text { font: 800 15px Consolas,Monaco,monospace; fill:#7dd3fc; animation: ticker ${tickerDur} linear infinite; }
-    .screen-pulse { animation: screenPulse 1.5s linear infinite; }
-    .agent-sprite { animation: bob 2.1s linear infinite; }
-    .arm-left { animation: armA 0.55s steps(2) infinite; transform-origin: 10px 36px; }
-    .arm-right { animation: armB 0.55s steps(2) infinite; transform-origin: 38px 36px; }
-    .leg-left { animation: legA 0.45s steps(2) infinite; transform-origin: 18px 64px; }
-    .leg-right { animation: legB 0.45s steps(2) infinite; transform-origin: 31px 64px; }
-    .hover-outline { transition: opacity .2s; }
-    a:hover .hover-outline { opacity: 0.42; }
-    .meeting-glow { animation: pulse 1.8s linear infinite; }
-    .head-bubble { opacity: 0; animation: speakWindow 24s linear infinite; }
-    .walker-seq { opacity: 0; animation: walkerWindow 24s linear infinite; }
-    @keyframes ticker { from { transform: translateX(${WIDTH}px);} to { transform: translateX(-1550px);} }
-    @keyframes screenPulse { 0%,100%{opacity:.6} 50%{opacity:1} }
-    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
-    @keyframes armA { 0%,100%{transform:rotate(0)} 50%{transform:rotate(8deg)} }
-    @keyframes armB { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-8deg)} }
-    @keyframes legA { 0%,100%{transform:rotate(0)} 50%{transform:rotate(10deg)} }
-    @keyframes legB { 0%,100%{transform:rotate(10deg)} 50%{transform:rotate(0)} }
-    @keyframes pulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
-    @keyframes speakWindow { 0%, 8%, 100% { opacity: 0; } 12%, 26% { opacity: 1; } 30%, 100% { opacity: 0; } }
-    @keyframes walkerWindow { 0%, 4%, 100% { opacity: 0; } 6%, 28% { opacity: 1; } 32%, 100% { opacity: 0; } }
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
-  ]]></style>
 
+  <!-- Background -->
   <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bgGrad)"/>
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#grid)" opacity="0.55"/>
-  <rect x="32" y="62" width="${WIDTH - 64}" height="${HEIGHT - 126}" rx="20" fill="none" stroke="#26334a" stroke-width="4"/>
 
-  <text x="${WIDTH / 2}" y="38" class="title">NEURAL OFFICE · COMMIT CHOREOGRAPHY</text>
-  <text x="${WIDTH / 2}" y="58" class="subtitle">Latest commit ${esc(commitSha)} by ${esc(commitAuthor)} · sequential 4-agent discussions</text>
+  <!-- Subtle dot grid background -->
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="none"
+    stroke="none" opacity="0.18"/>
 
-  <a href="${linkAttr}" xlink:href="${linkAttr}" target="_blank" rel="noopener">
-    <g>
-      <circle cx="430" cy="300" r="58" fill="#0f1729" stroke="#3b4e69" stroke-width="3"/>
-      <circle cx="430" cy="300" r="44" class="meeting-glow" fill="#67e8f9" opacity="0.25"/>
-      <text x="430" y="297" class="tiny">SYNC</text>
-      <text x="430" y="311" class="tiny">ZONE</text>
-    </g>
-  </a>
+  <!-- Floor grid lines -->
+  ${floorGrid}
 
+  <!-- Ambient particles -->
+  ${particles}
+
+  <!-- Glow rings (active agent indicator) -->
+  ${glowRings}
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="${WIDTH}" height="55" fill="#0a1628" opacity="0.9"/>
+  <text x="${WIDTH / 2}" y="28" font-size="18" font-family="monospace" font-weight="900"
+    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE \u00B7 COMMIT CHOREOGRAPHY</text>
+  <text x="${WIDTH / 2}" y="46" font-size="10" font-family="monospace"
+    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)}</text>
+
+  <!-- Scene indicator -->
+  ${sceneIndicator}
+
+  <!-- Static desks and agents -->
   ${desksMarkup}
+
+  <!-- Walking agents (render above static) -->
   ${walkersMarkup}
 
-  <rect x="30" y="${HEIGHT - 42}" width="${WIDTH - 60}" height="28" rx="10" fill="#0b1220" stroke="#26334a" stroke-width="2"/>
-  <svg x="42" y="${HEIGHT - 39}" width="${WIDTH - 84}" height="24" overflow="hidden">
-    <text x="0" y="16" class="ticker-text">${esc(tickerRaw)}</text>
+  <!-- Speech bubbles (topmost) -->
+  ${bubblesMarkup}
+
+  <!-- Ticker bar -->
+  <rect x="0" y="${HEIGHT - 36}" width="${WIDTH}" height="36" fill="#070e1c" opacity="0.95"/>
+  <rect x="0" y="${HEIGHT - 36}" width="${WIDTH}" height="1" fill="#1e2d45"/>
+  <svg x="10" y="${HEIGHT - 26}" width="${WIDTH - 20}" height="20" overflow="hidden">
+    <text x="${WIDTH}" y="14" font-size="12" font-family="monospace" font-weight="700"
+      fill="#7dd3fc">
+      ${esc(tickerRaw)}
+      <animateTransform attributeName="transform" type="translate"
+        from="${WIDTH},0" to="-${tickerRaw.length * 8},0"
+        dur="${tickerDur}" repeatCount="indefinite"/>
+    </text>
   </svg>
+
+  <!-- Interactive link overlay (clickable area) -->
+  <a href="${linkAttr}" xlink:href="${linkAttr}" target="_blank" rel="noopener">
+    <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="transparent"/>
+  </a>
 </svg>`;
 
 fs.writeFileSync(svgPath, svg);
-console.log(`SVG regenerated: ${svgPath}`);
+console.log(`SVG regenerated: ${svgPath} (${Buffer.byteLength(svg, "utf8")} bytes)`);

@@ -7,10 +7,15 @@
 [![Open Interactive Office](https://img.shields.io/badge/Open_Interactive_Office-Live_View-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
 
 <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-  <img src="office/base-office.svg" alt="Neural Office animated SVG preview" width="100%">
+  <img
+    src="office/base-office.svg"
+    alt="Neural Office — 4 AI agents discussing your latest commit"
+    width="860"
+    height="600"
+  />
 </a>
 
-*Live animated SVG preview. Opens the interactive office on click.*
+*4 pixel-art agents walking between desks, sharing your latest commit in real time.*
 
 </div>
 
