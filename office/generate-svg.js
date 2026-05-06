@@ -43,36 +43,24 @@ const ROLE_COLORS = {
   devops:   { shirt: "#fb923c", hair: "#ea580c", skin: "#fbbf24", badge: "#fff", accent: "#fb923c" },
 };
 
-const AGENT_POSITIONS = {
-  frontend: { x: 140, y: 90 },
-  backend:  { x: 680, y: 90 },
-  database: { x: 140, y: 340 },
-  devops:   { x: 680, y: 340 },
+const ROOM = {
+  headerH: 64,
+  floorTop: 90,
+  footerH: 46,
 };
 
-const WALK_POSITIONS = {
-  frontend: { x: 180, y: 180 },
-  backend:  { x: 720, y: 180 },
-  database: { x: 180, y: 430 },
-  devops:   { x: 720, y: 430 },
+const DESKS = {
+  frontend: { x: 92,  y: 130 },
+  backend:  { x: 550, y: 130 },
+  database: { x: 92,  y: 360 },
+  devops:   { x: 550, y: 360 },
 };
-
-const WALK_ROUTES = [
-  { from: "frontend", to: "backend"  },
-  { from: "backend",  to: "database" },
-  { from: "database", to: "devops"   },
-  { from: "devops",   to: "frontend" },
-];
-
-const SCENE_DURATION = 10;
-const TOTAL_CYCLE = 40;
 
 // ?? State reading ??????????????????????????????????????????????????????????????
 
 const config = readJson(configPath);
 const state  = readJson(statePath);
 
-// Extract speech lines ù Stage 4 writes strings; before that they may be objects
 const rawAgents = state.agents || {};
 function getSpeechLine(role) {
   const val = rawAgents[role];
@@ -88,438 +76,226 @@ const speechLines = {
   devops:   getSpeechLine("devops")   || "Deploy to prod done",
 };
 
-const SCENE_SPEECH = [
-  { speaker: "frontend", pauseBegin: 2.5,  text: speechLines.frontend },
-  { speaker: "backend",  pauseBegin: 12.5, text: speechLines.backend  },
-  { speaker: "database", pauseBegin: 22.5, text: speechLines.database },
-  { speaker: "devops",   pauseBegin: 32.5, text: speechLines.devops   },
-];
-
-const tickerRaw = `${state.ticker || "Neural Office online"} | Pixel agent choreography active`;
-const tickerDur = `${Math.max(20, tickerRaw.length * 0.3).toFixed(1)}s`;
+const tickerRaw = `${state.ticker || "Neural Office online"} | Static pixel office scene`;
 const commitSha    = state.lastCommit?.sha ? short(state.lastCommit.sha, 8) : "n/a";
 const commitAuthor = state.lastCommit?.author || "unknown";
+const commitMsg    = state.lastCommit?.message ? short(state.lastCommit.message, 64) : "no message";
 
-// ?? Drawing functions ??????????????????????????????????????????????????????????
+// ?? Drawing helpers ????????????????????????????????????????????????????????????
 
-function drawPixelAgent(x, y, role, label) {
-  const c = ROLE_COLORS[role] || ROLE_COLORS.devops;
-
-  // All measurements relative to anchor (x,y) = top-left of head
-  const headX   = x - 14;        // head width=28, centered on x
-  const headY   = y;
-  const eyeBaseY = headY + 8;
-  const neckX   = x - 5;         // neck width=10, centered on x
-  const neckY   = headY + 24;
-  const torsoX  = x - 18;        // torso width=36, centered on x
-  const torsoY  = neckY + 8;
-  const armLX   = torsoX - 10;   // left arm
-  const armRX   = torsoX + 36;   // right arm
-  const armY    = torsoY + 2;
-  const legLX   = x - 14;        // left leg width=14
-  const legRX   = x;             // right leg width=14
-  const legY    = torsoY + 32;
-  const shoeLX  = legLX - 1;     // shoes width=16
-  const shoeRX  = legRX - 1;
-  const shoeY   = legY + 28;
-
-  // label box width based on text length
-  const labelText = label || role.toUpperCase() + " AGENT";
-  const labelW    = labelText.length * 8 + 16;
-  const labelX    = x - labelW / 2;
-  const labelY    = headY - 28;
-
+function drawLabelTag(x, y, text, accent = "#ffffff") {
+  const w = Math.max(70, text.length * 8 + 20);
   return `<g>
-    <!-- label -->
-    <rect x="${labelX}" y="${labelY}" width="${labelW}" height="20" rx="10"
-      fill="#0f172a" stroke="${c.accent}" stroke-width="2"/>
-    <text x="${x}" y="${labelY + 14}" font-size="11" font-family="monospace"
-      fill="${c.accent}" text-anchor="middle">${esc(labelText)}</text>
-
-    <!-- head -->
-    <rect x="${headX}" y="${headY}" width="28" height="24" rx="4" fill="${c.skin}"/>
-    <!-- hair strip -->
-    <rect x="${headX}" y="${headY}" width="28" height="6" rx="4" fill="${c.hair}"/>
-    <!-- left eye white -->
-    <rect x="${headX + 6}" y="${eyeBaseY}" width="6" height="6" fill="#ffffff"/>
-    <!-- right eye white -->
-    <rect x="${headX + 16}" y="${eyeBaseY}" width="6" height="6" fill="#ffffff"/>
-    <!-- left pupil -->
-    <rect x="${headX + 7}" y="${eyeBaseY + 1}" width="4" height="4" fill="#111827"/>
-    <!-- right pupil -->
-    <rect x="${headX + 17}" y="${eyeBaseY + 1}" width="4" height="4" fill="#111827"/>
-
-    <!-- neck -->
-    <rect x="${neckX}" y="${neckY}" width="10" height="8" fill="${c.skin}"/>
-
-    <!-- torso -->
-    <rect x="${torsoX}" y="${torsoY}" width="36" height="32" rx="2" fill="${c.shirt}"/>
-    <!-- badge -->
-    <rect x="${torsoX + 12}" y="${torsoY + 12}" width="12" height="8" rx="2"
-      fill="${c.badge}" opacity="0.7"/>
-
-    <!-- left arm -->
-    <rect x="${armLX}" y="${armY}" width="10" height="28" rx="4" fill="${c.shirt}"
-      transform="rotate(-8, ${armLX + 5}, ${armY})"/>
-    <!-- right arm -->
-    <rect x="${armRX}" y="${armY}" width="10" height="28" rx="4" fill="${c.shirt}"
-      transform="rotate(8, ${armRX + 5}, ${armY})"/>
-
-    <!-- left leg -->
-    <rect x="${legLX}" y="${legY}" width="14" height="28" rx="4" fill="#1e293b"/>
-    <!-- right leg -->
-    <rect x="${legRX}" y="${legY}" width="14" height="28" rx="4" fill="#1e293b"/>
-
-    <!-- left shoe -->
-    <rect x="${shoeLX}" y="${shoeY}" width="16" height="10" rx="3" fill="#0f172a"/>
-    <!-- right shoe -->
-    <rect x="${shoeRX}" y="${shoeY}" width="16" height="10" rx="3" fill="#0f172a"/>
+    <rect x="${x}" y="${y}" width="${w}" height="22" rx="6" fill="#0b1220" stroke="${accent}" stroke-width="2"/>
+    <text x="${x + w / 2}" y="${y + 15}" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">${esc(text)}</text>
   </g>`;
 }
 
-function drawDesk(x, y, role) {
+function drawArrow(x1, y1, x2, y2, color = "#2dd4bf") {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.max(1, Math.hypot(dx, dy));
+  const ux = dx / len;
+  const uy = dy / len;
+  const px = -uy;
+  const py = ux;
+  const head = 10;
+  const tailW = 4;
+  const hx = x2 - ux * head;
+  const hy = y2 - uy * head;
+  const p1x = x1 + px * tailW;
+  const p1y = y1 + py * tailW;
+  const p2x = x1 - px * tailW;
+  const p2y = y1 - py * tailW;
+  const p3x = hx - px * tailW;
+  const p3y = hy - py * tailW;
+  const p4x = hx + px * tailW;
+  const p4y = hy + py * tailW;
+  return `<g opacity="0.95">
+    <polygon points="${p1x.toFixed(1)},${p1y.toFixed(1)} ${p2x.toFixed(1)},${p2y.toFixed(1)} ${p3x.toFixed(1)},${p3y.toFixed(1)} ${p4x.toFixed(1)},${p4y.toFixed(1)}"
+      fill="${color}"/>
+    <polygon points="${x2},${y2} ${(hx + px * 9).toFixed(1)},${(hy + py * 9).toFixed(1)} ${(hx - px * 9).toFixed(1)},${(hy - py * 9).toFixed(1)}"
+      fill="${color}"/>
+  </g>`;
+}
+
+function drawFloor() {
+  const top = ROOM.floorTop;
+  const plankH = 14;
+  const n = Math.ceil((HEIGHT - top - ROOM.footerH) / plankH);
+  const parts = [];
+  parts.push(`<rect x="0" y="${top}" width="${WIDTH}" height="${HEIGHT - top}" fill="#3b2414"/>`);
+  for (let i = 0; i < n; i++) {
+    const y = top + i * plankH;
+    const shade = i % 2 === 0 ? "#402715" : "#3a2313";
+    parts.push(`<rect x="0" y="${y}" width="${WIDTH}" height="${plankH}" fill="${shade}"/>`);
+    parts.push(`<rect x="0" y="${y + plankH - 1}" width="${WIDTH}" height="1" fill="rgba(255,255,255,0.05)"/>`);
+    for (let j = 0; j < 6; j++) {
+      const seamX = 40 + j * 140 + (i % 3) * 12;
+      parts.push(`<rect x="${seamX}" y="${y + 2}" width="2" height="${plankH - 4}" fill="rgba(0,0,0,0.12)"/>`);
+    }
+  }
+  return parts.join("\n");
+}
+
+function drawWall() {
+  const parts = [];
+  parts.push(`<rect x="0" y="0" width="${WIDTH}" height="${ROOM.floorTop}" fill="#0b1220"/>`);
+  parts.push(`<rect x="0" y="${ROOM.floorTop - 4}" width="${WIDTH}" height="4" fill="#111c33"/>`);
+  parts.push(`<rect x="0" y="0" width="${WIDTH}" height="2" fill="rgba(255,255,255,0.05)"/>`);
+  parts.push(`<rect x="28" y="14" width="70" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
+  parts.push(`<text x="63" y="38" font-size="10" font-family="monospace" fill="#7dd3fc" text-anchor="middle">NEURAL</text>`);
+  parts.push(`<rect x="760" y="14" width="72" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
+  parts.push(`<text x="796" y="38" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">OFFICE</text>`);
+  return parts.join("\n");
+}
+
+function drawDeskCluster(x, y, role) {
   const c = ROLE_COLORS[role] || ROLE_COLORS.devops;
-  // x,y = left edge of desk surface
-  const surfaceW = 120;
-  const bodyW    = 100;
-  const bodyX    = x + (surfaceW - bodyW) / 2;
-  const monW     = 60;
-  const monH     = 40;
-  const monX     = x + (surfaceW - monW) / 2;
-  const monY     = y - 16 - monH - 16;   // above stand, above desk surface
-  const standX   = x + (surfaceW - 8) / 2;
-  const standY   = monY + monH;
-  const kbdX     = x + (surfaceW - 50) / 2;
-  const kbdY     = y - 2;
+  const parts = [];
+  parts.push(`<rect x="${x}" y="${y + 48}" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>`);
+  parts.push(`<rect x="${x + 12}" y="${y + 70}" width="226" height="78" rx="10" fill="#6b4e2e"/>`);
+  parts.push(`<rect x="${x + 92}" y="${y + 10}" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>`);
+  parts.push(`<rect x="${x + 98}" y="${y + 16}" width="80" height="46" rx="8" fill="${c.accent}" opacity="0.25"/>`);
+  parts.push(`<rect x="${x + 134}" y="${y + 68}" width="10" height="18" rx="3" fill="#475569"/>`);
+  parts.push(`<rect x="${x + 104}" y="${y + 86}" width="68" height="12" rx="4" fill="#334155"/>`);
+  parts.push(`<rect x="${x + 26}" y="${y + 62}" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>`);
+  parts.push(`<rect x="${x + 200}" y="${y + 82}" width="14" height="16" rx="3" fill="#0f172a"/>`);
+  parts.push(`<rect x="${x + 214}" y="${y + 86}" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>`);
+  parts.push(`<rect x="${x + 28}" y="${y + 30}" width="14" height="12" rx="3" fill="#14532d"/>`);
+  parts.push(`<circle cx="${x + 35}" cy="${y + 26}" r="7" fill="#22c55e" opacity="0.9"/>`);
+  return `<g>${parts.join("\n")}</g>`;
+}
 
+function drawAgentSprite(x, y, kind) {
+  const palette = {
+    frontend: { shirt: ROLE_COLORS.frontend.shirt, hair: "#0ea5e9", skin: "#fbbf24" },
+    backend:  { shirt: ROLE_COLORS.backend.shirt,  hair: "#10b981", skin: "#fbbf24" },
+    database: { shirt: ROLE_COLORS.database.shirt, hair: "#7c3aed", skin: "#fbbf24" },
+    devops:   { shirt: ROLE_COLORS.devops.shirt,   hair: "#ea580c", skin: "#fbbf24" },
+    pm:       { shirt: "#f472b6", hair: "#f97316", skin: "#fbbf24" },
+    intern:   { shirt: "#e2e8f0", hair: "#1f2937", skin: "#fbbf24" },
+    qa:       { shirt: "#22c55e", hair: "#16a34a", skin: "#fbbf24" },
+    memory:   { shirt: "#94a3b8", hair: "#64748b", skin: "#93c5fd" },
+  }[kind] || { shirt: "#60a5fa", hair: "#334155", skin: "#fbbf24" };
+
+  return `<g transform="translate(${x} ${y})">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="${palette.skin}"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="${palette.hair}"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
+
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="${palette.shirt}"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
+
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="${palette.shirt}"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="${palette.shirt}"/>
+
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+  </g>`;
+}
+
+function drawSpeechBox(x, y, role, text) {
+  const c = ROLE_COLORS[role] || ROLE_COLORS.frontend;
+  const msg = truncate(text, 34);
+  const w = 200;
+  const h = 36;
   return `<g>
-    <!-- desk body -->
-    <rect x="${bodyX}" y="${y + 16}" width="${bodyW}" height="40" rx="4"
-      fill="#6b4e2e"/>
-    <!-- desk surface -->
-    <rect x="${x}" y="${y}" width="${surfaceW}" height="16" rx="4"
-      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
-    <!-- monitor stand -->
-    <rect x="${standX}" y="${standY}" width="8" height="16" fill="#555"/>
-    <!-- monitor -->
-    <rect x="${monX}" y="${monY}" width="${monW}" height="${monH}" rx="6"
-      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-    <!-- screen glow -->
-    <rect x="${monX + 3}" y="${monY + 3}" width="${monW - 6}" height="${monH - 6}" rx="4"
-      fill="${c.accent}" opacity="0.3"/>
-    <!-- keyboard -->
-    <rect x="${kbdX}" y="${kbdY}" width="50" height="10" rx="3" fill="#334155"/>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#0f172a" stroke="${c.accent}" stroke-width="2"/>
+    <text x="${x + 10}" y="${y + 22}" font-size="11" font-family="monospace" fill="#ffffff">${esc(msg)}</text>
   </g>`;
 }
 
-function drawWalkingAgent(agentId, fromPos, toPos, sceneIndex) {
-  const c = ROLE_COLORS[agentId] || ROLE_COLORS.devops;
-  const beginSec   = sceneIndex * SCENE_DURATION;
-  const standUpDur = 0.5;
-  const walkDur    = 2;
-  const pauseDur   = 3;
-  const returnDur  = 2;
-  const sitDownDur = 0.5;
-  const totalDur   = SCENE_DURATION; // 10s
+// ?? Main SVG ???????????????????????????????????????????????????????????????????
 
-  // draw a simplified pixel agent inline (no label, smaller scale for walker)
-  const wx = -14; // relative to group origin
-  const wy = 0;
-  const agentSprite = `
-    <rect x="${wx}" y="${wy}" width="28" height="24" rx="4" fill="${c.skin}"/>
-    <rect x="${wx}" y="${wy}" width="28" height="6" rx="4" fill="${c.hair}"/>
-    <rect x="${wx + 6}" y="${wy + 8}" width="6" height="6" fill="#ffffff"/>
-    <rect x="${wx + 16}" y="${wy + 8}" width="6" height="6" fill="#ffffff"/>
-    <rect x="${wx + 7}" y="${wy + 9}" width="4" height="4" fill="#111827"/>
-    <rect x="${wx + 17}" y="${wy + 9}" width="4" height="4" fill="#111827"/>
-    <rect x="-5" y="${wy + 24}" width="10" height="8" fill="${c.skin}"/>
-    <rect x="-18" y="${wy + 32}" width="36" height="32" rx="2" fill="${c.shirt}"/>
-    <rect x="-28" y="${wy + 34}" width="10" height="28" rx="4" fill="${c.shirt}"/>
-    <rect x="18" y="${wy + 34}" width="10" height="28" rx="4" fill="${c.shirt}"/>
-    <rect x="-14" y="${wy + 64}" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="0" y="${wy + 64}" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="-15" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>
-    <rect x="-1" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>`;
-
-  const dx = toPos.x - fromPos.x;
-  const dy = toPos.y - fromPos.y;
-
-  const walkBegin   = beginSec + standUpDur;
-  const pauseBegin  = walkBegin + walkDur;
-  const returnBegin = pauseBegin + pauseDur;
-  const sitBegin    = returnBegin + returnDur;
-
-  return `<g id="walker-${agentId}" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;${beginSec / TOTAL_CYCLE};${(beginSec + totalDur) / TOTAL_CYCLE}"
-      dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
-
-    <g transform="translate(${fromPos.x} ${fromPos.y})">
-      <g id="walker-body-${agentId}">
-        <!-- Stand up -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -20" dur="${standUpDur}s" begin="${beginSec}s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Walk to target -->
-        <animateMotion path="M 0,-20 L ${dx},${dy - 20}" dur="${walkDur}s" begin="${walkBegin}s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Pause (hold position implicitly via freeze) -->
-
-        <!-- Walk back -->
-        <animateMotion path="M ${dx},${dy - 20} L 0,-20" dur="${returnDur}s" begin="${returnBegin}s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Sit down -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 -20; 0 0" dur="${sitDownDur}s" begin="${sitBegin}s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Footstep bob during forward walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="${walkBegin}s" repeatCount="${Math.round(walkDur / 0.2)}"/>
-
-        <!-- Footstep bob during return walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="${returnBegin}s" repeatCount="${Math.round(returnDur / 0.2)}"/>
-
-        ${agentSprite}
-      </g>
-    </g>
-  </g>`;
-}
-
-function drawSpeechBubble(x, y, text, beginSec, durationSec) {
-  const MAX_CHARS = 28;
-  const truncated = truncate(text, 34);
-
-  let line1 = truncated;
-  let line2  = "";
-  if (truncated.length > MAX_CHARS) {
-    const breakAt = truncated.lastIndexOf(" ", MAX_CHARS) || MAX_CHARS;
-    line1 = truncated.slice(0, breakAt);
-    line2  = truncated.slice(breakAt + 1);
-  }
-
-  const twoLines   = line2.length > 0;
-  const bubbleH    = twoLines ? 56 : 36;
-  const bubbleW    = 200;
-  const bubbleX    = x - bubbleW / 2;
-  const bubbleY    = y - bubbleH - 12; // 12px above anchor
-  const tailCX     = x;
-  const tailY      = bubbleY + bubbleH;
-
-  const disappearBegin = beginSec + durationSec - 0.3;
-
-  return `<g id="bubble-${Math.round(beginSec)}" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;${beginSec / TOTAL_CYCLE};${(beginSec + durationSec) / TOTAL_CYCLE}"
-      dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
-
-    <g transform-origin="${x} ${bubbleY + bubbleH / 2}">
-      <animateTransform attributeName="transform" type="scale"
-        from="0" to="1" begin="${beginSec}s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-      <animateTransform attributeName="transform" type="scale"
-        from="1" to="0" begin="${disappearBegin}s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-
-      <!-- bubble rect -->
-      <rect x="${bubbleX}" y="${bubbleY}" width="${bubbleW}" height="${bubbleH}" rx="12"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-      <!-- tail triangle -->
-      <polygon points="${tailCX},${tailY + 12} ${tailCX - 10},${tailY} ${tailCX + 10},${tailY}"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-
-      <!-- text -->
-      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="${x}" y="${bubbleY + 20}">${esc(line1)}</tspan>
-        ${twoLines ? `<tspan x="${x}" dy="14">${esc(line2)}</tspan>` : ""}
-      </text>
-    </g>
-  </g>`;
-}
-
-// ?? Particles ??????????????????????????????????????????????????????????????????
-
-function drawParticles() {
-  const particles = [];
-  // Deterministic "random" using a simple LCG so SVG is stable across runs
-  let seed = 42;
-  function rand(min, max) {
-    seed = (seed * 1664525 + 1013904223) >>> 0;
-    return min + (seed % (max - min));
-  }
-
-  for (let i = 0; i < 12; i++) {
-    const cx  = rand(40, 820);
-    const cy  = rand(100, 550);
-    const dur = (4 + (i % 5)).toFixed(1);
-    const del = (i * 0.7).toFixed(1);
-    particles.push(
-      `<circle cx="${cx}" cy="${cy}" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="${dur}s" begin="${del}s"
-          repeatCount="indefinite"/>
-      </circle>`
-    );
-  }
-  return particles.join("\n");
-}
-
-// ?? Floor grid ????????????????????????????????????????????????????????????????
-
-function drawFloorGrid() {
-  const lines = [];
-  for (let i = 0; i < 6; i++) {
-    const yPos = 260 + i * (270 / 5);
-    lines.push(`<line x1="30" y1="${yPos.toFixed(0)}" x2="830" y2="${yPos.toFixed(0)}"
-      stroke="#1e2d45" stroke-width="1"/>`);
-  }
-  return lines.join("\n");
-}
-
-// ?? Glow rings ????????????????????????????????????????????????????????????????
-
-function drawGlowRings() {
-  return WALK_ROUTES.map(({ from }, i) => {
-    const pos       = AGENT_POSITIONS[from];
-    const c         = ROLE_COLORS[from];
-    const sceneBegin = i * SCENE_DURATION;
-    return `<circle cx="${pos.x}" cy="${pos.y + 60}" r="36" fill="none"
-      stroke="${c.accent}" stroke-width="2" opacity="0" id="glow-${from}" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;${sceneBegin / TOTAL_CYCLE};${(sceneBegin + SCENE_DURATION) / TOTAL_CYCLE}"
-        dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
-      <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="${sceneBegin}s" repeatCount="${SCENE_DURATION}"/>
-      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="${sceneBegin}s" repeatCount="${SCENE_DURATION}"/>
-    </circle>`;
-  }).join("\n");
-}
-
-// ?? Scene indicator ???????????????????????????????????????????????????????????
-
-function drawSceneIndicator() {
-  const labels = [
-    { role: "frontend", text: "\u25BA FRONTEND AGENT REPORTING", begin: 0,  end: 10 },
-    { role: "backend",  text: "\u25BA BACKEND AGENT REPORTING",  begin: 10, end: 20 },
-    { role: "database", text: "\u25BA DATABASE AGENT REPORTING", begin: 20, end: 30 },
-    { role: "devops",   text: "\u25BA DEVOPS AGENT REPORTING",   begin: 30, end: 40 },
-  ];
-
-  return labels.map(({ role, text, begin, end }) => {
-    const c = ROLE_COLORS[role];
-    return `<text x="430" y="75" font-size="10" font-family="monospace"
-      fill="${c.accent}" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;${begin / TOTAL_CYCLE};${end / TOTAL_CYCLE}"
-        dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
-      ${esc(text)}
-    </text>`;
-  }).join("\n");
-}
-
-// ?? Main SVG assembly ?????????????????????????????????????????????????????????
-
-const desksMarkup = ["frontend", "backend", "database", "devops"].map(role => {
-  const pos = AGENT_POSITIONS[role];
-  // desk anchor: agent sits slightly overlapping the desk top
-  // agent body anchor = pos, desk top = pos.y + agentBodyHeight
-  const agentBodyH = 24 + 8 + 32 + 28 + 10; // head+neck+torso+legs+shoes ? 102
-  const deskY = pos.y + 80; // place desk about 80px below head anchor
-  return `${drawDesk(pos.x - 60, deskY, role)}
-${drawPixelAgent(pos.x, pos.y, role, role.toUpperCase() + " AGENT")}`;
-}).join("\n");
-
-const walkersMarkup = WALK_ROUTES.map(({ from, to }, i) => {
-  return drawWalkingAgent(from, WALK_POSITIONS[from], WALK_POSITIONS[to], i);
-}).join("\n");
-
-const bubblesMarkup = SCENE_SPEECH.map(({ speaker, pauseBegin, text }) => {
-  const targetRoute = WALK_ROUTES.find(r => r.from === speaker);
-  const toPos = targetRoute ? WALK_POSITIONS[targetRoute.to] : WALK_POSITIONS[speaker];
-  // bubble appears 60px above walking agent's head at target position
-  const bubX = toPos.x;
-  const bubY = toPos.y - 60;
-  return drawSpeechBubble(bubX, bubY, truncate(text, 34), pauseBegin, 3);
-}).join("\n");
-
-const glowRings       = drawGlowRings();
-const particles       = drawParticles();
-const floorGrid       = drawFloorGrid();
-const sceneIndicator  = drawSceneIndicator();
-const linkAttr        = xmlAttrUrl(INTERACTIVE_URL);
+const linkAttr = xmlAttrUrl(INTERACTIVE_URL);
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}"
-  role="img" aria-label="Neural Office ù 4 AI agents discussing your latest commit">
+  role="img" aria-label="Neural Office ó static pixel office scene">
   <defs>
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1220"/>
-      <stop offset="1" stop-color="#0f1a2e"/>
+    <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0a1628"/>
+      <stop offset="1" stop-color="#0b1220"/>
     </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bgGrad)"/>
+  ${drawWall()}
+  ${drawFloor()}
 
-  <!-- Subtle dot grid background -->
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="none"
-    stroke="none" opacity="0.18"/>
+  <!-- Header -->
+  <rect x="0" y="0" width="${WIDTH}" height="${ROOM.headerH}" fill="url(#hdrGrad)"/>
+  <text x="${WIDTH / 2}" y="30" font-size="18" font-family="monospace" font-weight="900"
+    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ∑ PIXEL FLOOR</text>
+  <text x="${WIDTH / 2}" y="50" font-size="10" font-family="monospace"
+    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)} ∑ ${esc(commitMsg)}</text>
 
-  <!-- Floor grid lines -->
-  ${floorGrid}
+  <!-- Desks -->
+  ${drawDeskCluster(DESKS.frontend.x, DESKS.frontend.y, "frontend")}
+  ${drawDeskCluster(DESKS.backend.x,  DESKS.backend.y,  "backend")}
+  ${drawDeskCluster(DESKS.database.x, DESKS.database.y, "database")}
+  ${drawDeskCluster(DESKS.devops.x,   DESKS.devops.y,   "devops")}
 
-  <!-- Ambient particles -->
-  ${particles}
+  <!-- Main agents -->
+  ${drawLabelTag(DESKS.frontend.x + 18, DESKS.frontend.y - 10, "FRONTEND_AGENT", ROLE_COLORS.frontend.accent)}
+  ${drawAgentSprite(DESKS.frontend.x + 46, DESKS.frontend.y + 36, "frontend")}
+  ${drawSpeechBox(DESKS.frontend.x + 18, DESKS.frontend.y + 150, "frontend", speechLines.frontend)}
 
-  <!-- Glow rings (active agent indicator) -->
-  ${glowRings}
+  ${drawLabelTag(DESKS.backend.x + 48, DESKS.backend.y - 10, "BACKEND_AGENT", ROLE_COLORS.backend.accent)}
+  ${drawAgentSprite(DESKS.backend.x + 74, DESKS.backend.y + 36, "backend")}
+  ${drawSpeechBox(DESKS.backend.x + 48, DESKS.backend.y + 150, "backend", speechLines.backend)}
 
-  <!-- Title bar -->
-  <rect x="0" y="0" width="${WIDTH}" height="55" fill="#0a1628" opacity="0.9"/>
-  <text x="${WIDTH / 2}" y="28" font-size="18" font-family="monospace" font-weight="900"
-    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE \u00B7 COMMIT CHOREOGRAPHY</text>
-  <text x="${WIDTH / 2}" y="46" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)}</text>
+  ${drawLabelTag(DESKS.database.x + 18, DESKS.database.y - 10, "DATABASE_AGENT", ROLE_COLORS.database.accent)}
+  ${drawAgentSprite(DESKS.database.x + 46, DESKS.database.y + 36, "database")}
+  ${drawSpeechBox(DESKS.database.x + 18, DESKS.database.y + 150, "database", speechLines.database)}
 
-  <!-- Scene indicator -->
-  ${sceneIndicator}
+  ${drawLabelTag(DESKS.devops.x + 66, DESKS.devops.y - 10, "DEVOPS_AGENT", ROLE_COLORS.devops.accent)}
+  ${drawAgentSprite(DESKS.devops.x + 92, DESKS.devops.y + 36, "devops")}
+  ${drawSpeechBox(DESKS.devops.x + 66, DESKS.devops.y + 150, "devops", speechLines.devops)}
 
-  <!-- Static desks and agents -->
-  ${desksMarkup}
+  <!-- NPCs -->
+  ${drawLabelTag(250, 96, "PM_AGENT", "#e879f9")}
+  ${drawAgentSprite(258, 110, "pm")}
 
-  <!-- Walking agents (render above static) -->
-  ${walkersMarkup}
+  ${drawLabelTag(382, 286, "NEW_HIRE!", "#fbbf24")}
+  ${drawAgentSprite(376, 300, "intern")}
 
-  <!-- Speech bubbles (topmost) -->
-  ${bubblesMarkup}
+  ${drawLabelTag(744, 332, "QA_AGENT", "#22c55e")}
+  ${drawAgentSprite(742, 346, "qa")}
 
-  <!-- Ticker bar -->
-  <rect x="0" y="${HEIGHT - 36}" width="${WIDTH}" height="36" fill="#070e1c" opacity="0.95"/>
-  <rect x="0" y="${HEIGHT - 36}" width="${WIDTH}" height="1" fill="#1e2d45"/>
-  <svg x="10" y="${HEIGHT - 26}" width="${WIDTH - 20}" height="20" overflow="hidden">
-    <text x="${WIDTH}" y="14" font-size="12" font-family="monospace" font-weight="700"
-      fill="#7dd3fc">
-      ${esc(tickerRaw)}
-      <animateTransform attributeName="transform" type="translate"
-        from="${WIDTH},0" to="-${tickerRaw.length * 8},0"
-        dur="${tickerDur}" repeatCount="indefinite"/>
-    </text>
-  </svg>
+  ${drawLabelTag(704, 96, "MEMORY (SESSION 2)", "#93c5fd")}
+  <g transform="translate(770 110)">
+    <rect x="0" y="10" width="52" height="56" rx="14" fill="#0b1220" opacity="0.55"/>
+    <rect x="8" y="18" width="36" height="32" rx="10" fill="#1f2937"/>
+    <circle cx="20" cy="34" r="4" fill="#93c5fd"/>
+    <circle cx="32" cy="34" r="4" fill="#93c5fd"/>
+    <rect x="16" y="52" width="20" height="10" rx="5" fill="#64748b"/>
+  </g>
 
-  <!-- Interactive link overlay (clickable area) -->
+  <!-- Task arrows -->
+  ${drawArrow(328, 140, 540, 140, "#2dd4bf")}
+  ${drawArrow(340, 410, 540, 410, "#60a5fa")}
+  ${drawArrow(470, 320, 700, 320, "#34d399")}
+
+  <!-- Footer / ticker -->
+  <rect x="0" y="${HEIGHT - ROOM.footerH}" width="${WIDTH}" height="${ROOM.footerH}" fill="#070e1c" opacity="0.98"/>
+  <rect x="0" y="${HEIGHT - ROOM.footerH}" width="${WIDTH}" height="1" fill="#1e2d45"/>
+  <text x="18" y="${HEIGHT - 18}" font-size="12" font-family="monospace" font-weight="800" fill="#7dd3fc">
+    ${esc(tickerRaw)}
+  </text>
+
+  <!-- Click-through badge (not full overlay) -->
   <a href="${linkAttr}" xlink:href="${linkAttr}" target="_blank" rel="noopener">
-    <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="transparent"/>
+    <rect x="${WIDTH - 210}" y="18" width="190" height="26" rx="10" fill="rgba(0,0,0,0.25)" stroke="#334155" stroke-width="2"/>
+    <text x="${WIDTH - 115}" y="36" font-size="11" font-family="monospace" fill="#e2e8f0" text-anchor="middle">OPEN_INTERACTIVE_VIEW</text>
   </a>
 </svg>`;
 

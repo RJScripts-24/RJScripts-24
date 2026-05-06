@@ -32,7 +32,9 @@ Rules:
   "devops": "<line>"
 }`;
 
-  const userPrompt = `Commit by ${commit.author}: "${commit.message}" (domain: ${commit.domain})`;
+  const files = Array.isArray(commit.filesChanged) ? commit.filesChanged.slice(0, 10) : [];
+  const filesText = files.length ? files.join(", ") : "n/a";
+  const userPrompt = `Commit by ${commit.author}: "${commit.message}"\nDomain: ${commit.domain}\nFiles: ${filesText}\nWrite 4 short office reactions.`;
 
   let raw;
   try {
@@ -56,9 +58,26 @@ Rules:
   const roles = ["frontend", "backend", "database", "devops"];
   const result = {};
   for (const role of roles) {
-    result[role] = clamp(parsed[role] || `${role} reviewing commit`);
+    result[role] = clamp(parsed[role] || `${role} reviewing changes`);
   }
   return result;
+}
+
+function buildFallbackLines(commit) {
+  const msg = clamp(String(commit.message || "Update shipped"), 34);
+  const domain = commit.domain || "general";
+  const templates = {
+    frontend: domain === "frontend" ? `UI shipped: ${msg}` : "UI ready for review",
+    backend:  domain === "backend"  ? `API update: ${msg}` : "API looks stable",
+    database: domain === "database" ? `DB change: ${msg}` : "DB checks passed",
+    devops:   domain === "devops"   ? `CI tweak: ${msg}` : "Pipeline green",
+  };
+  return {
+    frontend: clamp(templates.frontend),
+    backend:  clamp(templates.backend),
+    database: clamp(templates.database),
+    devops:   clamp(templates.devops),
+  };
 }
 
 async function main() {
@@ -74,14 +93,20 @@ async function main() {
     console.log("[update-office-state] Speech lines generated:", JSON.stringify(speechLines));
     state.agents = speechLines;
   } else {
-    // Fallback: keep existing agents or use defaults
+    // Fallback: deterministic lines (commit-aware) or keep existing strings
     console.warn("[update-office-state] Using fallback speech lines.");
-    state.agents = {
-      frontend: clamp(typeof state.agents?.frontend === "string" ? state.agents.frontend : "CI pipeline green"),
-      backend:  clamp(typeof state.agents?.backend  === "string" ? state.agents.backend  : "API schema updated"),
-      database: clamp(typeof state.agents?.database === "string" ? state.agents.database : "Migration complete"),
-      devops:   clamp(typeof state.agents?.devops   === "string" ? state.agents.devops   : "Deploy to prod done"),
-    };
+    const existingOk =
+      state.agents &&
+      typeof state.agents.frontend === "string" &&
+      typeof state.agents.backend === "string" &&
+      typeof state.agents.database === "string" &&
+      typeof state.agents.devops === "string";
+    state.agents = existingOk ? {
+      frontend: clamp(state.agents.frontend),
+      backend:  clamp(state.agents.backend),
+      database: clamp(state.agents.database),
+      devops:   clamp(state.agents.devops),
+    } : buildFallbackLines(commit);
   }
 
   state.lastCommit = {

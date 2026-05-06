@@ -1,796 +1,597 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="860" height="600" viewBox="0 0 860 600"
-  role="img" aria-label="Neural Office � 4 AI agents discussing your latest commit">
+  role="img" aria-label="Neural Office � static pixel office scene">
   <defs>
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1220"/>
-      <stop offset="1" stop-color="#0f1a2e"/>
+    <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0a1628"/>
+      <stop offset="1" stop-color="#0b1220"/>
     </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="860" height="600" fill="url(#bgGrad)"/>
+  <rect x="0" y="0" width="860" height="90" fill="#0b1220"/>
+<rect x="0" y="86" width="860" height="4" fill="#111c33"/>
+<rect x="0" y="0" width="860" height="2" fill="rgba(255,255,255,0.05)"/>
+<rect x="28" y="14" width="70" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>
+<text x="63" y="38" font-size="10" font-family="monospace" fill="#7dd3fc" text-anchor="middle">NEURAL</text>
+<rect x="760" y="14" width="72" height="40" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>
+<text x="796" y="38" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">OFFICE</text>
+  <rect x="0" y="90" width="860" height="510" fill="#3b2414"/>
+<rect x="0" y="90" width="860" height="14" fill="#402715"/>
+<rect x="0" y="103" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="92" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="104" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="117" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="106" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="118" width="860" height="14" fill="#402715"/>
+<rect x="0" y="131" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="120" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="132" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="145" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="134" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="146" width="860" height="14" fill="#402715"/>
+<rect x="0" y="159" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="148" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="160" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="173" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="162" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="174" width="860" height="14" fill="#402715"/>
+<rect x="0" y="187" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="176" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="188" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="201" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="190" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="202" width="860" height="14" fill="#402715"/>
+<rect x="0" y="215" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="204" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="216" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="229" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="218" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="230" width="860" height="14" fill="#402715"/>
+<rect x="0" y="243" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="232" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="244" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="257" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="246" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="258" width="860" height="14" fill="#402715"/>
+<rect x="0" y="271" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="260" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="272" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="285" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="274" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="286" width="860" height="14" fill="#402715"/>
+<rect x="0" y="299" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="288" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="300" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="313" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="302" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="314" width="860" height="14" fill="#402715"/>
+<rect x="0" y="327" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="316" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="328" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="341" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="330" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="342" width="860" height="14" fill="#402715"/>
+<rect x="0" y="355" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="344" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="356" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="369" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="358" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="370" width="860" height="14" fill="#402715"/>
+<rect x="0" y="383" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="372" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="384" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="397" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="386" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="398" width="860" height="14" fill="#402715"/>
+<rect x="0" y="411" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="400" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="412" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="425" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="414" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="426" width="860" height="14" fill="#402715"/>
+<rect x="0" y="439" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="428" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="440" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="453" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="442" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="454" width="860" height="14" fill="#402715"/>
+<rect x="0" y="467" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="456" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="468" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="481" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="470" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="482" width="860" height="14" fill="#402715"/>
+<rect x="0" y="495" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="484" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="496" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="509" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="498" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="510" width="860" height="14" fill="#402715"/>
+<rect x="0" y="523" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="512" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="524" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="537" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="52" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="192" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="332" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="472" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="612" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="752" y="526" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="538" width="860" height="14" fill="#402715"/>
+<rect x="0" y="551" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="64" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="204" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="344" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="484" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="624" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="764" y="540" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="0" y="552" width="860" height="14" fill="#3a2313"/>
+<rect x="0" y="565" width="860" height="1" fill="rgba(255,255,255,0.05)"/>
+<rect x="40" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="180" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="320" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="460" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="600" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
+<rect x="740" y="554" width="2" height="10" fill="rgba(0,0,0,0.12)"/>
 
-  <!-- Subtle dot grid background -->
-  <rect width="860" height="600" fill="none"
-    stroke="none" opacity="0.18"/>
+  <!-- Header -->
+  <rect x="0" y="0" width="860" height="64" fill="url(#hdrGrad)"/>
+  <text x="430" y="30" font-size="18" font-family="monospace" font-weight="900"
+    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE � PIXEL FLOOR</text>
+  <text x="430" y="50" font-size="10" font-family="monospace"
+    fill="#9fb3c8" text-anchor="middle">commit 1adeb75 by rkj24 � Improved the svg again</text>
 
-  <!-- Floor grid lines -->
-  <line x1="30" y1="260" x2="830" y2="260"
-      stroke="#1e2d45" stroke-width="1"/>
-<line x1="30" y1="314" x2="830" y2="314"
-      stroke="#1e2d45" stroke-width="1"/>
-<line x1="30" y1="368" x2="830" y2="368"
-      stroke="#1e2d45" stroke-width="1"/>
-<line x1="30" y1="422" x2="830" y2="422"
-      stroke="#1e2d45" stroke-width="1"/>
-<line x1="30" y1="476" x2="830" y2="476"
-      stroke="#1e2d45" stroke-width="1"/>
-<line x1="30" y1="530" x2="830" y2="530"
-      stroke="#1e2d45" stroke-width="1"/>
+  <!-- Desks -->
+  <g><rect x="92" y="178" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>
+<rect x="104" y="200" width="226" height="78" rx="10" fill="#6b4e2e"/>
+<rect x="184" y="140" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+<rect x="190" y="146" width="80" height="46" rx="8" fill="#38bdf8" opacity="0.25"/>
+<rect x="226" y="198" width="10" height="18" rx="3" fill="#475569"/>
+<rect x="196" y="216" width="68" height="12" rx="4" fill="#334155"/>
+<rect x="118" y="192" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>
+<rect x="292" y="212" width="14" height="16" rx="3" fill="#0f172a"/>
+<rect x="306" y="216" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<rect x="120" y="160" width="14" height="12" rx="3" fill="#14532d"/>
+<circle cx="127" cy="156" r="7" fill="#22c55e" opacity="0.9"/></g>
+  <g><rect x="550" y="178" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>
+<rect x="562" y="200" width="226" height="78" rx="10" fill="#6b4e2e"/>
+<rect x="642" y="140" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+<rect x="648" y="146" width="80" height="46" rx="8" fill="#34d399" opacity="0.25"/>
+<rect x="684" y="198" width="10" height="18" rx="3" fill="#475569"/>
+<rect x="654" y="216" width="68" height="12" rx="4" fill="#334155"/>
+<rect x="576" y="192" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>
+<rect x="750" y="212" width="14" height="16" rx="3" fill="#0f172a"/>
+<rect x="764" y="216" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<rect x="578" y="160" width="14" height="12" rx="3" fill="#14532d"/>
+<circle cx="585" cy="156" r="7" fill="#22c55e" opacity="0.9"/></g>
+  <g><rect x="92" y="408" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>
+<rect x="104" y="430" width="226" height="78" rx="10" fill="#6b4e2e"/>
+<rect x="184" y="370" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+<rect x="190" y="376" width="80" height="46" rx="8" fill="#a78bfa" opacity="0.25"/>
+<rect x="226" y="428" width="10" height="18" rx="3" fill="#475569"/>
+<rect x="196" y="446" width="68" height="12" rx="4" fill="#334155"/>
+<rect x="118" y="422" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>
+<rect x="292" y="442" width="14" height="16" rx="3" fill="#0f172a"/>
+<rect x="306" y="446" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<rect x="120" y="390" width="14" height="12" rx="3" fill="#14532d"/>
+<circle cx="127" cy="386" r="7" fill="#22c55e" opacity="0.9"/></g>
+  <g><rect x="550" y="408" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>
+<rect x="562" y="430" width="226" height="78" rx="10" fill="#6b4e2e"/>
+<rect x="642" y="370" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+<rect x="648" y="376" width="80" height="46" rx="8" fill="#fb923c" opacity="0.25"/>
+<rect x="684" y="428" width="10" height="18" rx="3" fill="#475569"/>
+<rect x="654" y="446" width="68" height="12" rx="4" fill="#334155"/>
+<rect x="576" y="422" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>
+<rect x="750" y="442" width="14" height="16" rx="3" fill="#0f172a"/>
+<rect x="764" y="446" width="6" height="8" rx="3" fill="none" stroke="#94a3b8" stroke-width="2"/>
+<rect x="578" y="390" width="14" height="12" rx="3" fill="#14532d"/>
+<circle cx="585" cy="386" r="7" fill="#22c55e" opacity="0.9"/></g>
 
-  <!-- Ambient particles -->
-  <circle cx="413" cy="188" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="4.0s" begin="0.0s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="747" cy="394" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="5.0s" begin="0.7s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="361" cy="482" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="6.0s" begin="1.4s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="435" cy="242" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="7.0s" begin="2.1s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="129" cy="234" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="8.0s" begin="2.8s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="395" cy="306" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="4.0s" begin="3.5s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="569" cy="152" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="5.0s" begin="4.2s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="263" cy="204" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="6.0s" begin="4.9s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="657" cy="426" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="7.0s" begin="5.6s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="683" cy="278" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="8.0s" begin="6.3s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="705" cy="138" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="4.0s" begin="7.0s"
-          repeatCount="indefinite"/>
-      </circle>
-<circle cx="219" cy="272" r="2" fill="rgba(99,179,237,0.4)">
-        <animateTransform attributeName="transform" type="translate"
-          from="0,0" to="0,-40" dur="5.0s" begin="7.7s"
-          repeatCount="indefinite"/>
-      </circle>
-
-  <!-- Glow rings (active agent indicator) -->
-  <circle cx="140" cy="150" r="36" fill="none"
-      stroke="#38bdf8" stroke-width="2" opacity="0" id="glow-frontend" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0;0.25"
-        dur="40s" repeatCount="indefinite"/>
-      <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="0s" repeatCount="10"/>
-      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="0s" repeatCount="10"/>
-    </circle>
-<circle cx="680" cy="150" r="36" fill="none"
-      stroke="#34d399" stroke-width="2" opacity="0" id="glow-backend" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.25;0.5"
-        dur="40s" repeatCount="indefinite"/>
-      <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="10s" repeatCount="10"/>
-      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="10s" repeatCount="10"/>
-    </circle>
-<circle cx="140" cy="400" r="36" fill="none"
-      stroke="#a78bfa" stroke-width="2" opacity="0" id="glow-database" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.5;0.75"
-        dur="40s" repeatCount="indefinite"/>
-      <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="20s" repeatCount="10"/>
-      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="20s" repeatCount="10"/>
-    </circle>
-<circle cx="680" cy="400" r="36" fill="none"
-      stroke="#fb923c" stroke-width="2" opacity="0" id="glow-devops" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.75;1"
-        dur="40s" repeatCount="indefinite"/>
-      <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="30s" repeatCount="10"/>
-      <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="30s" repeatCount="10"/>
-    </circle>
-
-  <!-- Title bar -->
-  <rect x="0" y="0" width="860" height="55" fill="#0a1628" opacity="0.9"/>
-  <text x="430" y="28" font-size="18" font-family="monospace" font-weight="900"
-    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE · COMMIT CHOREOGRAPHY</text>
-  <text x="430" y="46" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit 2a9ae... by rkj24</text>
-
-  <!-- Scene indicator -->
-  <text x="430" y="75" font-size="10" font-family="monospace"
-      fill="#38bdf8" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0;0.25"
-        dur="40s" repeatCount="indefinite"/>
-      ► FRONTEND AGENT REPORTING
-    </text>
-<text x="430" y="75" font-size="10" font-family="monospace"
-      fill="#34d399" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.25;0.5"
-        dur="40s" repeatCount="indefinite"/>
-      ► BACKEND AGENT REPORTING
-    </text>
-<text x="430" y="75" font-size="10" font-family="monospace"
-      fill="#a78bfa" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.5;0.75"
-        dur="40s" repeatCount="indefinite"/>
-      ► DATABASE AGENT REPORTING
-    </text>
-<text x="430" y="75" font-size="10" font-family="monospace"
-      fill="#fb923c" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility" calcMode="discrete"
-        values="hidden;visible;hidden"
-        keyTimes="0;0.75;1"
-        dur="40s" repeatCount="indefinite"/>
-      ► DEVOPS AGENT REPORTING
-    </text>
-
-  <!-- Static desks and agents -->
+  <!-- Main agents -->
   <g>
-    <!-- desk body -->
-    <rect x="90" y="186" width="100" height="40" rx="4"
-      fill="#6b4e2e"/>
-    <!-- desk surface -->
-    <rect x="80" y="170" width="120" height="16" rx="4"
-      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
-    <!-- monitor stand -->
-    <rect x="136" y="138" width="8" height="16" fill="#555"/>
-    <!-- monitor -->
-    <rect x="110" y="98" width="60" height="40" rx="6"
-      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-    <!-- screen glow -->
-    <rect x="113" y="101" width="54" height="34" rx="4"
-      fill="#38bdf8" opacity="0.3"/>
-    <!-- keyboard -->
-    <rect x="115" y="168" width="50" height="10" rx="3" fill="#334155"/>
+    <rect x="110" y="120" width="132" height="22" rx="6" fill="#0b1220" stroke="#38bdf8" stroke-width="2"/>
+    <text x="176" y="135" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">FRONTEND_AGENT</text>
   </g>
-<g>
-    <!-- label -->
-    <rect x="76" y="62" width="128" height="20" rx="10"
-      fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
-    <text x="140" y="76" font-size="11" font-family="monospace"
-      fill="#38bdf8" text-anchor="middle">FRONTEND AGENT</text>
+  <g transform="translate(138 166)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#0ea5e9"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
 
-    <!-- head -->
-    <rect x="126" y="90" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <!-- hair strip -->
-    <rect x="126" y="90" width="28" height="6" rx="4" fill="#0ea5e9"/>
-    <!-- left eye white -->
-    <rect x="132" y="98" width="6" height="6" fill="#ffffff"/>
-    <!-- right eye white -->
-    <rect x="142" y="98" width="6" height="6" fill="#ffffff"/>
-    <!-- left pupil -->
-    <rect x="133" y="99" width="4" height="4" fill="#111827"/>
-    <!-- right pupil -->
-    <rect x="143" y="99" width="4" height="4" fill="#111827"/>
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#38bdf8"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
 
-    <!-- neck -->
-    <rect x="135" y="114" width="10" height="8" fill="#fbbf24"/>
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#38bdf8"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#38bdf8"/>
 
-    <!-- torso -->
-    <rect x="122" y="122" width="36" height="32" rx="2" fill="#38bdf8"/>
-    <!-- badge -->
-    <rect x="134" y="134" width="12" height="8" rx="2"
-      fill="#fff" opacity="0.7"/>
-
-    <!-- left arm -->
-    <rect x="112" y="124" width="10" height="28" rx="4" fill="#38bdf8"
-      transform="rotate(-8, 117, 124)"/>
-    <!-- right arm -->
-    <rect x="158" y="124" width="10" height="28" rx="4" fill="#38bdf8"
-      transform="rotate(8, 163, 124)"/>
-
-    <!-- left leg -->
-    <rect x="126" y="154" width="14" height="28" rx="4" fill="#1e293b"/>
-    <!-- right leg -->
-    <rect x="140" y="154" width="14" height="28" rx="4" fill="#1e293b"/>
-
-    <!-- left shoe -->
-    <rect x="125" y="182" width="16" height="10" rx="3" fill="#0f172a"/>
-    <!-- right shoe -->
-    <rect x="139" y="182" width="16" height="10" rx="3" fill="#0f172a"/>
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
   </g>
-<g>
-    <!-- desk body -->
-    <rect x="630" y="186" width="100" height="40" rx="4"
-      fill="#6b4e2e"/>
-    <!-- desk surface -->
-    <rect x="620" y="170" width="120" height="16" rx="4"
-      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
-    <!-- monitor stand -->
-    <rect x="676" y="138" width="8" height="16" fill="#555"/>
-    <!-- monitor -->
-    <rect x="650" y="98" width="60" height="40" rx="6"
-      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-    <!-- screen glow -->
-    <rect x="653" y="101" width="54" height="34" rx="4"
-      fill="#34d399" opacity="0.3"/>
-    <!-- keyboard -->
-    <rect x="655" y="168" width="50" height="10" rx="3" fill="#334155"/>
-  </g>
-<g>
-    <!-- label -->
-    <rect x="620" y="62" width="120" height="20" rx="10"
-      fill="#0f172a" stroke="#34d399" stroke-width="2"/>
-    <text x="680" y="76" font-size="11" font-family="monospace"
-      fill="#34d399" text-anchor="middle">BACKEND AGENT</text>
-
-    <!-- head -->
-    <rect x="666" y="90" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <!-- hair strip -->
-    <rect x="666" y="90" width="28" height="6" rx="4" fill="#10b981"/>
-    <!-- left eye white -->
-    <rect x="672" y="98" width="6" height="6" fill="#ffffff"/>
-    <!-- right eye white -->
-    <rect x="682" y="98" width="6" height="6" fill="#ffffff"/>
-    <!-- left pupil -->
-    <rect x="673" y="99" width="4" height="4" fill="#111827"/>
-    <!-- right pupil -->
-    <rect x="683" y="99" width="4" height="4" fill="#111827"/>
-
-    <!-- neck -->
-    <rect x="675" y="114" width="10" height="8" fill="#fbbf24"/>
-
-    <!-- torso -->
-    <rect x="662" y="122" width="36" height="32" rx="2" fill="#34d399"/>
-    <!-- badge -->
-    <rect x="674" y="134" width="12" height="8" rx="2"
-      fill="#fff" opacity="0.7"/>
-
-    <!-- left arm -->
-    <rect x="652" y="124" width="10" height="28" rx="4" fill="#34d399"
-      transform="rotate(-8, 657, 124)"/>
-    <!-- right arm -->
-    <rect x="698" y="124" width="10" height="28" rx="4" fill="#34d399"
-      transform="rotate(8, 703, 124)"/>
-
-    <!-- left leg -->
-    <rect x="666" y="154" width="14" height="28" rx="4" fill="#1e293b"/>
-    <!-- right leg -->
-    <rect x="680" y="154" width="14" height="28" rx="4" fill="#1e293b"/>
-
-    <!-- left shoe -->
-    <rect x="665" y="182" width="16" height="10" rx="3" fill="#0f172a"/>
-    <!-- right shoe -->
-    <rect x="679" y="182" width="16" height="10" rx="3" fill="#0f172a"/>
-  </g>
-<g>
-    <!-- desk body -->
-    <rect x="90" y="436" width="100" height="40" rx="4"
-      fill="#6b4e2e"/>
-    <!-- desk surface -->
-    <rect x="80" y="420" width="120" height="16" rx="4"
-      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
-    <!-- monitor stand -->
-    <rect x="136" y="388" width="8" height="16" fill="#555"/>
-    <!-- monitor -->
-    <rect x="110" y="348" width="60" height="40" rx="6"
-      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-    <!-- screen glow -->
-    <rect x="113" y="351" width="54" height="34" rx="4"
-      fill="#a78bfa" opacity="0.3"/>
-    <!-- keyboard -->
-    <rect x="115" y="418" width="50" height="10" rx="3" fill="#334155"/>
-  </g>
-<g>
-    <!-- label -->
-    <rect x="76" y="312" width="128" height="20" rx="10"
-      fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
-    <text x="140" y="326" font-size="11" font-family="monospace"
-      fill="#a78bfa" text-anchor="middle">DATABASE AGENT</text>
-
-    <!-- head -->
-    <rect x="126" y="340" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <!-- hair strip -->
-    <rect x="126" y="340" width="28" height="6" rx="4" fill="#7c3aed"/>
-    <!-- left eye white -->
-    <rect x="132" y="348" width="6" height="6" fill="#ffffff"/>
-    <!-- right eye white -->
-    <rect x="142" y="348" width="6" height="6" fill="#ffffff"/>
-    <!-- left pupil -->
-    <rect x="133" y="349" width="4" height="4" fill="#111827"/>
-    <!-- right pupil -->
-    <rect x="143" y="349" width="4" height="4" fill="#111827"/>
-
-    <!-- neck -->
-    <rect x="135" y="364" width="10" height="8" fill="#fbbf24"/>
-
-    <!-- torso -->
-    <rect x="122" y="372" width="36" height="32" rx="2" fill="#a78bfa"/>
-    <!-- badge -->
-    <rect x="134" y="384" width="12" height="8" rx="2"
-      fill="#fff" opacity="0.7"/>
-
-    <!-- left arm -->
-    <rect x="112" y="374" width="10" height="28" rx="4" fill="#a78bfa"
-      transform="rotate(-8, 117, 374)"/>
-    <!-- right arm -->
-    <rect x="158" y="374" width="10" height="28" rx="4" fill="#a78bfa"
-      transform="rotate(8, 163, 374)"/>
-
-    <!-- left leg -->
-    <rect x="126" y="404" width="14" height="28" rx="4" fill="#1e293b"/>
-    <!-- right leg -->
-    <rect x="140" y="404" width="14" height="28" rx="4" fill="#1e293b"/>
-
-    <!-- left shoe -->
-    <rect x="125" y="432" width="16" height="10" rx="3" fill="#0f172a"/>
-    <!-- right shoe -->
-    <rect x="139" y="432" width="16" height="10" rx="3" fill="#0f172a"/>
-  </g>
-<g>
-    <!-- desk body -->
-    <rect x="630" y="436" width="100" height="40" rx="4"
-      fill="#6b4e2e"/>
-    <!-- desk surface -->
-    <rect x="620" y="420" width="120" height="16" rx="4"
-      fill="#7c5a3a" stroke="#5a3e28" stroke-width="1"/>
-    <!-- monitor stand -->
-    <rect x="676" y="388" width="8" height="16" fill="#555"/>
-    <!-- monitor -->
-    <rect x="650" y="348" width="60" height="40" rx="6"
-      fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-    <!-- screen glow -->
-    <rect x="653" y="351" width="54" height="34" rx="4"
-      fill="#fb923c" opacity="0.3"/>
-    <!-- keyboard -->
-    <rect x="655" y="418" width="50" height="10" rx="3" fill="#334155"/>
-  </g>
-<g>
-    <!-- label -->
-    <rect x="624" y="312" width="112" height="20" rx="10"
-      fill="#0f172a" stroke="#fb923c" stroke-width="2"/>
-    <text x="680" y="326" font-size="11" font-family="monospace"
-      fill="#fb923c" text-anchor="middle">DEVOPS AGENT</text>
-
-    <!-- head -->
-    <rect x="666" y="340" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <!-- hair strip -->
-    <rect x="666" y="340" width="28" height="6" rx="4" fill="#ea580c"/>
-    <!-- left eye white -->
-    <rect x="672" y="348" width="6" height="6" fill="#ffffff"/>
-    <!-- right eye white -->
-    <rect x="682" y="348" width="6" height="6" fill="#ffffff"/>
-    <!-- left pupil -->
-    <rect x="673" y="349" width="4" height="4" fill="#111827"/>
-    <!-- right pupil -->
-    <rect x="683" y="349" width="4" height="4" fill="#111827"/>
-
-    <!-- neck -->
-    <rect x="675" y="364" width="10" height="8" fill="#fbbf24"/>
-
-    <!-- torso -->
-    <rect x="662" y="372" width="36" height="32" rx="2" fill="#fb923c"/>
-    <!-- badge -->
-    <rect x="674" y="384" width="12" height="8" rx="2"
-      fill="#fff" opacity="0.7"/>
-
-    <!-- left arm -->
-    <rect x="652" y="374" width="10" height="28" rx="4" fill="#fb923c"
-      transform="rotate(-8, 657, 374)"/>
-    <!-- right arm -->
-    <rect x="698" y="374" width="10" height="28" rx="4" fill="#fb923c"
-      transform="rotate(8, 703, 374)"/>
-
-    <!-- left leg -->
-    <rect x="666" y="404" width="14" height="28" rx="4" fill="#1e293b"/>
-    <!-- right leg -->
-    <rect x="680" y="404" width="14" height="28" rx="4" fill="#1e293b"/>
-
-    <!-- left shoe -->
-    <rect x="665" y="432" width="16" height="10" rx="3" fill="#0f172a"/>
-    <!-- right shoe -->
-    <rect x="679" y="432" width="16" height="10" rx="3" fill="#0f172a"/>
+  <g>
+    <rect x="110" y="280" width="200" height="36" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <text x="120" y="302" font-size="11" font-family="monospace" fill="#ffffff">CI pipeline green</text>
   </g>
 
-  <!-- Walking agents (render above static) -->
-  <g id="walker-frontend" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0;0.25"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform="translate(180 180)">
-      <g id="walker-body-frontend">
-        <!-- Stand up -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -20" dur="0.5s" begin="0s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Walk to target -->
-        <animateMotion path="M 0,-20 L 540,-20" dur="2s" begin="0.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Pause (hold position implicitly via freeze) -->
-
-        <!-- Walk back -->
-        <animateMotion path="M 540,-20 L 0,-20" dur="2s" begin="5.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Sit down -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 -20; 0 0" dur="0.5s" begin="7.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Footstep bob during forward walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="0.5s" repeatCount="10"/>
-
-        <!-- Footstep bob during return walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="5.5s" repeatCount="10"/>
-
-        
-    <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <rect x="-14" y="0" width="28" height="6" rx="4" fill="#0ea5e9"/>
-    <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="2" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="-7" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="3" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="-5" y="24" width="10" height="8" fill="#fbbf24"/>
-    <rect x="-18" y="32" width="36" height="32" rx="2" fill="#38bdf8"/>
-    <rect x="-28" y="34" width="10" height="28" rx="4" fill="#38bdf8"/>
-    <rect x="18" y="34" width="10" height="28" rx="4" fill="#38bdf8"/>
-    <rect x="-14" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-    <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-      </g>
-    </g>
+  <g>
+    <rect x="598" y="120" width="124" height="22" rx="6" fill="#0b1220" stroke="#34d399" stroke-width="2"/>
+    <text x="660" y="135" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">BACKEND_AGENT</text>
   </g>
-<g id="walker-backend" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.25;0.5"
-      dur="40s" repeatCount="indefinite"/>
+  <g transform="translate(624 166)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#10b981"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
 
-    <g transform="translate(720 180)">
-      <g id="walker-body-backend">
-        <!-- Stand up -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -20" dur="0.5s" begin="10s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#34d399"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
 
-        <!-- Walk to target -->
-        <animateMotion path="M 0,-20 L -540,230" dur="2s" begin="10.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#34d399"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#34d399"/>
 
-        <!-- Pause (hold position implicitly via freeze) -->
-
-        <!-- Walk back -->
-        <animateMotion path="M -540,230 L 0,-20" dur="2s" begin="15.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Sit down -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 -20; 0 0" dur="0.5s" begin="17.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Footstep bob during forward walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="10.5s" repeatCount="10"/>
-
-        <!-- Footstep bob during return walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="15.5s" repeatCount="10"/>
-
-        
-    <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <rect x="-14" y="0" width="28" height="6" rx="4" fill="#10b981"/>
-    <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="2" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="-7" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="3" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="-5" y="24" width="10" height="8" fill="#fbbf24"/>
-    <rect x="-18" y="32" width="36" height="32" rx="2" fill="#34d399"/>
-    <rect x="-28" y="34" width="10" height="28" rx="4" fill="#34d399"/>
-    <rect x="18" y="34" width="10" height="28" rx="4" fill="#34d399"/>
-    <rect x="-14" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-    <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-      </g>
-    </g>
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
   </g>
-<g id="walker-database" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.5;0.75"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform="translate(180 430)">
-      <g id="walker-body-database">
-        <!-- Stand up -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -20" dur="0.5s" begin="20s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Walk to target -->
-        <animateMotion path="M 0,-20 L 540,-20" dur="2s" begin="20.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Pause (hold position implicitly via freeze) -->
-
-        <!-- Walk back -->
-        <animateMotion path="M 540,-20 L 0,-20" dur="2s" begin="25.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Sit down -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 -20; 0 0" dur="0.5s" begin="27.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Footstep bob during forward walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="20.5s" repeatCount="10"/>
-
-        <!-- Footstep bob during return walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="25.5s" repeatCount="10"/>
-
-        
-    <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <rect x="-14" y="0" width="28" height="6" rx="4" fill="#7c3aed"/>
-    <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="2" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="-7" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="3" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="-5" y="24" width="10" height="8" fill="#fbbf24"/>
-    <rect x="-18" y="32" width="36" height="32" rx="2" fill="#a78bfa"/>
-    <rect x="-28" y="34" width="10" height="28" rx="4" fill="#a78bfa"/>
-    <rect x="18" y="34" width="10" height="28" rx="4" fill="#a78bfa"/>
-    <rect x="-14" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-    <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-      </g>
-    </g>
-  </g>
-<g id="walker-devops" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.75;1"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform="translate(720 430)">
-      <g id="walker-body-devops">
-        <!-- Stand up -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -20" dur="0.5s" begin="30s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Walk to target -->
-        <animateMotion path="M 0,-20 L -540,-270" dur="2s" begin="30.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Pause (hold position implicitly via freeze) -->
-
-        <!-- Walk back -->
-        <animateMotion path="M -540,-270 L 0,-20" dur="2s" begin="35.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Sit down -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 -20; 0 0" dur="0.5s" begin="37.5s"
-          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
-
-        <!-- Footstep bob during forward walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="30.5s" repeatCount="10"/>
-
-        <!-- Footstep bob during return walk -->
-        <animateTransform attributeName="transform" type="translate"
-          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
-          begin="35.5s" repeatCount="10"/>
-
-        
-    <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
-    <rect x="-14" y="0" width="28" height="6" rx="4" fill="#ea580c"/>
-    <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="2" y="8" width="6" height="6" fill="#ffffff"/>
-    <rect x="-7" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="3" y="9" width="4" height="4" fill="#111827"/>
-    <rect x="-5" y="24" width="10" height="8" fill="#fbbf24"/>
-    <rect x="-18" y="32" width="36" height="32" rx="2" fill="#fb923c"/>
-    <rect x="-28" y="34" width="10" height="28" rx="4" fill="#fb923c"/>
-    <rect x="18" y="34" width="10" height="28" rx="4" fill="#fb923c"/>
-    <rect x="-14" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
-    <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-    <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
-      </g>
-    </g>
+  <g>
+    <rect x="598" y="280" width="200" height="36" rx="10" fill="#0f172a" stroke="#34d399" stroke-width="2"/>
+    <text x="608" y="302" font-size="11" font-family="monospace" fill="#ffffff">API schema updated</text>
   </g>
 
-  <!-- Speech bubbles (topmost) -->
-  <g id="bubble-3" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.0625;0.1375"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform-origin="720 80">
-      <animateTransform attributeName="transform" type="scale"
-        from="0" to="1" begin="2.5s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-      <animateTransform attributeName="transform" type="scale"
-        from="1" to="0" begin="5.2s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-
-      <!-- bubble rect -->
-      <rect x="620" y="52" width="200" height="56" rx="12"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-      <!-- tail triangle -->
-      <polygon points="720,120 710,108 730,108"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-
-      <!-- text -->
-      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="720" y="72">CI/CD note: I&apos;ll monitor</tspan>
-        <tspan x="720" dy="14">workflow…</tspan>
-      </text>
-    </g>
+  <g>
+    <rect x="110" y="350" width="132" height="22" rx="6" fill="#0b1220" stroke="#a78bfa" stroke-width="2"/>
+    <text x="176" y="365" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">DATABASE_AGENT</text>
   </g>
-<g id="bubble-13" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.3125;0.3875"
-      dur="40s" repeatCount="indefinite"/>
+  <g transform="translate(138 396)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#7c3aed"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
 
-    <g transform-origin="180 330">
-      <animateTransform attributeName="transform" type="scale"
-        from="0" to="1" begin="12.5s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-      <animateTransform attributeName="transform" type="scale"
-        from="1" to="0" begin="15.2s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#a78bfa"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
 
-      <!-- bubble rect -->
-      <rect x="80" y="302" width="200" height="56" rx="12"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-      <!-- tail triangle -->
-      <polygon points="180,370 170,358 190,358"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#a78bfa"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#a78bfa"/>
 
-      <!-- text -->
-      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="180" y="322">I reviewed commit 2a9ae0c.</tspan>
-        <tspan x="180" dy="14">Main f…</tspan>
-      </text>
-    </g>
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
   </g>
-<g id="bubble-23" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.5625;0.6375"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform-origin="720 330">
-      <animateTransform attributeName="transform" type="scale"
-        from="0" to="1" begin="22.5s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-      <animateTransform attributeName="transform" type="scale"
-        from="1" to="0" begin="25.2s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-
-      <!-- bubble rect -->
-      <rect x="620" y="302" width="200" height="56" rx="12"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-      <!-- tail triangle -->
-      <polygon points="720,370 710,358 730,358"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-
-      <!-- text -->
-      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="720" y="322">Commit message says: &quot;Readme</tspan>
-        <tspan x="720" dy="14">auto…</tspan>
-      </text>
-    </g>
-  </g>
-<g id="bubble-33" visibility="hidden">
-    <animate attributeName="visibility" calcMode="discrete"
-      values="hidden;visible;hidden"
-      keyTimes="0;0.8125;0.8875"
-      dur="40s" repeatCount="indefinite"/>
-
-    <g transform-origin="180 80">
-      <animateTransform attributeName="transform" type="scale"
-        from="0" to="1" begin="32.5s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-      <animateTransform attributeName="transform" type="scale"
-        from="1" to="0" begin="35.2s" dur="0.3s" fill="freeze"
-        additive="sum" repeatCount="indefinite" restart="always"/>
-
-      <!-- bubble rect -->
-      <rect x="80" y="52" width="200" height="56" rx="12"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-      <!-- tail triangle -->
-      <polygon points="180,120 170,108 190,108"
-        fill="#0f172a" stroke="#ffffff" stroke-width="1.5"/>
-
-      <!-- text -->
-      <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="180" y="72">Data implications look</tspan>
-        <tspan x="180" dy="14">manageable…</tspan>
-      </text>
-    </g>
+  <g>
+    <rect x="110" y="510" width="200" height="36" rx="10" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
+    <text x="120" y="532" font-size="11" font-family="monospace" fill="#ffffff">Migration complete</text>
   </g>
 
-  <!-- Ticker bar -->
-  <rect x="0" y="564" width="860" height="36" fill="#070e1c" opacity="0.95"/>
-  <rect x="0" y="564" width="860" height="1" fill="#1e2d45"/>
-  <svg x="10" y="574" width="840" height="20" overflow="hidden">
-    <text x="860" y="14" font-size="12" font-family="monospace" font-weight="700"
-      fill="#7dd3fc">
-      Agents reviewed 2a9ae0c: Readme automated | 4 files changed, 207 insertions(+), 27 deletions(-) | Pixel agent choreography active
-      <animateTransform attributeName="transform" type="translate"
-        from="860,0" to="-1032,0"
-        dur="38.7s" repeatCount="indefinite"/>
-    </text>
-  </svg>
+  <g>
+    <rect x="616" y="350" width="116" height="22" rx="6" fill="#0b1220" stroke="#fb923c" stroke-width="2"/>
+    <text x="674" y="365" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">DEVOPS_AGENT</text>
+  </g>
+  <g transform="translate(642 396)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#ea580c"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
 
-  <!-- Interactive link overlay (clickable area) -->
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#fb923c"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
+
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#fb923c"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#fb923c"/>
+
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+  </g>
+  <g>
+    <rect x="616" y="510" width="200" height="36" rx="10" fill="#0f172a" stroke="#fb923c" stroke-width="2"/>
+    <text x="626" y="532" font-size="11" font-family="monospace" fill="#ffffff">Deploy to prod done</text>
+  </g>
+
+  <!-- NPCs -->
+  <g>
+    <rect x="250" y="96" width="84" height="22" rx="6" fill="#0b1220" stroke="#e879f9" stroke-width="2"/>
+    <text x="292" y="111" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">PM_AGENT</text>
+  </g>
+  <g transform="translate(258 110)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#f97316"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
+
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#f472b6"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
+
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#f472b6"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#f472b6"/>
+
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+  </g>
+
+  <g>
+    <rect x="382" y="286" width="92" height="22" rx="6" fill="#0b1220" stroke="#fbbf24" stroke-width="2"/>
+    <text x="428" y="301" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">NEW_HIRE!</text>
+  </g>
+  <g transform="translate(376 300)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#1f2937"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
+
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#e2e8f0"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
+
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#e2e8f0"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#e2e8f0"/>
+
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+  </g>
+
+  <g>
+    <rect x="744" y="332" width="84" height="22" rx="6" fill="#0b1220" stroke="#22c55e" stroke-width="2"/>
+    <text x="786" y="347" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">QA_AGENT</text>
+  </g>
+  <g transform="translate(742 346)">
+    <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
+    <rect x="14" y="10" width="26" height="22" rx="6" fill="#fbbf24"/>
+    <rect x="14" y="10" width="26" height="6" rx="6" fill="#16a34a"/>
+    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
+    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
+
+    <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
+      fill="#22c55e"/>
+    <rect x="22" y="52" width="14" height="10" rx="3" fill="rgba(255,255,255,0.55)"/>
+
+    <rect x="8" y="44" width="10" height="22" rx="6" fill="#22c55e"/>
+    <rect x="40" y="44" width="10" height="22" rx="6" fill="#22c55e"/>
+
+    <rect x="18" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="30" y="70" width="10" height="24" rx="6" fill="#1e293b"/>
+    <rect x="16" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+    <rect x="28" y="92" width="14" height="10" rx="4" fill="#0f172a"/>
+  </g>
+
+  <g>
+    <rect x="704" y="96" width="164" height="22" rx="6" fill="#0b1220" stroke="#93c5fd" stroke-width="2"/>
+    <text x="786" y="111" font-size="11" font-family="monospace" font-weight="900"
+      fill="#e2e8f0" text-anchor="middle">MEMORY (SESSION 2)</text>
+  </g>
+  <g transform="translate(770 110)">
+    <rect x="0" y="10" width="52" height="56" rx="14" fill="#0b1220" opacity="0.55"/>
+    <rect x="8" y="18" width="36" height="32" rx="10" fill="#1f2937"/>
+    <circle cx="20" cy="34" r="4" fill="#93c5fd"/>
+    <circle cx="32" cy="34" r="4" fill="#93c5fd"/>
+    <rect x="16" y="52" width="20" height="10" rx="5" fill="#64748b"/>
+  </g>
+
+  <!-- Task arrows -->
+  <g opacity="0.95">
+    <polygon points="328.0,144.0 328.0,136.0 530.0,136.0 530.0,144.0"
+      fill="#2dd4bf"/>
+    <polygon points="540,140 530.0,149.0 530.0,131.0"
+      fill="#2dd4bf"/>
+  </g>
+  <g opacity="0.95">
+    <polygon points="340.0,414.0 340.0,406.0 530.0,406.0 530.0,414.0"
+      fill="#60a5fa"/>
+    <polygon points="540,410 530.0,419.0 530.0,401.0"
+      fill="#60a5fa"/>
+  </g>
+  <g opacity="0.95">
+    <polygon points="470.0,324.0 470.0,316.0 690.0,316.0 690.0,324.0"
+      fill="#34d399"/>
+    <polygon points="700,320 690.0,329.0 690.0,311.0"
+      fill="#34d399"/>
+  </g>
+
+  <!-- Footer / ticker -->
+  <rect x="0" y="554" width="860" height="46" fill="#070e1c" opacity="0.98"/>
+  <rect x="0" y="554" width="860" height="1" fill="#1e2d45"/>
+  <text x="18" y="582" font-size="12" font-family="monospace" font-weight="800" fill="#7dd3fc">
+    Agents reviewed 1adeb75: Improved the svg again | Static pixel office scene
+  </text>
+
+  <!-- Click-through badge (not full overlay) -->
   <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" xlink:href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html" target="_blank" rel="noopener">
-    <rect x="0" y="0" width="860" height="600" fill="transparent"/>
+    <rect x="650" y="18" width="190" height="26" rx="10" fill="rgba(0,0,0,0.25)" stroke="#334155" stroke-width="2"/>
+    <text x="745" y="36" font-size="11" font-family="monospace" fill="#e2e8f0" text-anchor="middle">OPEN_INTERACTIVE_VIEW</text>
   </a>
 </svg>
