@@ -8,14 +8,14 @@
 
 <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
   <img
-    src="office/base-office.svg"
-    alt="Neural Office — 4 AI agents discussing your latest commit"
+    src="office/neural-office.gif"
+    alt="Neural Office — pixel office animation"
     width="860"
     height="600"
   />
 </a>
 
-*4 pixel-art agents walking between desks, sharing your latest commit in real time.*
+*High-quality pixel office animation (GIF) for reliable README playback.*
 
 </div>
 

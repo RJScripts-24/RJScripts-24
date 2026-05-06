@@ -61,6 +61,11 @@ const DESKS = {
 const config = readJson(configPath);
 const state  = readJson(statePath);
 
+const FRAME = Number(process.env.FRAME || 0);
+const FRAMES = Math.max(1, Number(process.env.FRAMES || 1));
+const t = FRAMES > 1 ? (FRAME % FRAMES) / FRAMES : 0;
+const TAU = Math.PI * 2;
+
 const rawAgents = state.agents || {};
 function getSpeechLine(role) {
   const val = rawAgents[role];
@@ -157,7 +162,8 @@ function drawDeskCluster(x, y, role) {
   parts.push(`<rect x="${x}" y="${y + 48}" width="250" height="22" rx="8" fill="#7c5a3a" stroke="#5a3e28" stroke-width="2"/>`);
   parts.push(`<rect x="${x + 12}" y="${y + 70}" width="226" height="78" rx="10" fill="#6b4e2e"/>`);
   parts.push(`<rect x="${x + 92}" y="${y + 10}" width="92" height="58" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2"/>`);
-  parts.push(`<rect x="${x + 98}" y="${y + 16}" width="80" height="46" rx="8" fill="${c.accent}" opacity="0.25"/>`);
+  const glow = 0.18 + 0.12 * (0.5 + 0.5 * Math.sin(TAU * t + (role.charCodeAt(0) % 7)));
+  parts.push(`<rect x="${x + 98}" y="${y + 16}" width="80" height="46" rx="8" fill="${c.accent}" opacity="${glow.toFixed(2)}"/>`);
   parts.push(`<rect x="${x + 134}" y="${y + 68}" width="10" height="18" rx="3" fill="#475569"/>`);
   parts.push(`<rect x="${x + 104}" y="${y + 86}" width="68" height="12" rx="4" fill="#334155"/>`);
   parts.push(`<rect x="${x + 26}" y="${y + 62}" width="34" height="52" rx="10" fill="#111827" opacity="0.65"/>`);
@@ -180,14 +186,17 @@ function drawAgentSprite(x, y, kind) {
     memory:   { shirt: "#94a3b8", hair: "#64748b", skin: "#93c5fd" },
   }[kind] || { shirt: "#60a5fa", hair: "#334155", skin: "#fbbf24" };
 
-  return `<g transform="translate(${x} ${y})">
+  const phase = (kind.charCodeAt(0) % 9) * 0.37;
+  const bob = Math.round(Math.sin(TAU * t + phase) * 2);
+  const blink = (Math.floor((t * 8 + phase) % 8) === 0); // 1 frame blink
+  return `<g transform="translate(${x} ${y + bob})">
     <rect x="10" y="6" width="34" height="30" rx="8" fill="#0b1220" opacity="0.55"/>
     <rect x="14" y="10" width="26" height="22" rx="6" fill="${palette.skin}"/>
     <rect x="14" y="10" width="26" height="6" rx="6" fill="${palette.hair}"/>
-    <rect x="20" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
-    <rect x="30" y="20" width="6" height="6" rx="2" fill="#ffffff"/>
-    <rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
-    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="20" y="20" width="6" height="${blink ? 2 : 6}" rx="2" fill="#ffffff"/>
+    <rect x="30" y="20" width="6" height="${blink ? 2 : 6}" rx="2" fill="#ffffff"/>
+    ${blink ? "" : `<rect x="22" y="22" width="3" height="3" rx="1" fill="#111827"/>
+    <rect x="32" y="22" width="3" height="3" rx="1" fill="#111827"/>`}
 
     <path d="M13 38 h28 c6 0 10 4 10 10 v12 c0 6-4 10-10 10 H13 c-6 0-10-4-10-10 V48 c0-6 4-10 10-10 z"
       fill="${palette.shirt}"/>
@@ -220,7 +229,7 @@ const linkAttr = xmlAttrUrl(INTERACTIVE_URL);
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}"
-  role="img" aria-label="Neural Office ó static pixel office scene">
+  role="img" aria-label="Neural Office ù static pixel office scene">
   <defs>
     <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#0a1628"/>
@@ -234,9 +243,9 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   <!-- Header -->
   <rect x="0" y="0" width="${WIDTH}" height="${ROOM.headerH}" fill="url(#hdrGrad)"/>
   <text x="${WIDTH / 2}" y="30" font-size="18" font-family="monospace" font-weight="900"
-    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ∑ PIXEL FLOOR</text>
+    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ù PIXEL FLOOR</text>
   <text x="${WIDTH / 2}" y="50" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)} ∑ ${esc(commitMsg)}</text>
+    fill="#9fb3c8" text-anchor="middle">commit ${esc(commitSha)} by ${esc(commitAuthor)} ù ${esc(commitMsg)}</text>
 
   <!-- Desks -->
   ${drawDeskCluster(DESKS.frontend.x, DESKS.frontend.y, "frontend")}
@@ -281,9 +290,15 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   </g>
 
   <!-- Task arrows -->
-  ${drawArrow(328, 140, 540, 140, "#2dd4bf")}
-  ${drawArrow(340, 410, 540, 410, "#60a5fa")}
-  ${drawArrow(470, 320, 700, 320, "#34d399")}
+  <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t)).toFixed(2)}">
+    ${drawArrow(328, 140, 540, 140, "#2dd4bf")}
+  </g>
+  <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t + 1.7)).toFixed(2)}">
+    ${drawArrow(340, 410, 540, 410, "#60a5fa")}
+  </g>
+  <g opacity="${(0.65 + 0.25 * Math.sin(TAU * t + 3.2)).toFixed(2)}">
+    ${drawArrow(470, 320, 700, 320, "#34d399")}
+  </g>
 
   <!-- Footer / ticker -->
   <rect x="0" y="${HEIGHT - ROOM.footerH}" width="${WIDTH}" height="${ROOM.footerH}" fill="#070e1c" opacity="0.98"/>

@@ -1,8 +1,6 @@
 name: Update Neural Office SVG
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
