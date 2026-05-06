@@ -137,6 +137,81 @@ function drawLabelTag(x, y, text, accent = "#ffffff") {
   </g>`;
 }
 
+// Minimal 5x7 pixel font (A-Z, 0-9, _, space, !)
+const PIX = {
+  "A": ["01110","10001","10001","11111","10001","10001","10001"],
+  "B": ["11110","10001","11110","10001","10001","10001","11110"],
+  "C": ["01111","10000","10000","10000","10000","10000","01111"],
+  "D": ["11110","10001","10001","10001","10001","10001","11110"],
+  "E": ["11111","10000","11110","10000","10000","10000","11111"],
+  "F": ["11111","10000","11110","10000","10000","10000","10000"],
+  "G": ["01111","10000","10000","10011","10001","10001","01110"],
+  "H": ["10001","10001","11111","10001","10001","10001","10001"],
+  "I": ["11111","00100","00100","00100","00100","00100","11111"],
+  "J": ["00111","00010","00010","00010","00010","10010","01100"],
+  "K": ["10001","10010","11100","10010","10001","10001","10001"],
+  "L": ["10000","10000","10000","10000","10000","10000","11111"],
+  "M": ["10001","11011","10101","10001","10001","10001","10001"],
+  "N": ["10001","11001","10101","10011","10001","10001","10001"],
+  "O": ["01110","10001","10001","10001","10001","10001","01110"],
+  "P": ["11110","10001","10001","11110","10000","10000","10000"],
+  "Q": ["01110","10001","10001","10001","10101","10010","01101"],
+  "R": ["11110","10001","10001","11110","10010","10001","10001"],
+  "S": ["01111","10000","10000","01110","00001","00001","11110"],
+  "T": ["11111","00100","00100","00100","00100","00100","00100"],
+  "U": ["10001","10001","10001","10001","10001","10001","01110"],
+  "V": ["10001","10001","10001","10001","10001","01010","00100"],
+  "W": ["10001","10001","10001","10001","10101","11011","10001"],
+  "X": ["10001","01010","00100","00100","00100","01010","10001"],
+  "Y": ["10001","01010","00100","00100","00100","00100","00100"],
+  "Z": ["11111","00001","00010","00100","01000","10000","11111"],
+  "0": ["01110","10001","10011","10101","11001","10001","01110"],
+  "1": ["00100","01100","00100","00100","00100","00100","01110"],
+  "2": ["01110","10001","00001","00010","00100","01000","11111"],
+  "3": ["11110","00001","00001","01110","00001","00001","11110"],
+  "4": ["00010","00110","01010","10010","11111","00010","00010"],
+  "5": ["11111","10000","11110","00001","00001","10001","01110"],
+  "6": ["00110","01000","10000","11110","10001","10001","01110"],
+  "7": ["11111","00001","00010","00100","01000","01000","01000"],
+  "8": ["01110","10001","10001","01110","10001","10001","01110"],
+  "9": ["01110","10001","10001","01111","00001","00010","01100"],
+  "_": ["00000","00000","00000","00000","00000","00000","11111"],
+  "!": ["00100","00100","00100","00100","00100","00000","00100"],
+  " ": ["00000","00000","00000","00000","00000","00000","00000"],
+};
+
+function drawPixelText(x, y, text, color = "#e2e8f0", scale = 2) {
+  const s = String(text || "").toUpperCase();
+  const parts = [];
+  let cx = x;
+  for (const ch of s) {
+    const g = PIX[ch] || PIX[" "];
+    for (let row = 0; row < g.length; row++) {
+      const line = g[row];
+      for (let col = 0; col < line.length; col++) {
+        if (line[col] === "1") {
+          parts.push(`<rect x="${cx + col * scale}" y="${y + row * scale}" width="${scale}" height="${scale}" fill="${color}"/>`);
+        }
+      }
+    }
+    cx += (5 + 1) * scale; // glyph + spacing
+  }
+  return `<g>${parts.join("")}</g>`;
+}
+
+function drawLabelTagPixel(x, y, text, accent = "#ffffff") {
+  // Pill with pixel-font text (no <text> element)
+  const scale = 2;
+  const w = Math.max(70, text.length * (6 * scale) + 18);
+  const h = 22;
+  const tx = x + 10;
+  const ty = y + 6;
+  return `<g>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="#0b1220" stroke="${accent}" stroke-width="2"/>
+    ${drawPixelText(tx, ty, text, "#e2e8f0", scale)}
+  </g>`;
+}
+
 function drawArrow(x1, y1, x2, y2, color = "#2dd4bf") {
   const dx = x2 - x1;
   const dy = y2 - y1;
@@ -165,6 +240,30 @@ function drawArrow(x1, y1, x2, y2, color = "#2dd4bf") {
   </g>`;
 }
 
+function drawParticles() {
+  // small pixel particles drifting (frame-based)
+  const rand = prng(1337);
+  const parts = [];
+  for (let i = 0; i < 18; i++) {
+    const baseX = 12 + rand() * (WIDTH - 24);
+    const baseY = ROOM.floorTop + 8 + rand() * (HEIGHT - ROOM.floorTop - 20);
+    const sp = 6 + rand() * 16;
+    const dy = -Math.round(((FRAME % FRAMES) / Math.max(1, FRAMES)) * sp * 10) / 10;
+    parts.push(`<rect x="${baseX.toFixed(0)}" y="${(baseY + dy).toFixed(0)}" width="2" height="2" fill="rgba(125,211,252,0.55)"/>`);
+  }
+  return `<g>${parts.join("")}</g>`;
+}
+
+function drawScanlines() {
+  // subtle scanlines for pixel feel
+  const parts = [];
+  const offset = (FRAME % 6);
+  for (let y = ROOM.floorTop + offset; y < HEIGHT; y += 6) {
+    parts.push(`<rect x="0" y="${y}" width="${WIDTH}" height="1" fill="rgba(0,0,0,0.10)"/>`);
+  }
+  return `<g>${parts.join("")}</g>`;
+}
+
 function drawFloor() {
   const top = ROOM.floorTop;
   const plankH = 14;
@@ -189,10 +288,16 @@ function drawWall() {
   parts.push(`<rect x="0" y="0" width="${WIDTH}" height="${ROOM.floorTop}" fill="#0b1220"/>`);
   parts.push(`<rect x="0" y="${ROOM.floorTop - 4}" width="${WIDTH}" height="4" fill="#111c33"/>`);
   parts.push(`<rect x="0" y="0" width="${WIDTH}" height="2" fill="rgba(255,255,255,0.05)"/>`);
+  // Left/right poster blocks (pixelated, no words)
   parts.push(`<rect x="16" y="10" width="70" height="32" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
-  parts.push(`<text x="51" y="30" font-size="10" font-family="monospace" fill="#7dd3fc" text-anchor="middle">NEURAL</text>`);
+  parts.push(`<rect x="24" y="18" width="10" height="10" rx="2" fill="#7dd3fc" opacity="0.9"/>`);
+  parts.push(`<rect x="38" y="18" width="40" height="4" rx="2" fill="#334155"/>`);
+  parts.push(`<rect x="38" y="26" width="34" height="4" rx="2" fill="#334155"/>`);
+
   parts.push(`<rect x="${WIDTH - 86}" y="10" width="70" height="32" rx="6" fill="#111827" stroke="#334155" stroke-width="2"/>`);
-  parts.push(`<text x="${WIDTH - 51}" y="30" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">OFFICE</text>`);
+  parts.push(`<rect x="${WIDTH - 78}" y="18" width="10" height="10" rx="2" fill="#fbbf24" opacity="0.9"/>`);
+  parts.push(`<rect x="${WIDTH - 64}" y="18" width="40" height="4" rx="2" fill="#334155"/>`);
+  parts.push(`<rect x="${WIDTH - 64}" y="26" width="30" height="4" rx="2" fill="#334155"/>`);
   return parts.join("\n");
 }
 
@@ -260,7 +365,7 @@ const linkAttr = xmlAttrUrl(INTERACTIVE_URL);
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}"
-  role="img" aria-label="Neural Office ù static pixel office scene">
+  role="img" aria-label="Pixel office animation scene">
   <defs>
     <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#0a1628"/>
@@ -270,11 +375,12 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
 
   ${drawWall()}
   ${drawFloor()}
+  ${drawParticles()}
+  ${drawScanlines()}
 
-  <!-- Header -->
+  <!-- Header (pixel text) -->
   <rect x="0" y="0" width="${WIDTH}" height="${ROOM.headerH}" fill="url(#hdrGrad)"/>
-  <text x="${WIDTH / 2}" y="24" font-size="14" font-family="monospace" font-weight="900"
-    fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE ù LIVE</text>
+  ${drawPixelText(18, 12, "LIVE SCENE", "#f8fafc", 2)}
 
   <!-- Desks -->
   ${drawDeskCluster(DESKS.frontend.x, DESKS.frontend.y, "frontend")}
@@ -283,17 +389,17 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   ${drawDeskCluster(DESKS.devops.x,   DESKS.devops.y,   "devops")}
 
   <!-- Main agents roaming -->
-  ${(() => { const p = roam("frontend", DESKS.frontend.x + 70, DESKS.frontend.y + 55, 60, 32); return drawLabelTag(DESKS.frontend.x + 8, DESKS.frontend.y - 14, "FRONTEND", ROLE_COLORS.frontend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "frontend"); })()}
-  ${(() => { const p = roam("backend", DESKS.backend.x + 78, DESKS.backend.y + 55, 60, 32); return drawLabelTag(DESKS.backend.x + 16, DESKS.backend.y - 14, "BACKEND", ROLE_COLORS.backend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "backend"); })()}
-  ${(() => { const p = roam("database", DESKS.database.x + 70, DESKS.database.y + 55, 60, 32); return drawLabelTag(DESKS.database.x + 8, DESKS.database.y - 14, "DATABASE", ROLE_COLORS.database.accent) + "\\n" + drawAgentSprite(p.x, p.y, "database"); })()}
-  ${(() => { const p = roam("devops", DESKS.devops.x + 78, DESKS.devops.y + 55, 60, 32); return drawLabelTag(DESKS.devops.x + 24, DESKS.devops.y - 14, "DEVOPS", ROLE_COLORS.devops.accent) + "\\n" + drawAgentSprite(p.x, p.y, "devops"); })()}
+  ${(() => { const p = roam("frontend", DESKS.frontend.x + 70, DESKS.frontend.y + 55, 60, 32); return drawLabelTagPixel(DESKS.frontend.x + 8, DESKS.frontend.y - 14, "FRONTEND", ROLE_COLORS.frontend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "frontend"); })()}
+  ${(() => { const p = roam("backend", DESKS.backend.x + 78, DESKS.backend.y + 55, 60, 32); return drawLabelTagPixel(DESKS.backend.x + 16, DESKS.backend.y - 14, "BACKEND", ROLE_COLORS.backend.accent) + "\\n" + drawAgentSprite(p.x, p.y, "backend"); })()}
+  ${(() => { const p = roam("database", DESKS.database.x + 70, DESKS.database.y + 55, 60, 32); return drawLabelTagPixel(DESKS.database.x + 8, DESKS.database.y - 14, "DATABASE", ROLE_COLORS.database.accent) + "\\n" + drawAgentSprite(p.x, p.y, "database"); })()}
+  ${(() => { const p = roam("devops", DESKS.devops.x + 78, DESKS.devops.y + 55, 60, 32); return drawLabelTagPixel(DESKS.devops.x + 24, DESKS.devops.y - 14, "DEVOPS", ROLE_COLORS.devops.accent) + "\\n" + drawAgentSprite(p.x, p.y, "devops"); })()}
 
   <!-- NPCs roaming -->
-  ${(() => { const p = roam("pm", WIDTH * 0.30, ROOM.floorTop + 34, 45, 22); return drawLabelTag(140, 38, "PM", "#e879f9") + "\\n" + drawAgentSprite(p.x, p.y, "pm"); })()}
-  ${(() => { const p = roam("intern", WIDTH * 0.48, ROOM.floorTop + 112, 55, 30); return drawLabelTag(220, 148, "NEW_HIRE", "#fbbf24") + "\\n" + drawAgentSprite(p.x, p.y, "intern"); })()}
-  ${(() => { const p = roam("qa", WIDTH * 0.76, ROOM.floorTop + 124, 45, 26); return drawLabelTag(WIDTH - 92, 160, "QA", "#22c55e") + "\\n" + drawAgentSprite(p.x, p.y, "qa"); })()}
+  ${(() => { const p = roam("pm", WIDTH * 0.30, ROOM.floorTop + 34, 45, 22); return drawLabelTagPixel(140, 38, "PM", "#e879f9") + "\\n" + drawAgentSprite(p.x, p.y, "pm"); })()}
+  ${(() => { const p = roam("intern", WIDTH * 0.48, ROOM.floorTop + 112, 55, 30); return drawLabelTagPixel(220, 148, "NEW_HIRE", "#fbbf24") + "\\n" + drawAgentSprite(p.x, p.y, "intern"); })()}
+  ${(() => { const p = roam("qa", WIDTH * 0.76, ROOM.floorTop + 124, 45, 26); return drawLabelTagPixel(WIDTH - 92, 160, "QA", "#22c55e") + "\\n" + drawAgentSprite(p.x, p.y, "qa"); })()}
 
-  ${drawLabelTag(WIDTH - 126, 38, "MEMORY", "#93c5fd")}
+  ${drawLabelTagPixel(WIDTH - 126, 38, "MEMORY", "#93c5fd")}
   <g transform="translate(${WIDTH - 86} 56)">
     <rect x="0" y="10" width="52" height="56" rx="14" fill="#0b1220" opacity="0.55"/>
     <rect x="8" y="18" width="36" height="32" rx="10" fill="#1f2937"/>
@@ -313,11 +419,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
     ${drawArrow(290, 190, 420, 190, "#34d399")}
   </g>
 
-  <!-- Click-through badge -->
-  <a href="${linkAttr}" xlink:href="${linkAttr}" target="_blank" rel="noopener">
-    <rect x="${WIDTH - 158}" y="10" width="146" height="20" rx="8" fill="rgba(0,0,0,0.25)" stroke="#334155" stroke-width="2"/>
-    <text x="${WIDTH - 85}" y="24" font-size="10" font-family="monospace" fill="#e2e8f0" text-anchor="middle">OPEN_VIEW</text>
-  </a>
+  <!-- no external link / badge in README GIF -->
 </svg>`;
 
 fs.writeFileSync(svgPath, svg);

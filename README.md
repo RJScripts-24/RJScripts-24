@@ -1,8 +1,6 @@
 ﻿<div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:00d4ff,100:7b2ff7&height=200&section=header&text=Rishabh%20Kumar%20Jha&fontSize=50&fontAlignY=38&animation=fadeIn&fontColor=ffffff&desc=Full%20Stack%20Developer%20%7C%20AI%20Builder%20%7C%20Systems%20Engineer&descSize=18&descAlignY=58&descColor=aaaaff" width="100%"/>
-
-# Neural Office
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:00d4ff,100:7b2ff7&height=200&section=header&text=Rishabh%20Kumar%20Jha&fontSize=50&fontAlignY=38&animation=fadeIn&fontColor=ffffff&desc=Full%20Stack%20Web%20Developer&descSize=18&descAlignY=58&descColor=aaaaff" width="100%"/>
 
 </div>
 
@@ -26,16 +24,12 @@
       </p>
     </td>
     <td width="45%" valign="top" align="right">
-      <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
-        <img
-          src="office/neural-office.gif"
-          alt="Neural Office — pixel office animation"
-          width="560"
-          height="400"
-        />
-      </a>
-      <br/>
-      <sub>Looping pixel-office GIF (README-safe).</sub>
+      <img
+        src="office/neural-office.gif"
+        alt="Pixel office animation"
+        width="560"
+        height="400"
+      />
     </td>
   </tr>
 </table>
