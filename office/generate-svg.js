@@ -72,7 +72,7 @@ const TOTAL_CYCLE = 40;
 const config = readJson(configPath);
 const state  = readJson(statePath);
 
-// Extract speech lines ó Stage 4 writes strings; before that they may be objects
+// Extract speech lines ù Stage 4 writes strings; before that they may be objects
 const rawAgents = state.agents || {};
 function getSpeechLine(role) {
   const val = rawAgents[role];
@@ -215,20 +215,12 @@ function drawDesk(x, y, role) {
 function drawWalkingAgent(agentId, fromPos, toPos, sceneIndex) {
   const c = ROLE_COLORS[agentId] || ROLE_COLORS.devops;
   const beginSec   = sceneIndex * SCENE_DURATION;
+  const standUpDur = 0.5;
   const walkDur    = 2;
   const pauseDur   = 3;
   const returnDur  = 2;
+  const sitDownDur = 0.5;
   const totalDur   = SCENE_DURATION; // 10s
-
-  // Build the walk path
-  const pathGo     = `M ${fromPos.x},${fromPos.y} L ${toPos.x},${toPos.y}`;
-  const pathReturn = `M ${toPos.x},${toPos.y} L ${fromPos.x},${fromPos.y}`;
-
-  const standEnd   = beginSec + 0.5;
-  const walkEnd    = beginSec + walkDur;
-  const pauseEnd   = walkEnd + pauseDur;
-  const returnEnd  = pauseEnd + returnDur;
-  const sceneEnd   = beginSec + totalDur;
 
   // draw a simplified pixel agent inline (no label, smaller scale for walker)
   const wx = -14; // relative to group origin
@@ -249,20 +241,54 @@ function drawWalkingAgent(agentId, fromPos, toPos, sceneIndex) {
     <rect x="-15" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>
     <rect x="-1" y="${wy + 92}" width="16" height="10" rx="3" fill="#0f172a"/>`;
 
+  const dx = toPos.x - fromPos.x;
+  const dy = toPos.y - fromPos.y;
+
+  const walkBegin   = beginSec + standUpDur;
+  const pauseBegin  = walkBegin + walkDur;
+  const returnBegin = pauseBegin + pauseDur;
+  const sitBegin    = returnBegin + returnDur;
+
   return `<g id="walker-${agentId}" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
-      keyTimes="0;${beginSec / TOTAL_CYCLE};${sceneEnd / TOTAL_CYCLE}"
+      keyTimes="0;${beginSec / TOTAL_CYCLE};${(beginSec + totalDur) / TOTAL_CYCLE}"
       dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
 
-    <!-- Stand-up bob group -->
-    <g>
-      <animateTransform attributeName="transform" type="translate"
-        values="${fromPos.x},${fromPos.y}; ${fromPos.x},${fromPos.y - 20}; ${fromPos.x},${fromPos.y - 20}; ${toPos.x},${toPos.y - 20}; ${toPos.x},${toPos.y - 20}; ${fromPos.x},${fromPos.y}"
-        keyTimes="0; ${0.5 / totalDur}; ${walkDur / totalDur}; ${walkDur / totalDur}; ${(walkDur + pauseDur) / totalDur}; 1"
-        calcMode="linear"
-        dur="${totalDur}s" begin="${beginSec}s" repeatCount="indefinite"/>
-      ${agentSprite}
+    <g transform="translate(${fromPos.x} ${fromPos.y})">
+      <g id="walker-body-${agentId}">
+        <!-- Stand up -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -20" dur="${standUpDur}s" begin="${beginSec}s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Walk to target -->
+        <animateMotion path="M 0,-20 L ${dx},${dy - 20}" dur="${walkDur}s" begin="${walkBegin}s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Pause (hold position implicitly via freeze) -->
+
+        <!-- Walk back -->
+        <animateMotion path="M ${dx},${dy - 20} L 0,-20" dur="${returnDur}s" begin="${returnBegin}s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Sit down -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 -20; 0 0" dur="${sitDownDur}s" begin="${sitBegin}s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Footstep bob during forward walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="${walkBegin}s" repeatCount="${Math.round(walkDur / 0.2)}"/>
+
+        <!-- Footstep bob during return walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="${returnBegin}s" repeatCount="${Math.round(returnDur / 0.2)}"/>
+
+        ${agentSprite}
+      </g>
     </g>
   </g>`;
 }
@@ -290,7 +316,7 @@ function drawSpeechBubble(x, y, text, beginSec, durationSec) {
   const disappearBegin = beginSec + durationSec - 0.3;
 
   return `<g id="bubble-${Math.round(beginSec)}" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;${beginSec / TOTAL_CYCLE};${(beginSec + durationSec) / TOTAL_CYCLE}"
       dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
@@ -365,13 +391,16 @@ function drawGlowRings() {
     const pos       = AGENT_POSITIONS[from];
     const c         = ROLE_COLORS[from];
     const sceneBegin = i * SCENE_DURATION;
-    const sceneEnd   = sceneBegin + SCENE_DURATION;
     return `<circle cx="${pos.x}" cy="${pos.y + 60}" r="36" fill="none"
-      stroke="${c.accent}" stroke-width="2" opacity="0" id="glow-${from}">
+      stroke="${c.accent}" stroke-width="2" opacity="0" id="glow-${from}" visibility="hidden">
+      <animate attributeName="visibility" calcMode="discrete"
+        values="hidden;visible;hidden"
+        keyTimes="0;${sceneBegin / TOTAL_CYCLE};${(sceneBegin + SCENE_DURATION) / TOTAL_CYCLE}"
+        dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
       <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="${sceneBegin}s" end="${sceneEnd}s" repeatCount="indefinite"/>
+        begin="${sceneBegin}s" repeatCount="${SCENE_DURATION}"/>
       <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="${sceneBegin}s" end="${sceneEnd}s" repeatCount="indefinite"/>
+        begin="${sceneBegin}s" repeatCount="${SCENE_DURATION}"/>
     </circle>`;
   }).join("\n");
 }
@@ -390,7 +419,7 @@ function drawSceneIndicator() {
     const c = ROLE_COLORS[role];
     return `<text x="430" y="75" font-size="10" font-family="monospace"
       fill="${c.accent}" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility"
+      <animate attributeName="visibility" calcMode="discrete"
         values="hidden;visible;hidden"
         keyTimes="0;${begin / TOTAL_CYCLE};${end / TOTAL_CYCLE}"
         dur="${TOTAL_CYCLE}s" repeatCount="indefinite"/>
@@ -432,7 +461,7 @@ const linkAttr        = xmlAttrUrl(INTERACTIVE_URL);
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}"
-  role="img" aria-label="Neural Office ó 4 AI agents discussing your latest commit">
+  role="img" aria-label="Neural Office ù 4 AI agents discussing your latest commit">
   <defs>
     <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0b1220"/>

@@ -93,32 +93,48 @@
 
   <!-- Glow rings (active agent indicator) -->
   <circle cx="140" cy="150" r="36" fill="none"
-      stroke="#38bdf8" stroke-width="2" opacity="0" id="glow-frontend">
+      stroke="#38bdf8" stroke-width="2" opacity="0" id="glow-frontend" visibility="hidden">
+      <animate attributeName="visibility" calcMode="discrete"
+        values="hidden;visible;hidden"
+        keyTimes="0;0;0.25"
+        dur="40s" repeatCount="indefinite"/>
       <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="0s" end="10s" repeatCount="indefinite"/>
+        begin="0s" repeatCount="10"/>
       <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="0s" end="10s" repeatCount="indefinite"/>
+        begin="0s" repeatCount="10"/>
     </circle>
 <circle cx="680" cy="150" r="36" fill="none"
-      stroke="#34d399" stroke-width="2" opacity="0" id="glow-backend">
+      stroke="#34d399" stroke-width="2" opacity="0" id="glow-backend" visibility="hidden">
+      <animate attributeName="visibility" calcMode="discrete"
+        values="hidden;visible;hidden"
+        keyTimes="0;0.25;0.5"
+        dur="40s" repeatCount="indefinite"/>
       <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="10s" end="20s" repeatCount="indefinite"/>
+        begin="10s" repeatCount="10"/>
       <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="10s" end="20s" repeatCount="indefinite"/>
+        begin="10s" repeatCount="10"/>
     </circle>
 <circle cx="140" cy="400" r="36" fill="none"
-      stroke="#a78bfa" stroke-width="2" opacity="0" id="glow-database">
+      stroke="#a78bfa" stroke-width="2" opacity="0" id="glow-database" visibility="hidden">
+      <animate attributeName="visibility" calcMode="discrete"
+        values="hidden;visible;hidden"
+        keyTimes="0;0.5;0.75"
+        dur="40s" repeatCount="indefinite"/>
       <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="20s" end="30s" repeatCount="indefinite"/>
+        begin="20s" repeatCount="10"/>
       <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="20s" end="30s" repeatCount="indefinite"/>
+        begin="20s" repeatCount="10"/>
     </circle>
 <circle cx="680" cy="400" r="36" fill="none"
-      stroke="#fb923c" stroke-width="2" opacity="0" id="glow-devops">
+      stroke="#fb923c" stroke-width="2" opacity="0" id="glow-devops" visibility="hidden">
+      <animate attributeName="visibility" calcMode="discrete"
+        values="hidden;visible;hidden"
+        keyTimes="0;0.75;1"
+        dur="40s" repeatCount="indefinite"/>
       <animate attributeName="r" from="32" to="42" dur="1s"
-        begin="30s" end="40s" repeatCount="indefinite"/>
+        begin="30s" repeatCount="10"/>
       <animate attributeName="opacity" from="0.6" to="0" dur="1s"
-        begin="30s" end="40s" repeatCount="indefinite"/>
+        begin="30s" repeatCount="10"/>
     </circle>
 
   <!-- Title bar -->
@@ -126,12 +142,12 @@
   <text x="430" y="28" font-size="18" font-family="monospace" font-weight="900"
     fill="#f8fafc" text-anchor="middle" letter-spacing="2">NEURAL OFFICE · COMMIT CHOREOGRAPHY</text>
   <text x="430" y="46" font-size="10" font-family="monospace"
-    fill="#9fb3c8" text-anchor="middle">commit 5ee55... by rkj24</text>
+    fill="#9fb3c8" text-anchor="middle">commit 2a9ae... by rkj24</text>
 
   <!-- Scene indicator -->
   <text x="430" y="75" font-size="10" font-family="monospace"
       fill="#38bdf8" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility"
+      <animate attributeName="visibility" calcMode="discrete"
         values="hidden;visible;hidden"
         keyTimes="0;0;0.25"
         dur="40s" repeatCount="indefinite"/>
@@ -139,7 +155,7 @@
     </text>
 <text x="430" y="75" font-size="10" font-family="monospace"
       fill="#34d399" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility"
+      <animate attributeName="visibility" calcMode="discrete"
         values="hidden;visible;hidden"
         keyTimes="0;0.25;0.5"
         dur="40s" repeatCount="indefinite"/>
@@ -147,7 +163,7 @@
     </text>
 <text x="430" y="75" font-size="10" font-family="monospace"
       fill="#a78bfa" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility"
+      <animate attributeName="visibility" calcMode="discrete"
         values="hidden;visible;hidden"
         keyTimes="0;0.5;0.75"
         dur="40s" repeatCount="indefinite"/>
@@ -155,7 +171,7 @@
     </text>
 <text x="430" y="75" font-size="10" font-family="monospace"
       fill="#fb923c" text-anchor="middle" visibility="hidden">
-      <animate attributeName="visibility"
+      <animate attributeName="visibility" calcMode="discrete"
         values="hidden;visible;hidden"
         keyTimes="0;0.75;1"
         dur="40s" repeatCount="indefinite"/>
@@ -422,19 +438,44 @@
 
   <!-- Walking agents (render above static) -->
   <g id="walker-frontend" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0;0.25"
       dur="40s" repeatCount="indefinite"/>
 
-    <!-- Stand-up bob group -->
-    <g>
-      <animateTransform attributeName="transform" type="translate"
-        values="180,180; 180,160; 180,160; 720,160; 720,160; 180,180"
-        keyTimes="0; 0.05; 0.2; 0.2; 0.5; 1"
-        calcMode="linear"
-        dur="10s" begin="0s" repeatCount="indefinite"/>
-      
+    <g transform="translate(180 180)">
+      <g id="walker-body-frontend">
+        <!-- Stand up -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -20" dur="0.5s" begin="0s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Walk to target -->
+        <animateMotion path="M 0,-20 L 540,-20" dur="2s" begin="0.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Pause (hold position implicitly via freeze) -->
+
+        <!-- Walk back -->
+        <animateMotion path="M 540,-20 L 0,-20" dur="2s" begin="5.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Sit down -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 -20; 0 0" dur="0.5s" begin="7.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Footstep bob during forward walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="0.5s" repeatCount="10"/>
+
+        <!-- Footstep bob during return walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="5.5s" repeatCount="10"/>
+
+        
     <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
     <rect x="-14" y="0" width="28" height="6" rx="4" fill="#0ea5e9"/>
     <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
@@ -449,22 +490,48 @@
     <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
     <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
     <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
+      </g>
     </g>
   </g>
 <g id="walker-backend" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.25;0.5"
       dur="40s" repeatCount="indefinite"/>
 
-    <!-- Stand-up bob group -->
-    <g>
-      <animateTransform attributeName="transform" type="translate"
-        values="720,180; 720,160; 720,160; 180,410; 180,410; 720,180"
-        keyTimes="0; 0.05; 0.2; 0.2; 0.5; 1"
-        calcMode="linear"
-        dur="10s" begin="10s" repeatCount="indefinite"/>
-      
+    <g transform="translate(720 180)">
+      <g id="walker-body-backend">
+        <!-- Stand up -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -20" dur="0.5s" begin="10s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Walk to target -->
+        <animateMotion path="M 0,-20 L -540,230" dur="2s" begin="10.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Pause (hold position implicitly via freeze) -->
+
+        <!-- Walk back -->
+        <animateMotion path="M -540,230 L 0,-20" dur="2s" begin="15.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Sit down -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 -20; 0 0" dur="0.5s" begin="17.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Footstep bob during forward walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="10.5s" repeatCount="10"/>
+
+        <!-- Footstep bob during return walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="15.5s" repeatCount="10"/>
+
+        
     <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
     <rect x="-14" y="0" width="28" height="6" rx="4" fill="#10b981"/>
     <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
@@ -479,22 +546,48 @@
     <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
     <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
     <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
+      </g>
     </g>
   </g>
 <g id="walker-database" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.5;0.75"
       dur="40s" repeatCount="indefinite"/>
 
-    <!-- Stand-up bob group -->
-    <g>
-      <animateTransform attributeName="transform" type="translate"
-        values="180,430; 180,410; 180,410; 720,410; 720,410; 180,430"
-        keyTimes="0; 0.05; 0.2; 0.2; 0.5; 1"
-        calcMode="linear"
-        dur="10s" begin="20s" repeatCount="indefinite"/>
-      
+    <g transform="translate(180 430)">
+      <g id="walker-body-database">
+        <!-- Stand up -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -20" dur="0.5s" begin="20s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Walk to target -->
+        <animateMotion path="M 0,-20 L 540,-20" dur="2s" begin="20.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Pause (hold position implicitly via freeze) -->
+
+        <!-- Walk back -->
+        <animateMotion path="M 540,-20 L 0,-20" dur="2s" begin="25.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Sit down -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 -20; 0 0" dur="0.5s" begin="27.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Footstep bob during forward walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="20.5s" repeatCount="10"/>
+
+        <!-- Footstep bob during return walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="25.5s" repeatCount="10"/>
+
+        
     <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
     <rect x="-14" y="0" width="28" height="6" rx="4" fill="#7c3aed"/>
     <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
@@ -509,22 +602,48 @@
     <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
     <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
     <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
+      </g>
     </g>
   </g>
 <g id="walker-devops" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.75;1"
       dur="40s" repeatCount="indefinite"/>
 
-    <!-- Stand-up bob group -->
-    <g>
-      <animateTransform attributeName="transform" type="translate"
-        values="720,430; 720,410; 720,410; 180,160; 180,160; 720,430"
-        keyTimes="0; 0.05; 0.2; 0.2; 0.5; 1"
-        calcMode="linear"
-        dur="10s" begin="30s" repeatCount="indefinite"/>
-      
+    <g transform="translate(720 430)">
+      <g id="walker-body-devops">
+        <!-- Stand up -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -20" dur="0.5s" begin="30s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Walk to target -->
+        <animateMotion path="M 0,-20 L -540,-270" dur="2s" begin="30.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Pause (hold position implicitly via freeze) -->
+
+        <!-- Walk back -->
+        <animateMotion path="M -540,-270 L 0,-20" dur="2s" begin="35.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Sit down -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 -20; 0 0" dur="0.5s" begin="37.5s"
+          fill="freeze" calcMode="linear" repeatCount="indefinite"/>
+
+        <!-- Footstep bob during forward walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="30.5s" repeatCount="10"/>
+
+        <!-- Footstep bob during return walk -->
+        <animateTransform attributeName="transform" type="translate"
+          values="0 0; 0 -3; 0 0; 0 3; 0 0" dur="0.2s"
+          begin="35.5s" repeatCount="10"/>
+
+        
     <rect x="-14" y="0" width="28" height="24" rx="4" fill="#fbbf24"/>
     <rect x="-14" y="0" width="28" height="6" rx="4" fill="#ea580c"/>
     <rect x="-8" y="8" width="6" height="6" fill="#ffffff"/>
@@ -539,12 +658,13 @@
     <rect x="0" y="64" width="14" height="28" rx="4" fill="#1e293b"/>
     <rect x="-15" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
     <rect x="-1" y="92" width="16" height="10" rx="3" fill="#0f172a"/>
+      </g>
     </g>
   </g>
 
   <!-- Speech bubbles (topmost) -->
   <g id="bubble-3" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.0625;0.1375"
       dur="40s" repeatCount="indefinite"/>
@@ -572,7 +692,7 @@
     </g>
   </g>
 <g id="bubble-13" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.3125;0.3875"
       dur="40s" repeatCount="indefinite"/>
@@ -594,13 +714,13 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="180" y="322">I reviewed commit 5ee552f.</tspan>
+        <tspan x="180" y="322">I reviewed commit 2a9ae0c.</tspan>
         <tspan x="180" dy="14">Main f…</tspan>
       </text>
     </g>
   </g>
 <g id="bubble-23" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.5625;0.6375"
       dur="40s" repeatCount="indefinite"/>
@@ -622,13 +742,13 @@
 
       <!-- text -->
       <text font-size="11" font-family="monospace" fill="#ffffff" text-anchor="middle">
-        <tspan x="720" y="322">Commit message says: &quot;Fixed</tspan>
-        <tspan x="720" dy="14">the r…</tspan>
+        <tspan x="720" y="322">Commit message says: &quot;Readme</tspan>
+        <tspan x="720" dy="14">auto…</tspan>
       </text>
     </g>
   </g>
 <g id="bubble-33" visibility="hidden">
-    <animate attributeName="visibility"
+    <animate attributeName="visibility" calcMode="discrete"
       values="hidden;visible;hidden"
       keyTimes="0;0.8125;0.8875"
       dur="40s" repeatCount="indefinite"/>
@@ -662,10 +782,10 @@
   <svg x="10" y="574" width="840" height="20" overflow="hidden">
     <text x="860" y="14" font-size="12" font-family="monospace" font-weight="700"
       fill="#7dd3fc">
-      Agents reviewed 5ee552f: Fixed the redirect issue 3 | 4 files changed, 47 insertions(+), 54 deletions(-) | Pixel agent choreography active
+      Agents reviewed 2a9ae0c: Readme automated | 4 files changed, 207 insertions(+), 27 deletions(-) | Pixel agent choreography active
       <animateTransform attributeName="transform" type="translate"
-        from="860,0" to="-1104,0"
-        dur="41.4s" repeatCount="indefinite"/>
+        from="860,0" to="-1032,0"
+        dur="38.7s" repeatCount="indefinite"/>
     </text>
   </svg>
 
