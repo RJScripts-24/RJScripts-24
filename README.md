@@ -4,8 +4,6 @@
 
 # Neural Office
 
-[![Open Interactive Office](https://img.shields.io/badge/Open_Interactive_Office-Live_View-0ea5e9?style=for-the-badge&logo=github)](https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html)
-
 </div>
 
 ---
@@ -13,16 +11,19 @@
 <table>
   <tr>
     <td width="55%" valign="top">
-
-## About Me
-
-I am **Rishabh Kumar Jha**, a full-stack software engineer and AI builder based in Bangalore, India.  
-I focus on building autonomous multi-agent systems, LLM orchestration workflows, and scalable microservice platforms.
-
-I am currently pursuing a **B.E. in Computer Science and Business Systems** at NMIT with a **9.25/10 GPA**.
-
-You can reach me at **rkj242004@gmail.com**, connect on [LinkedIn](https://www.linkedin.com/in/rishabh-kumar-jha-8b5761325/), or explore my work on [GitHub](https://github.com/RJScripts-24).
-
+      <h2>About Me</h2>
+      <p>
+        I am <b>Rishabh Kumar Jha</b>, a full-stack software engineer and AI builder based in Bangalore, India.<br/>
+        I focus on building autonomous multi-agent systems, LLM orchestration workflows, and scalable microservice platforms.
+      </p>
+      <p>
+        I am currently pursuing a <b>B.E. in Computer Science and Business Systems</b> at NMIT with a <b>9.25/10 GPA</b>.
+      </p>
+      <p>
+        You can reach me at <b>rkj242004@gmail.com</b>, connect on
+        <a href="https://www.linkedin.com/in/rishabh-kumar-jha-8b5761325/">LinkedIn</a>,
+        or explore my work on <a href="https://github.com/RJScripts-24">GitHub</a>.
+      </p>
     </td>
     <td width="45%" valign="top" align="right">
       <a href="https://rjscripts-24.github.io/RJScripts-24/office/interactive-office.html">
